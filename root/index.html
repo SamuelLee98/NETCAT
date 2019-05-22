@@ -31,7 +31,7 @@
         <a href="#">About</a>
       </div>
 
-    <div class="header" id="myHeader">
+    <div class="header sticky" id="myHeader">
       <!-- Medium, Large, XL version of header -->
       <div class="container d-none d-md-block">
         <div class="row">
@@ -134,21 +134,18 @@
       </div>
       <!-- More events -->
       <div class="container">
-        <div class="row">
-          <div class="col-lg-6 col-md-6 col-sm-12">
-            <div class="moreEvents" id="moreEvents">
-
-            </div>
-          </div>
-          <div class="d-none d-md-block col-lg-6 col-md-6" id = "map"style="width:100%; height: 400px;"></div>
-        </div>
+          <div class = "map" id = "map" style="width:100%; height: 400px; position: sticky;"></div>
+          <br>
+          <br>
+          <div class="moreEvents card-columns" id="moreEvents" style="width:100%;"></div>
       </div>
     </div>
+
 
   <!-- Generate More Events Section -->
   <script type="text/javascript">
     var eventArray = [];
-    for (var i=0; i<6; i++) {
+    for (var i=0; i<10; i++) {
       var event = {
         title: "Fake Event Title",
         date:"Monday, October 21, 2019",
@@ -165,7 +162,8 @@
       cardBody.className = "card-body";
       var title = '<h5 class="card-title">'+event.title+'</h5>';
       var rest = event.time + '<br>' + event.date + '<br>'+ event.location;
-      var eventString = title + rest;
+      var button = '<br><br><a href="'+'details.html' +'" class="btn btn-danger">Check it out!</a>';
+      var eventString = title + rest + button;
       cardBody.innerHTML = eventString;
       cardDiv.appendChild(cardBody);
       moreEventsDiv.appendChild(cardDiv);
@@ -212,23 +210,24 @@
     </script>
 
     <!-- Java script for sticky header onscroll -->
-    <script>
-      window.onscroll = function() {myFunction()};
+    <!-- <script>
+      window.onscroll = function() { myFunction(); }
       // Get the header
       var header = document.getElementById("myHeader");
+      //var map = document.getElementById("map");
       // Get the offset position of the navbar
       var sticky = header.offsetTop;
       // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
       function myFunction() {
         if (window.pageYOffset > sticky) {
           header.classList.add("sticky");
-        } else if (window.pageYOffset == sticky) {
-          header.classList.remove("sticky");
-        } else {
-          header.classList.remove("sticky");
+          // map.classList.add("sticky");
+         } else {
+            header.classList.remove("sticky");
+            // map.classList.remove("sticky");
         }
       }
-    </script>
+    </script> -->
 
   </body>
 </html>
