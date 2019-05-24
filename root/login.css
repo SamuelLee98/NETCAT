@@ -140,11 +140,14 @@ body {
 	background-color: #ac101b;
 	border-color: #ac101b;
 }
-.card-body {
-	font-size: 13px;
-	color: gray;
-}
 .card-title {
 	font-size: 16px;
 	color: black;
+}
+.signUpDetails{
+
+}
+/* center any div */
+.center{
+  text-align:center;
 }
