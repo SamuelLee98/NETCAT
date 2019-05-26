@@ -151,3 +151,17 @@ body {
 .center{
   text-align:center;
 }
+.myFooter {
+  background-color: #f9f9f9;
+  border-top-color: red !important;
+  width: 100%;
+  font-family: helvetica-light;
+}
+.verticalLine {
+  border-left:1px solid LightGrey;
+  margin-top: 35px;
+  height: 240px;
+}
+.contactForm {
+  font-size: 13px;
+}
