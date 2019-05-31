@@ -28,7 +28,7 @@
         <a href="index-viterbi.html">VITERBI</a>
         <a href="#">ANNENBERG</a>
         <a href="#">DORNSIFE</a>
-        <a href="#">ABOUT</a>
+        <a href="#">CONTACT US</a>
         <a href="login.html">LOGIN/REGISTER</a>
       </div>
 
@@ -131,6 +131,7 @@
             Domestic confined any but son bachelor advanced remember. How proceed offered her offence shy forming. Returned peculiar pleasant but appetite differed she. Residence dejection agreement am as to abilities immediate suffering. Ye am depending propriety sweetness distrusts belonging collected. Smiling mention he in thought equally musical. Wisdom new and valley answer. Contented it so is discourse recommend. Man its upon him call mile. An pasture he himself believe ferrars besides cottage.
           </div>
         </div>
+        <hr>
         <h3 style="text-align:center; margin-top: 20px;">More Events</h3>
       </div>
       <!-- More events -->
@@ -142,11 +143,53 @@
       </div>
     </div>
 
+    <!-- footer -->
+
+    <footer class="myFooter">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align:center;" >
+            <br>
+            <br>
+            <h4 style="font-family:vogue">NETCAT</h4>
+            <h6>Marshall<h6>
+            <h6>Viterbi</h6>
+            <h6>Annenberg</h6>
+            <h6>Dornsife</h6>
+            <h6>Register/Login</h6>
+            <h6>About</h6>
+            <br>
+          </div>
+          <div class="col-lg-1 col-md-1  d-none d-md-block verticalLine fluid-center">
+          </div>
+          <div class="col-lg-8 col-md-8 d-none d-md-block">
+            <br>
+            <h6 style="text-align:center;">Advertise Your Own Events on NETCAT</h6>
+            <hr>
+            <form class="contactForm">
+              <div class="form-group">
+                <label>Email to Contact You</label>
+                <input type="contact" class="form-control" style="font-size: 13px;">
+              </div>
+              <div class="form-group">
+                <label>Summary of Your Event</label>
+                <textarea type="password" class="form-control" style="font-size: 13px;" placeholder=""> </textarea>
+              </div>
+              <div class="center">
+                <button type="submit" class="btn btn-danger" style="font-size: 13px;">Submit</button>
+              </div>
+            </form>
+            <br>
+          </div>
+        </div>
+      </div>
+    </footer>
+
 
   <!-- Generate More Events Section -->
   <script type="text/javascript">
     var eventArray = []; //replace this part with actual event array.
-    for (var i=0; i<1; i++) {
+
       var event = {
         title: "Thanos' Take on Overpopulation",
         date:"Monday, October 21, 2019",
@@ -154,8 +197,7 @@
         location:"Tutor Campus Center (TCC)"
       };
       eventArray.push(event);
-    }
-    for (var i=0; i<1; i++) {
+
       var event = {
         title: "Bill Gates on Dating Advice",
         date:"Monday, October 21, 2019",
@@ -163,8 +205,7 @@
         location:"Fertitta Hall (JFF)"
       };
       eventArray.push(event);
-    }
-    for (var i=0; i<1; i++) {
+
       var event = {
         title: "Sam Lee Talks About His Favorite Anime",
         date:"Monday, October 21, 2019",
@@ -172,9 +213,7 @@
         location:"Salvatori Computer Science Center (SAL)"
       };
       eventArray.push(event);
-    }
 
-    for (var i=0; i<1; i++) {
       var event = {
         title: "Zumberg Comes to Zumberg",
         date:"Monday, October 21, 2019",
@@ -182,8 +221,7 @@
         location:"Zumberg Hall of Science (ZHS)"
       };
       eventArray.push(event);
-    }
-    for (var i=0; i<1; i++) {
+
       var event = {
         title: "Jackie on Backend Web Developement",
         date:"Monday, October 21, 2019",
@@ -191,8 +229,7 @@
         location:"School of Cinematic Arts (SCA)"
       };
       eventArray.push(event);
-    }
-    for (var i=0; i<1; i++) {
+
       var event = {
         title: "Rainbows",
         date:"Monday, October 21, 2019",
@@ -200,7 +237,7 @@
         location:"Seeley G. Mudd Bldge (SGM)"
       };
       eventArray.push(event);
-    }
+
     function displayEvent(tbl, event) {
       var cardDiv = document.createElement('div');
       cardDiv.className = "card";
@@ -255,26 +292,6 @@
         document.getElementById("mySidenav").style.width = "0";
       }
     </script>
-
-    <!-- Java script for sticky header onscroll -->
-    <!-- <script>
-      window.onscroll = function() { myFunction(); }
-      // Get the header
-      var header = document.getElementById("myHeader");
-      //var map = document.getElementById("map");
-      // Get the offset position of the navbar
-      var sticky = header.offsetTop;
-      // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
-      function myFunction() {
-        if (window.pageYOffset > sticky) {
-          header.classList.add("sticky");
-          // map.classList.add("sticky");
-         } else {
-            header.classList.remove("sticky");
-            // map.classList.remove("sticky");
-        }
-      }
-    </script> -->
 
   </body>
 </html>

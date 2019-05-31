@@ -93,7 +93,7 @@ body {
     transition: 0.5s;
     padding-top: 60px;
     border-right:1px solid #efefef;
-		font-size:13px !important
+		font-size:13px !important;
   }
 
   .sidenav a {
@@ -147,4 +147,23 @@ body {
 .card-title {
 	font-size: 16px;
 	color: black;
+}
+
+.center{
+  text-align:center;
+}
+/* Footer divs */
+.myFooter {
+  background-color: #f9f9f9;
+  border-top-color: red !important;
+  width: 100%;
+  font-family: helvetica-light;
+}
+.verticalLine {
+  border-left:1px solid LightGrey;
+  margin-top: 35px;
+  height: 240px;
+}
+.contactForm {
+  font-size: 13px;
 }

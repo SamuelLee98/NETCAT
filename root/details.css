@@ -41,7 +41,7 @@ body {
 /* menu-header*/
 .header {
   padding: 10px 10px;
-  z-index: 2 !important;
+  z-index: 1 !important;
   background-color: white;
   border-top:1px solid #efefef;
   border-bottom:1px solid #efefef;
@@ -93,6 +93,7 @@ body {
     transition: 0.5s;
     padding-top: 60px;
     border-right:1px solid #efefef;
+		font-size:13px !important;
   }
 
   .sidenav a {
@@ -129,7 +130,7 @@ body {
   font-family:helvetica-light;
 }
 .sticky {
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 100%;
 }
@@ -144,6 +145,20 @@ body {
 	width: 100%;  /* The width is the width of the web page */ */ */
 }
 
-.sticky + .content {
-  padding-top: 54px; /*helps with smoother transitions when scrolling*/
+
+
+/* Footer divs */
+.myFooter {
+  background-color: #f9f9f9;
+  border-top-color: red !important;
+  width: 100%;
+  font-family: helvetica-light;
+}
+.verticalLine {
+  border-left:1px solid LightGrey;
+  margin-top: 35px;
+  height: 240px;
+}
+.contactForm {
+  font-size: 13px;
 }
