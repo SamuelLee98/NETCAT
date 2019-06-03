@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://fomo:FOMO%40usc2021@fomo-bhjbi.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken"
+}
