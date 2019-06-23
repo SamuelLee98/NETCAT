@@ -24,10 +24,8 @@ router.post(
     ).isLength({ min: 6 })
   ],
   async (req, res) => {
-    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      // Send 400 bad request with error as json
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -37,14 +35,11 @@ router.post(
       // See if user exists
       let user = await User.findOne({ email: email });
       if (user) {
-        // The returned error should look similar to the validation error
-        // before ie. array of errors
         return res
           .status(400)
           .json({ errors: [{ msg: 'User already exists' }] });
       }
 
-      // Get users gravatar
       const avatar = gravatar.url(email, {
         s: '200', // size
         r: 'pg', // rating, ie. no naked people
@@ -59,20 +54,12 @@ router.post(
       });
 
       // Encrypt password
-      const salt = await bcrypt.genSalt(10); // Generate salt for encryption
+      const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
 
       await user.save();
-      // Await eliminates the need to write
-      // bcrypt.genSalt(10).then(
-      //   () => { brypt.hash(...) })
-      // Due to the await keyword, we would first generate salt, then hash it,
-      // then save it to the database
-      // Rule of thumb: put await in front of anything that returns a promise
-
       // Return jsonwebtoken
 
-      // Set up payload. This info would be encrypted and stored in a token
       const payload = {
         user: {
           id: user.id // user._id from mongodb
@@ -83,7 +70,7 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: 360000 },
+        { expiresIn: 600 }, // 10 minutes
         (err, token) => {
           if (err) throw err;
           res.json({ token });

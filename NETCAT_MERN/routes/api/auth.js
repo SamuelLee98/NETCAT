@@ -23,7 +23,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // @route   POST api/auth
-// @desc    Authenticate user & get token
+// @desc    Login user & get token
 // @access  Public
 router.post(
   '/',
@@ -51,7 +51,6 @@ router.post(
       }
 
       // Check if password and email are correct
-      // user.password is encrypted password
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res
@@ -71,7 +70,7 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: 360000 },
+        { expiresIn: 600 }, // 10 minutes
         (err, token) => {
           if (err) throw err;
           res.json({ token });
