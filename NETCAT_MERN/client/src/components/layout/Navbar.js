@@ -3,18 +3,14 @@ import React, { Fragment, useState } from 'react';
 const Navbar = () => {
   const [open, toggleSideNav] = useState(false);
 
-  const openMenu = e => {
-    toggleSideNav(!open);
-  };
-
-  const closeNav = () => {
-    toggleSideNav(!open);
-  };
-
   return (
     <Fragment>
       <div id='mySidenav' className={`sidenav ${open ? 'open' : 'close'}`}>
-        <a className='closebtn' onClick={e => closeNav(e)}>
+        <a
+          className='closebtn'
+          style={{ cursor: 'pointer' }}
+          onClick={() => toggleSideNav(!open)}
+        >
           &times;
         </a>
         <h1 className='sidenav-title'>NETCAT</h1>
@@ -34,7 +30,8 @@ const Navbar = () => {
             <div className='col-lg-2 col-md-2'>
               <svg
                 className='side-menu'
-                onClick={e => openMenu(e)}
+                style={{ cursor: 'pointer' }}
+                onClick={() => toggleSideNav(!open)}
                 width='24'
                 height='24'
                 viewBox='0 0 24 24'
@@ -93,7 +90,8 @@ const Navbar = () => {
             <div className='col-sm-2' style={{ marginTop: '20px' }}>
               <svg
                 className='side-menu'
-                onClick={e => openMenu(e)}
+                style={{ cursor: 'pointer' }}
+                onClick={() => toggleSideNav(!open)}
                 width='24'
                 height='24'
                 viewBox='0 0 24 24'
@@ -123,7 +121,8 @@ const Navbar = () => {
             <div className='col-xs-6' style={{ marginTop: '20px' }}>
               <svg
                 className='side-menu'
-                onClick={e => openMenu(e)}
+                style={{ cursor: 'pointer' }}
+                onClick={() => toggleSideNav(!open)}
                 width='24'
                 height='24'
                 viewBox='0 0 24 24'
