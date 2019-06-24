@@ -1,12 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// function isMultiDay() {
-//   if (this.date.multiDay) return true;
-//   return false;
-// }
-
-const eventSchema = new Schema({
+const featuredSchema = new Schema({
   title: {
     type: String,
     required: true
@@ -50,7 +45,7 @@ const eventSchema = new Schema({
   },
   featured: {
     type: Boolean,
-    default: false
+    default: true
   },
   type: {
     type: String
@@ -60,4 +55,4 @@ const eventSchema = new Schema({
   }
 });
 
-module.exports = Event = mongoose.model('event', eventSchema);
+module.exports = Featured = mongoose.model('featuredevent', featuredSchema);

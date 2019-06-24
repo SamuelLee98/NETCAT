@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [open, toggleSideNav] = useState(false);
@@ -6,23 +7,23 @@ const Navbar = () => {
   return (
     <Fragment>
       <div id='mySidenav' className={`sidenav ${open ? 'open' : 'close'}`}>
-        <a
+        <span
           className='closebtn'
           style={{ cursor: 'pointer' }}
           onClick={() => toggleSideNav(!open)}
         >
           &times;
-        </a>
+        </span>
         <h1 className='sidenav-title'>NETCAT</h1>
-        <a href='index.html' style={{ color: '#ac101b' }}>
+        <Link to='/' style={{ color: '#ac101b' }}>
           HOME
-        </a>
-        <a href='index-marshall.html'>MARSHALL</a>
-        <a href='index-viterbi.html'>VITERBI</a>
-        <a href='#'>ANNENBERG</a>
-        <a href='#'>DORNSIFE</a>
-        <a href='#'>CONTACT US</a>
-        <a href='login.html'>LOGIN/REGISTER</a>
+        </Link>
+        <Link to='/'>MARSHALL</Link>
+        <Link to='/'>VITERBI</Link>
+        <Link to='/'>ANNENBERG</Link>
+        <Link to='/'>DORNSIFE</Link>
+        <Link to='/'>CONTACT US</Link>
+        <Link to='/'>LOGIN/REGISTER</Link>
       </div>
       <div className='header sticky' id='myHeader'>
         <div className='container d-none d-md-block'>
@@ -41,36 +42,24 @@ const Navbar = () => {
               </svg>
             </div>
             <div className='col-lg-2 col-md-2'>
-              <button
-                type='button'
-                className='btn btn-header btn-outline-danger'
-              >
+              <Link to='/' className='btn btn-header btn-outline-danger'>
                 MARSHALL
-              </button>
+              </Link>
             </div>
             <div className='col-lg-2 col-md-2'>
-              <button
-                type='button'
-                className='btn btn-header btn-outline-danger'
-              >
+              <Link to='/' className='btn btn-header btn-outline-danger'>
                 VITERBI
-              </button>
+              </Link>
             </div>
             <div className='col-lg-2 col-md-2'>
-              <button
-                type='button'
-                className='btn btn-header btn-outline-danger'
-              >
+              <Link to='/' className='btn btn-header btn-outline-danger'>
                 ANNENBERG
-              </button>
+              </Link>
             </div>
             <div className='col-lg-2 col-md-2'>
-              <button
-                type='button'
-                className='btn btn-header btn-outline-danger'
-              >
+              <Link to='/' className='btn btn-header btn-outline-danger'>
                 DORNSIFE
-              </button>
+              </Link>
             </div>
             <div className='col-lg-2 col-md-2'>
               <svg

@@ -172,6 +172,12 @@ body {
   font-size: 13px;
   color: gray;
 }
+
+.moreEvents .card-body {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .card-title {
   font-size: 16px;
   color: black;
