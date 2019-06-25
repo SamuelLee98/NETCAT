@@ -18,25 +18,5 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-
-    <script>
-      // Initialize and add the map
-      function initMap() {
-        // The location of USC
-        var USC = { lat: 34.02051, lng: -118.28563 };
-        // The map, centered at USC
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 16,
-          center: USC
-        });
-        // The marker, positioned at Uluru
-        var marker = new google.maps.Marker({ position: USC, map: map });
-      }
-    </script>
-    <!-- <script
-      async
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWgXw8FWA3_pGBCC7vAJxtaY0-2bPlLDY&callback=initMap"
-    ></script> -->
   </body>
 </html>

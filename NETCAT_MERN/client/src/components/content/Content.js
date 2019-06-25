@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import FeaturedEvent from './FeaturedEvent';
 import MoreEvent from './MoreEvent';
 import Spinner from '../layout/Spinner';
+import Map from '../map/Map';
 
 // Actions
 import { getEvents, getFeaturedEvents } from '../../actions/event';
@@ -53,7 +54,9 @@ const Content = ({
             className='map'
             id='map'
             style={{ width: '100%', height: '400px' }}
-          />
+          >
+            <Map events={events} />
+          </div>
           <br />
           <br />
           <div
