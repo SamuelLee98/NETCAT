@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 const Navbar = ({ school }) => {
   const [open, toggleSideNav] = useState(false);
 
-  const setLinkStyle = link => (link === school ? { color: '#ac101b' } : {});
+  const toggleStyle = link => (link === school ? { color: '#ac101b' } : {});
 
   return (
     <Fragment>
@@ -18,19 +18,19 @@ const Navbar = ({ school }) => {
           &times;
         </span>
         <h1 className='sidenav-title'>NETCAT</h1>
-        <Link to='/' style={setLinkStyle('')}>
+        <Link to='/' style={toggleStyle('')}>
           HOME
         </Link>
-        <Link to='/marshall' style={setLinkStyle('marshall')}>
+        <Link to='/marshall' style={toggleStyle('marshall')}>
           MARSHALL
         </Link>
-        <Link to='/viterbi' style={setLinkStyle('viterbi')}>
+        <Link to='/viterbi' style={toggleStyle('viterbi')}>
           VITERBI
         </Link>
-        <Link to='/annenberg' style={setLinkStyle('annenberg')}>
+        <Link to='/annenberg' style={toggleStyle('annenberg')}>
           ANNENBERG
         </Link>
-        <Link to='/dornsife' style={setLinkStyle('dornsife')}>
+        <Link to='/dornsife' style={toggleStyle('dornsife')}>
           DORNSIFE
         </Link>
         <Link to='/'>CONTACT US</Link>
@@ -39,7 +39,7 @@ const Navbar = ({ school }) => {
       <div className='header sticky' id='myHeader'>
         <div className='container d-none d-md-block'>
           <div className='row'>
-            <div className='col-lg-2 col-md-2'>
+            <div className='col'>
               <svg
                 className='side-menu'
                 style={{ cursor: 'pointer' }}
@@ -52,43 +52,52 @@ const Navbar = ({ school }) => {
                 <path d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z' />
               </svg>
             </div>
-            <div className='col-lg-2 col-md-2'>
+            <div className='col'>
+              <Link
+                to='/'
+                className='btn btn-header btn-outline-danger'
+                style={toggleStyle('')}
+              >
+                HOME
+              </Link>
+            </div>
+            <div className='col'>
               <Link
                 to='/marshall'
                 className='btn btn-header btn-outline-danger'
-                style={setLinkStyle('marshall')}
+                style={toggleStyle('marshall')}
               >
                 MARSHALL
               </Link>
             </div>
-            <div className='col-lg-2 col-md-2'>
+            <div className='col'>
               <Link
                 to='/viterbi'
                 className='btn btn-header btn-outline-danger'
-                style={setLinkStyle('viterbi')}
+                style={toggleStyle('viterbi')}
               >
                 VITERBI
               </Link>
             </div>
-            <div className='col-lg-2 col-md-2'>
+            <div className='col'>
               <Link
                 to='/annenberg'
                 className='btn btn-header btn-outline-danger'
-                style={setLinkStyle('annenberg')}
+                style={toggleStyle('annenberg')}
               >
                 ANNENBERG
               </Link>
             </div>
-            <div className='col-lg-2 col-md-2'>
+            <div className='col'>
               <Link
                 to='/dornsife'
                 className='btn btn-header btn-outline-danger'
-                style={setLinkStyle('dornsife')}
+                style={toggleStyle('dornsife')}
               >
                 DORNSIFE
               </Link>
             </div>
-            <div className='col-lg-2 col-md-2'>
+            <div className='col'>
               <svg
                 className='search-icon'
                 width='24'

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
-const FeaturedEvent = ({ event: { title, description }, image, index }) => {
+const FeaturedEvent = ({ event: { _id, title, description }, image }) => {
   return (
     <Fragment>
       <div className='col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-3'>
@@ -15,9 +16,17 @@ const FeaturedEvent = ({ event: { title, description }, image, index }) => {
             <div className='card-body'>
               <h4 className='card-title'>{title}</h4>
               <p className='card-text'>{description}</p>
-              <a href='details.html' className='btn btn-danger'>
+              <Link
+                to={{
+                  pathname: `/details/${_id}`,
+                  state: {
+                    featured: true
+                  }
+                }}
+                className='btn btn-danger'
+              >
                 Check it out!
-              </a>
+              </Link>
             </div>
           </div>
         </div>

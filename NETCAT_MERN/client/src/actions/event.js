@@ -1,9 +1,11 @@
 import axios from 'axios';
 import {
   GET_INDEX_EVENTS,
-  GET_INDEX_FEATURED,
+  GET_INDEX_FEATURED_EVENTS,
+  GET_EVENT,
+  GET_FEATURED_EVENT,
   EVENT_ERROR,
-  EVENTS_LOADING,
+  EVENT_LOADING,
   FEATURED_LOADING,
   SET_SCHOOL
 } from '../actions/types';
@@ -21,7 +23,7 @@ export const setSchool = (school = '') => dispatch => {
 export const getIndexEvents = (school = '') => async dispatch => {
   try {
     // Set loading
-    dispatch(loading(EVENTS_LOADING));
+    dispatch(loading(EVENT_LOADING));
     const res = await axios.get(`/api/events?school=${school}&limit=6`);
 
     dispatch({
@@ -42,11 +44,49 @@ export const getIndexFeaturedEvents = (school = '') => async dispatch => {
     // Set loading
     dispatch(loading(FEATURED_LOADING));
     const res = await axios.get(
-      `/api/events/featured?school=${school}&limit=4`
+      `/api/events?school=${school}&limit=4&featured=true`
     );
 
     dispatch({
-      type: GET_INDEX_FEATURED,
+      type: GET_INDEX_FEATURED_EVENTS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: EVENT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Get NORMAL event by id
+export const getEvent = id => async dispatch => {
+  try {
+    // Set loading
+    dispatch(loading(EVENT_LOADING));
+    const res = await axios.get(`/api/events/${id}`);
+
+    dispatch({
+      type: GET_EVENT,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: EVENT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Get FEATURED event by id
+export const getFeaturedEvent = id => async dispatch => {
+  try {
+    // Set loading
+    dispatch(loading(FEATURED_LOADING));
+    const res = await axios.get(`/api/events/${id}?featured=true`);
+
+    dispatch({
+      type: GET_FEATURED_EVENT,
       payload: res.data
     });
   } catch (err) {

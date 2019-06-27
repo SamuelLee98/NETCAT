@@ -9,11 +9,8 @@ import {
 import Moment from 'react-moment';
 
 const MyMap = withScriptjs(
-  withGoogleMap(({ events, markerId, setId }) => (
-    <GoogleMap
-      defaultZoom={15.3}
-      defaultCenter={{ lat: 34.021, lng: -118.286 }}
-    >
+  withGoogleMap(({ events, markerId, setId, center, zoom }) => (
+    <GoogleMap defaultZoom={zoom} defaultCenter={center}>
       {events.map(
         ({
           _id,

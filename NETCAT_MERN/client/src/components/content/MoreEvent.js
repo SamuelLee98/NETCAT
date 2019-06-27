@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 
 const MoreEvent = ({
   event: {
+    _id,
     title,
     date: { multiDay, from, to },
     location: { room, address }
@@ -21,9 +23,17 @@ const MoreEvent = ({
           {room}
           <br />
           <br />
-          <a href='details.html' className='btn btn-danger'>
+          <Link
+            to={{
+              pathname: `/details/${_id}`,
+              state: {
+                featured: false
+              }
+            }}
+            className='btn btn-danger'
+          >
             Check it out!
-          </a>
+          </Link>
         </div>
       </div>
     </div>

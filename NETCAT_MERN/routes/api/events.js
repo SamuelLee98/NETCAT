@@ -5,34 +5,59 @@ const Event = require('../../models/Event');
 const Featured = require('../../models/Featured');
 
 // @route   GET api/events/
-// @desc    Get NORMAL events by school or/and type
+// @desc    Get events by school, event type, and featured status
 // @access  Public
 router.get('/', async (req, res) => {
   try {
     let school = req.query.school;
     let type = req.query.type;
+    let featured = req.query.featured;
     let limit = parseInt(req.query.limit, 10);
 
     let events;
-    if (school && type) {
-      events = await Event.find({ school, type })
-        .sort({
-          'date.from': 1
-        })
-        .limit(limit);
-    } else if (school) {
-      events = await Event.find({ school })
-        .sort({ 'date.from': 1 })
-        .limit(limit);
-    } else if (type) {
-      events = await Event.find({ type })
-        .sort({ 'date.from': 1 })
-        .limit(limit);
+
+    if (featured && featured === 'true') {
+      if (school && type) {
+        events = await Featured.find({ school, type })
+          .sort({
+            'date.from': -1
+          })
+          .limit(limit);
+      } else if (school) {
+        events = await Featured.find({ school })
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      } else if (type) {
+        events = await Featured.find({ type })
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      } else {
+        events = await Featured.find()
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      }
     } else {
-      events = await Event.find()
-        .sort({ 'date.from': 1 })
-        .limit(limit);
+      if (school && type) {
+        events = await Event.find({ school, type })
+          .sort({
+            'date.from': 1
+          })
+          .limit(limit);
+      } else if (school) {
+        events = await Event.find({ school })
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      } else if (type) {
+        events = await Event.find({ type })
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      } else {
+        events = await Event.find()
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      }
     }
+
     res.json(events);
   } catch (err) {
     console.error(err.message);
@@ -40,38 +65,27 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route   GET api/events/featured
-// @desc    Get FEATURED events by school or/and type
+// @route   GET api/events/:id
+// @desc    Get normal or featured events by id
 // @access  Public
-router.get('/featured', async (req, res) => {
+router.get('/:id', async (req, res) => {
+  let featured = req.query.featured;
+  let event;
   try {
-    let school = req.query.school;
-    let type = req.query.type;
-    let limit = parseInt(req.query.limit, 10);
-
-    let events;
-    if (school && type) {
-      events = await Featured.find({ school, type })
-        .sort({
-          'date.from': -1
-        })
-        .limit(limit);
-    } else if (school) {
-      events = await Featured.find({ school })
-        .sort({ 'date.from': 1 })
-        .limit(limit);
-    } else if (type) {
-      events = await Featured.find({ type })
-        .sort({ 'date.from': 1 })
-        .limit(limit);
+    if (featured && featured === 'true') {
+      event = await Featured.findById(req.params.id);
     } else {
-      events = await Featured.find()
-        .sort({ 'date.from': 1 })
-        .limit(limit);
+      event = await Event.findById(req.params.id);
     }
-    res.json(events);
+    if (!event) {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+    res.json(event);
   } catch (err) {
     console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
     res.status(500).send('Server Error');
   }
 });

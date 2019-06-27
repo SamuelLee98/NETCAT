@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Content from '../content/Content';
-import { Details } from '../details/Details';
+import Details from '../details/Details';
 // import Alert from '../layout/Alert';
 // import NotFound from '../layout/NotFound';
 // import PrivateRoute from '../routing/PrivateRoute';
@@ -37,11 +37,11 @@ const Routes = () => {
           render={props => <Content {...props} school='dornsife' />}
         />
         <Route exact path='/details/:id' component={Details} />
-        {/* <Route
+        <Route
           exact
-          path='/notFound'
+          path='/not-found'
           component={() => <div>Page not found.</div>}
-        /> */}
+        />
         <Route
           component={() => (
             <div className='container text-center'>

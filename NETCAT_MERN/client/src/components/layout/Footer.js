@@ -10,7 +10,7 @@ const Footer = ({ school }) => {
 
   const { contact, summary } = formData;
 
-  const setLinkStyle = link => (link === school ? { color: '#ac101b' } : {});
+  const toggleStyle = link => (link === school ? { color: '#ac101b' } : {});
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,11 +26,18 @@ const Footer = ({ school }) => {
             <br />
             <br />
             <h4 style={{ fontFamily: 'vogue' }}>NETCAT</h4>
-
+            <Link
+              to='/'
+              className='btn btn-header btn-outline-danger'
+              style={toggleStyle('')}
+            >
+              <h6 style={{ cursor: 'pointer' }}>Home</h6>
+            </Link>
+            <br />
             <Link
               to='/marshall'
               className='btn btn-header btn-outline-danger'
-              style={setLinkStyle('marshall')}
+              style={toggleStyle('marshall')}
             >
               <h6 style={{ cursor: 'pointer' }}>Marshall</h6>
             </Link>
@@ -38,7 +45,7 @@ const Footer = ({ school }) => {
             <Link
               to='/viterbi'
               className='btn btn-header btn-outline-danger'
-              style={setLinkStyle('viterbi')}
+              style={toggleStyle('viterbi')}
             >
               <h6 style={{ cursor: 'pointer' }}>Viterbi</h6>
             </Link>
@@ -46,7 +53,7 @@ const Footer = ({ school }) => {
             <Link
               to='/annenberg'
               className='btn btn-header btn-outline-danger'
-              style={setLinkStyle('annenberg')}
+              style={toggleStyle('annenberg')}
             >
               <h6 style={{ cursor: 'pointer' }}>Annenberg</h6>
             </Link>
@@ -54,7 +61,7 @@ const Footer = ({ school }) => {
             <Link
               to='/dornsife'
               className='btn btn-header btn-outline-danger'
-              style={setLinkStyle('dornsife')}
+              style={toggleStyle('dornsife')}
             >
               <h6 style={{ cursor: 'pointer' }}>Dornsife</h6>
             </Link>

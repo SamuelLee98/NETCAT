@@ -51,7 +51,6 @@ const Content = ({
               key={event._id}
               event={event}
               image={images[index]}
-              index={index}
             />
           ))}
         </div>
@@ -63,7 +62,11 @@ const Content = ({
             id='map'
             style={{ width: '100%', height: '400px' }}
           >
-            <MapWrapper events={events} />
+            <MapWrapper
+              events={events}
+              center={{ lat: 34.021, lng: -118.286 }}
+              zoom={15.3}
+            />
           </div>
           <br />
           <br />

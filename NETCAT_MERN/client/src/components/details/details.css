@@ -1,0 +1,22 @@
+/*site body content*/
+.content {
+  z-index: 0 !important;
+  padding: 16px;
+  background-color: white;
+  font-family: "helvetica-light";
+}
+.sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+/*set google map size*/
+.no-padding {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+}
+#map {
+  height: 200px; /* The height is 400 pixels */
+  width: 100%; /* The width is the width of the web page */
+}

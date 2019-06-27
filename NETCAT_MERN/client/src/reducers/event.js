@@ -1,8 +1,10 @@
 import {
   GET_INDEX_EVENTS,
-  GET_INDEX_FEATURED,
+  GET_INDEX_FEATURED_EVENTS,
+  GET_EVENT,
+  GET_FEATURED_EVENT,
   EVENT_ERROR,
-  EVENTS_LOADING,
+  EVENT_LOADING,
   FEATURED_LOADING,
   SET_SCHOOL
 } from '../actions/types';
@@ -34,7 +36,7 @@ export default function(state = initialState, action) {
         },
         loading: state.featured.loading || false
       };
-    case GET_INDEX_FEATURED:
+    case GET_INDEX_FEATURED_EVENTS:
       return {
         ...state,
         featured: {
@@ -42,6 +44,26 @@ export default function(state = initialState, action) {
           featured: payload
         },
         loading: state.events.loading || false
+      };
+    case GET_EVENT:
+      return {
+        ...state,
+        events: {
+          ...state.events.events,
+          loading: false
+        },
+        event: payload,
+        loading: false
+      };
+    case GET_FEATURED_EVENT:
+      return {
+        ...state,
+        featured: {
+          ...state.featured.featured,
+          loading: false
+        },
+        event: payload,
+        loading: false
       };
     case FEATURED_LOADING:
       return {
@@ -52,7 +74,7 @@ export default function(state = initialState, action) {
         },
         loading: true
       };
-    case EVENTS_LOADING:
+    case EVENT_LOADING:
       return {
         ...state,
         events: {
@@ -68,9 +90,18 @@ export default function(state = initialState, action) {
       };
     case EVENT_ERROR:
       return {
-        ...state,
-        error: payload,
-        loading: false
+        events: {
+          loading: false,
+          events: null
+        },
+        featured: {
+          loading: false,
+          featured: null
+        },
+        event: null,
+        loading: false,
+        school: '',
+        error: payload
       };
     default:
       return state;
