@@ -1,8 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const Navbar = () => {
+const Navbar = ({ school }) => {
   const [open, toggleSideNav] = useState(false);
+
+  const setLinkStyle = link => (link === school ? { color: '#ac101b' } : {});
 
   return (
     <Fragment>
@@ -15,13 +18,21 @@ const Navbar = () => {
           &times;
         </span>
         <h1 className='sidenav-title'>NETCAT</h1>
-        <Link to='/' style={{ color: '#ac101b' }}>
+        <Link to='/' style={setLinkStyle('')}>
           HOME
         </Link>
-        <Link to='/'>MARSHALL</Link>
-        <Link to='/'>VITERBI</Link>
-        <Link to='/'>ANNENBERG</Link>
-        <Link to='/'>DORNSIFE</Link>
+        <Link to='/marshall' style={setLinkStyle('marshall')}>
+          MARSHALL
+        </Link>
+        <Link to='/viterbi' style={setLinkStyle('viterbi')}>
+          VITERBI
+        </Link>
+        <Link to='/annenberg' style={setLinkStyle('annenberg')}>
+          ANNENBERG
+        </Link>
+        <Link to='/dornsife' style={setLinkStyle('dornsife')}>
+          DORNSIFE
+        </Link>
         <Link to='/'>CONTACT US</Link>
         <Link to='/'>LOGIN/REGISTER</Link>
       </div>
@@ -42,22 +53,38 @@ const Navbar = () => {
               </svg>
             </div>
             <div className='col-lg-2 col-md-2'>
-              <Link to='/' className='btn btn-header btn-outline-danger'>
+              <Link
+                to='/marshall'
+                className='btn btn-header btn-outline-danger'
+                style={setLinkStyle('marshall')}
+              >
                 MARSHALL
               </Link>
             </div>
             <div className='col-lg-2 col-md-2'>
-              <Link to='/' className='btn btn-header btn-outline-danger'>
+              <Link
+                to='/viterbi'
+                className='btn btn-header btn-outline-danger'
+                style={setLinkStyle('viterbi')}
+              >
                 VITERBI
               </Link>
             </div>
             <div className='col-lg-2 col-md-2'>
-              <Link to='/' className='btn btn-header btn-outline-danger'>
+              <Link
+                to='/annenberg'
+                className='btn btn-header btn-outline-danger'
+                style={setLinkStyle('annenberg')}
+              >
                 ANNENBERG
               </Link>
             </div>
             <div className='col-lg-2 col-md-2'>
-              <Link to='/' className='btn btn-header btn-outline-danger'>
+              <Link
+                to='/dornsife'
+                className='btn btn-header btn-outline-danger'
+                style={setLinkStyle('dornsife')}
+              >
                 DORNSIFE
               </Link>
             </div>
@@ -130,4 +157,8 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+const mapStateToProps = state => ({
+  school: state.event.school
+});
+
+export default connect(mapStateToProps)(Navbar);

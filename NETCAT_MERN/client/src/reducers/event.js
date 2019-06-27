@@ -1,9 +1,10 @@
 import {
-  GET_EVENTS,
-  GET_FEATURED,
+  GET_INDEX_EVENTS,
+  GET_INDEX_FEATURED,
   EVENT_ERROR,
   EVENTS_LOADING,
-  FEATURED_LOADING
+  FEATURED_LOADING,
+  SET_SCHOOL
 } from '../actions/types';
 
 const initialState = {
@@ -17,13 +18,14 @@ const initialState = {
   },
   event: null,
   loading: true,
+  school: '',
   error: {}
 };
 
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case GET_EVENTS:
+    case GET_INDEX_EVENTS:
       return {
         ...state,
         events: {
@@ -32,7 +34,7 @@ export default function(state = initialState, action) {
         },
         loading: state.featured.loading || false
       };
-    case GET_FEATURED:
+    case GET_INDEX_FEATURED:
       return {
         ...state,
         featured: {
@@ -58,6 +60,11 @@ export default function(state = initialState, action) {
           loading: true
         },
         loading: true
+      };
+    case SET_SCHOOL:
+      return {
+        ...state,
+        school: payload
       };
     case EVENT_ERROR:
       return {

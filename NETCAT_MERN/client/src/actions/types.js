@@ -1,5 +1,6 @@
-export const GET_EVENTS = 'GET_EVENTS';
-export const GET_FEATURED = 'GET_FEATURED';
+export const GET_INDEX_EVENTS = 'GET_EVENTS';
+export const GET_INDEX_FEATURED = 'GET_FEATURED';
 export const EVENT_ERROR = 'EVENT_ERROR';
 export const EVENTS_LOADING = 'EVENTS_LOADING';
 export const FEATURED_LOADING = 'FEATURED_LOADING';
+export const SET_SCHOOL = 'SET_SCHOOL';

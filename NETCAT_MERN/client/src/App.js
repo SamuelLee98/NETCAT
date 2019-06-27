@@ -10,7 +10,6 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 // css
-import 'mapbox-gl/dist/mapbox-gl.css';
 import './App.css';
 
 const App = () => (
