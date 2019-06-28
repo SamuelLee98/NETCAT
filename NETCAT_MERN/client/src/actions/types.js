@@ -1,5 +1,6 @@
 // Share modal
-export const TOGGLE_MODAL = 'TOGGLE_MODAL';
+export const OPEN_MODAL = 'OPEN_MODAL';
+export const CLOSE_MODAL = 'CLOSE_MODAL';
 
 // Events
 export const GET_INDEX_EVENTS = 'GET_EVENTS';

@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 const FeaturedEvent = ({
   event: { _id, title, description },
   image,
-  toggleModalDisplay
+  openModal,
+  closeModal
 }) => {
   return (
     <Fragment>
@@ -28,7 +29,7 @@ const FeaturedEvent = ({
               </Link>
               <button
                 id='myBtn'
-                onClick={() => toggleModalDisplay()}
+                onClick={() => openModal(true, _id)}
                 className='btn btn-danger float-right'
               >
                 Share

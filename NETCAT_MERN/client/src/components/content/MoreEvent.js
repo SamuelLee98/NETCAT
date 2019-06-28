@@ -9,7 +9,8 @@ const MoreEvent = ({
     date: { multiDay, from, to },
     location: { room, address }
   },
-  toggleModalDisplay
+  openModal,
+  closeModal
 }) => {
   return (
     <div className='col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-3'>
@@ -34,7 +35,7 @@ const MoreEvent = ({
           </Link>
           <button
             id='myBtn'
-            onClick={() => toggleModalDisplay()}
+            onClick={() => openModal(false, _id)}
             className='btn btn-danger float-right'
           >
             Share

@@ -15,7 +15,7 @@ import {
   getIndexEvents,
   getIndexFeaturedEvents
 } from '../../actions/event';
-import { toggleModalDisplay } from '../../actions/modal';
+import { openModal, closeModal } from '../../actions/modal';
 
 // Images, delete later
 import facebook from './images/facebook.png';
@@ -28,7 +28,8 @@ const Content = ({
   setSchool,
   getIndexFeaturedEvents,
   getIndexEvents,
-  toggleModalDisplay,
+  openModal,
+  closeModal,
   event: {
     events: { events },
     featured: { featured },
@@ -60,7 +61,8 @@ const Content = ({
               key={event._id}
               event={event}
               image={images[index]}
-              toggleModalDisplay={toggleModalDisplay}
+              openModal={openModal}
+              closeModal={closeModal}
             />
           ))}
         </div>
@@ -86,7 +88,8 @@ const Content = ({
                 <MoreEvent
                   key={event._id}
                   event={event}
-                  toggleModalDisplay={toggleModalDisplay}
+                  openModal={openModal}
+                  closeModal={closeModal}
                 />
               ))}
             </div>
@@ -101,7 +104,8 @@ Content.propTypes = {
   setSchool: PropTypes.func.isRequired,
   getIndexEvents: PropTypes.func.isRequired,
   getIndexFeaturedEvents: PropTypes.func.isRequired,
-  toggleModalDisplay: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired,
   school: PropTypes.string
 };
@@ -112,5 +116,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setSchool, getIndexEvents, getIndexFeaturedEvents, toggleModalDisplay }
+  { setSchool, getIndexEvents, getIndexFeaturedEvents, openModal, closeModal }
 )(Content);

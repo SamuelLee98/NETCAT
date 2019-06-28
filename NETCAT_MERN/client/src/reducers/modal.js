@@ -1,12 +1,23 @@
-import { TOGGLE_MODAL } from '../actions/types';
+import { OPEN_MODAL, CLOSE_MODAL } from '../actions/types';
 
-const initialState = false;
+const initialState = {
+  onDisplay: false,
+  url: ''
+};
 
 export default function(state = initialState, action) {
-  const { type } = action;
+  const { type, payload } = action;
   switch (type) {
-    case TOGGLE_MODAL:
-      return !state;
+    case OPEN_MODAL:
+      return {
+        onDisplay: true,
+        url: payload
+      };
+    case CLOSE_MODAL:
+      return {
+        onDisplay: false,
+        url: ''
+      };
     default:
       return state;
   }
