@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
+import qs from 'query-string';
+
+// Actions
 import { getEvent, getFeaturedEvent } from '../../actions/event';
+
+// Components
 import Spinner from '../layout/Spinner';
 import MapWrapper from '../map/MapWrapper';
+import NotFound from '../layout/NotFound';
+import ServerError from '../layout/ServerError';
 
 // css
 import './details.css';
@@ -13,36 +19,37 @@ import './details.css';
 // Img, delete later
 import facebook from '../content/images/facebook.png';
 
-const Details = ({ match, event, getEvent, getFeaturedEvent, location }) => {
-  const [loading, toggleLoading] = useState(true);
+const Details = ({
+  loading,
+  event,
+  error,
+  getEvent,
+  getFeaturedEvent,
+  match,
+  location
+}) => {
+  // get featured query param from url
+  const featureParam = qs.parse(location.search).featured;
+  const featured = featureParam && featureParam === 'true' ? true : false;
 
   useEffect(() => {
-    const getFeaturedData = async () => {
-      await getFeaturedEvent(match.params.id);
-      console.log('toggleLoading');
-      toggleLoading(false);
-    };
+    if (featured) getFeaturedEvent(match.params.id);
+    else getEvent(match.params.id);
+  }, [getEvent, getFeaturedEvent, match, featured]);
 
-    const getData = async () => {
-      await getEvent(match.params.id);
-      console.log('toggleLoading');
-      toggleLoading(false);
-    };
+  if (error && error.status === 404) {
+    return <NotFound />;
+  }
 
-    // If no featured prop passed in, then location.state is null
-    if (location.state != null && location.state.featured === true) {
-      getFeaturedData();
-    } else {
-      getData();
-    }
-  }, [getEvent, getFeaturedEvent, match.params.id, location, loading]);
+  if (error && error.status === 500) {
+    return <ServerError />;
+  }
 
-  return loading ? (
-    <Spinner />
-  ) : !event ? (
-    // If finished loading but still no event exists, return not found
-    <Redirect to='/not-found' />
-  ) : (
+  if (loading || !event || error) {
+    return <Spinner />;
+  }
+
+  return (
     <div className='content no-padding'>
       <div className='container-fluid no-padding'>
         <div className='row'>
@@ -99,12 +106,13 @@ Details.propTypes = {
   getFeaturedEvent: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   event: PropTypes.object,
-  featured: PropTypes.bool
+  error: PropTypes.object
 };
 
 const mapStateToProps = state => ({
   loading: state.event.loading,
-  event: state.event.event
+  event: state.event.event,
+  error: state.event.error
 });
 
 export default connect(

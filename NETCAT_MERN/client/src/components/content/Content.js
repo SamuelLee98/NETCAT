@@ -7,6 +7,7 @@ import FeaturedEvent from './FeaturedEvent';
 import MoreEvent from './MoreEvent';
 import Spinner from '../layout/Spinner';
 import MapWrapper from '../map/MapWrapper';
+import ServerError from '../layout/ServerError';
 
 // Actions
 import {
@@ -14,6 +15,7 @@ import {
   getIndexEvents,
   getIndexFeaturedEvents
 } from '../../actions/event';
+import { toggleModalDisplay } from '../../actions/modal';
 
 // Images, delete later
 import facebook from './images/facebook.png';
@@ -26,10 +28,12 @@ const Content = ({
   setSchool,
   getIndexFeaturedEvents,
   getIndexEvents,
+  toggleModalDisplay,
   event: {
     events: { events },
     featured: { featured },
-    loading
+    loading,
+    error
   },
   school
 }) => {
@@ -39,9 +43,14 @@ const Content = ({
     getIndexEvents(school);
   }, [setSchool, getIndexFeaturedEvents, getIndexEvents, school]);
 
-  return loading || !events || !featured ? (
-    <Spinner />
-  ) : (
+  if (error && error.status === 500) {
+    return <ServerError />;
+  }
+  if (loading || !events || !featured) {
+    return <Spinner />;
+  }
+
+  return (
     <div className='content'>
       <div className='container'>
         <h3 style={{ textAlign: 'center' }}>Featured Events</h3>
@@ -51,6 +60,7 @@ const Content = ({
               key={event._id}
               event={event}
               image={images[index]}
+              toggleModalDisplay={toggleModalDisplay}
             />
           ))}
         </div>
@@ -73,7 +83,11 @@ const Content = ({
           <div className='moreEvents' id='moreEvents' style={{ width: '100%' }}>
             <div className='row'>
               {events.map(event => (
-                <MoreEvent key={event._id} event={event} />
+                <MoreEvent
+                  key={event._id}
+                  event={event}
+                  toggleModalDisplay={toggleModalDisplay}
+                />
               ))}
             </div>
           </div>
@@ -87,6 +101,7 @@ Content.propTypes = {
   setSchool: PropTypes.func.isRequired,
   getIndexEvents: PropTypes.func.isRequired,
   getIndexFeaturedEvents: PropTypes.func.isRequired,
+  toggleModalDisplay: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired,
   school: PropTypes.string
 };
@@ -97,5 +112,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setSchool, getIndexEvents, getIndexFeaturedEvents }
+  { setSchool, getIndexEvents, getIndexFeaturedEvents, toggleModalDisplay }
 )(Content);

@@ -8,7 +8,8 @@ const MoreEvent = ({
     title,
     date: { multiDay, from, to },
     location: { room, address }
-  }
+  },
+  toggleModalDisplay
 }) => {
   return (
     <div className='col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-3'>
@@ -25,15 +26,19 @@ const MoreEvent = ({
           <br />
           <Link
             to={{
-              pathname: `/details/${_id}`,
-              state: {
-                featured: false
-              }
+              pathname: `/details/${_id}`
             }}
             className='btn btn-danger'
           >
             Check it out!
           </Link>
+          <button
+            id='myBtn'
+            onClick={() => toggleModalDisplay()}
+            className='btn btn-danger float-right'
+          >
+            Share
+          </button>
         </div>
       </div>
     </div>
