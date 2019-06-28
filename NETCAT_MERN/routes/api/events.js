@@ -5,25 +5,59 @@ const Event = require('../../models/Event');
 const Featured = require('../../models/Featured');
 
 // @route   GET api/events/
-// @desc    Get NORMAL events by school or/and type
+// @desc    Get events by school, event type, and featured status
 // @access  Public
 router.get('/', async (req, res) => {
   try {
     let school = req.query.school;
     let type = req.query.type;
+    let featured = req.query.featured;
+    let limit = parseInt(req.query.limit, 10);
 
     let events;
-    if (school && type) {
-      events = await Event.find({ school, type }).sort({
-        'date.from': -1
-      });
-    } else if (school) {
-      events = await Event.find({ school }).sort({ 'date.from': -1 });
-    } else if (type) {
-      events = await Event.find({ type }).sort({ 'date.from': -1 });
+
+    if (featured && featured === 'true') {
+      if (school && type) {
+        events = await Featured.find({ school, type })
+          .sort({
+            'date.from': -1
+          })
+          .limit(limit);
+      } else if (school) {
+        events = await Featured.find({ school })
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      } else if (type) {
+        events = await Featured.find({ type })
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      } else {
+        events = await Featured.find()
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      }
     } else {
-      events = await Event.find().sort({ 'date.from': -1 });
+      if (school && type) {
+        events = await Event.find({ school, type })
+          .sort({
+            'date.from': 1
+          })
+          .limit(limit);
+      } else if (school) {
+        events = await Event.find({ school })
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      } else if (type) {
+        events = await Event.find({ type })
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      } else {
+        events = await Event.find()
+          .sort({ 'date.from': 1 })
+          .limit(limit);
+      }
     }
+
     res.json(events);
   } catch (err) {
     console.error(err.message);
@@ -31,29 +65,27 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route   GET api/events/featured
-// @desc    Get FEATURED events by school or/and type
+// @route   GET api/events/:id
+// @desc    Get normal or featured events by id
 // @access  Public
-router.get('/featured', async (req, res) => {
+router.get('/:id', async (req, res) => {
+  let featured = req.query.featured;
+  let event;
   try {
-    let school = req.query.school;
-    let type = req.query.type;
-
-    let events;
-    if (school && type) {
-      events = await Featured.find({ school, type }).sort({
-        'date.from': -1
-      });
-    } else if (school) {
-      events = await Featured.find({ school }).sort({ 'date.from': -1 });
-    } else if (type) {
-      events = await Featured.find({ type }).sort({ 'date.from': -1 });
+    if (featured && featured === 'true') {
+      event = await Featured.findById(req.params.id);
     } else {
-      events = await Featured.find().sort({ 'date.from': -1 });
+      event = await Event.findById(req.params.id);
     }
-    res.json(events);
+    if (!event) {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+    res.json(event);
   } catch (err) {
     console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
     res.status(500).send('Server Error');
   }
 });
@@ -139,9 +171,26 @@ router.get('/test-data', async (req, res) => {
   const random = () => Math.random() * 0.01 - 0.005;
 
   try {
+    // Remove all existing data
+    await Event.deleteMany();
+    await Featured.deleteMany();
     // Fake normal events
-    for (let i = 0; i < 12; i++) {
-      let title = i < 6 ? 'Test Viterbi Event' : 'Test Dornsife Event';
+    for (let i = 0; i < 24; i++) {
+      let title, school;
+      if (i < 6) {
+        title = 'Test Viterbi Event';
+        school = 'viterbi';
+      } else if (i < 12) {
+        title = 'Test Dornsife Event';
+        school = 'dornsife';
+      } else if (i < 18) {
+        title = 'Test Annenberg Event';
+        school = 'annenberg';
+      } else {
+        title = 'Test Marshall Event';
+        school = 'marshall';
+      }
+
       let newEvent = {
         title: `${title} ${i + 1}`,
         location: {
@@ -151,26 +200,42 @@ router.get('/test-data', async (req, res) => {
           longitude: -118.28651879471587 + random()
         },
         date: {
-          from: new Date(`${i + 10} July 2019 4:30:00 PDT`),
-          to: new Date(`${i + 10} July 2019 6:30:00 PDT`),
+          from: new Date(
+            `${i + 1 < 10 ? `0${i + 1}` : i + 1} July 2019 4:30:00 PDT`
+          ),
+          to: new Date(
+            `${i + 1 < 10 ? `0${i + 1}` : i + 1}  July 2019 6:30:00 PDT`
+          ),
           multiDay: false
         },
         featured: false,
         description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
         thumbNailUrl: 'www.facebook.com',
-        school: i < 6 ? 'viterbi' : 'dornsife',
+        school,
         type: i % 2 === 0 ? 'workshop' : 'career'
       };
       newEvent = new Event(newEvent);
       newEvent = await newEvent.save();
-      console.log(i);
+      console.log({ i, school });
     }
 
     // Fake featured events
-    for (let i = 0; i < 8; i++) {
-      let title =
-        i < 4 ? 'Test Featured Viterbi Event' : 'Test Feautred Dornsife Event';
+    for (let i = 0; i < 16; i++) {
+      let title, school;
+      if (i < 4) {
+        title = 'Test Featured Viterbi Event';
+        school = 'viterbi';
+      } else if (i < 8) {
+        title = 'Test Featured Dornsife Event';
+        school = 'dornsife';
+      } else if (i < 12) {
+        title = 'Test Featured Annenberg Event';
+        school = 'annenberg';
+      } else {
+        title = 'Test Featured Marshall Event';
+        school = 'marshall';
+      }
       let newEvent = {
         title: `${title} ${i + 1}`,
         location: {
@@ -188,12 +253,12 @@ router.get('/test-data', async (req, res) => {
         description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
         thumbNailUrl: 'www.facebook.com',
-        school: i < 4 ? 'viterbi' : 'dornsife',
+        school,
         type: i % 2 === 0 ? 'workshop' : 'career'
       };
       newEvent = new Featured(newEvent);
       newEvent = await newEvent.save();
-      console.log(i);
+      console.log({ i: i + 24, school });
     }
   } catch (err) {
     console.error(err.message);

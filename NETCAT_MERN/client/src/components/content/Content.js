@@ -6,10 +6,14 @@ import { connect } from 'react-redux';
 import FeaturedEvent from './FeaturedEvent';
 import MoreEvent from './MoreEvent';
 import Spinner from '../layout/Spinner';
-import Map from '../map/Map';
+import MapWrapper from '../map/MapWrapper';
 
 // Actions
-import { getEvents, getFeaturedEvents } from '../../actions/event';
+import {
+  setSchool,
+  getIndexEvents,
+  getIndexFeaturedEvents
+} from '../../actions/event';
 
 // Images, delete later
 import facebook from './images/facebook.png';
@@ -19,18 +23,21 @@ import vayner from './images/vayner.png';
 const images = [facebook, amazon, NBC, vayner];
 
 const Content = ({
-  getFeaturedEvents,
-  getEvents,
+  setSchool,
+  getIndexFeaturedEvents,
+  getIndexEvents,
   event: {
     events: { events },
     featured: { featured },
     loading
-  }
+  },
+  school
 }) => {
   useEffect(() => {
-    getFeaturedEvents();
-    getEvents();
-  }, [getFeaturedEvents, getEvents]);
+    setSchool(school);
+    getIndexFeaturedEvents(school);
+    getIndexEvents(school);
+  }, [setSchool, getIndexFeaturedEvents, getIndexEvents, school]);
 
   return loading || !events || !featured ? (
     <Spinner />
@@ -55,18 +62,20 @@ const Content = ({
             id='map'
             style={{ width: '100%', height: '400px' }}
           >
-            <Map events={events} />
+            <MapWrapper
+              events={events}
+              center={{ lat: 34.021, lng: -118.286 }}
+              zoom={15.3}
+            />
           </div>
           <br />
           <br />
-          <div
-            className='moreEvents card-columns'
-            id='moreEvents'
-            style={{ width: '100%' }}
-          >
-            {events.map(event => (
-              <MoreEvent key={event._id} event={event} />
-            ))}
+          <div className='moreEvents' id='moreEvents' style={{ width: '100%' }}>
+            <div className='row'>
+              {events.map(event => (
+                <MoreEvent key={event._id} event={event} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -75,9 +84,11 @@ const Content = ({
 };
 
 Content.propTypes = {
-  getEvents: PropTypes.func.isRequired,
-  getFeaturedEvents: PropTypes.func.isRequired,
-  event: PropTypes.object.isRequired
+  setSchool: PropTypes.func.isRequired,
+  getIndexEvents: PropTypes.func.isRequired,
+  getIndexFeaturedEvents: PropTypes.func.isRequired,
+  event: PropTypes.object.isRequired,
+  school: PropTypes.string
 };
 
 const mapStateToProps = state => ({
@@ -86,5 +97,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getEvents, getFeaturedEvents }
+  { setSchool, getIndexEvents, getIndexFeaturedEvents }
 )(Content);
