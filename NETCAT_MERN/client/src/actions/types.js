@@ -1,3 +1,8 @@
+// Share modal
+export const OPEN_MODAL = 'OPEN_MODAL';
+export const CLOSE_MODAL = 'CLOSE_MODAL';
+
+// Events
 export const GET_INDEX_EVENTS = 'GET_EVENTS';
 export const GET_INDEX_FEATURED_EVENTS = 'GET_FEATURED';
 export const EVENT_ERROR = 'EVENT_ERROR';

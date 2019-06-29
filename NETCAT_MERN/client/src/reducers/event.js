@@ -21,7 +21,7 @@ const initialState = {
   event: null,
   loading: true,
   school: '',
-  error: {}
+  error: null
 };
 
 export default function(state = initialState, action) {
@@ -34,7 +34,8 @@ export default function(state = initialState, action) {
           loading: false,
           events: payload
         },
-        loading: state.featured.loading || false
+        loading: state.featured.loading || false,
+        error: null
       };
     case GET_INDEX_FEATURED_EVENTS:
       return {
@@ -43,33 +44,22 @@ export default function(state = initialState, action) {
           loading: false,
           featured: payload
         },
-        loading: state.events.loading || false
+        loading: state.events.loading || false,
+        error: null
       };
     case GET_EVENT:
-      return {
-        ...state,
-        events: {
-          ...state.events.events,
-          loading: false
-        },
-        event: payload,
-        loading: false
-      };
     case GET_FEATURED_EVENT:
       return {
         ...state,
-        featured: {
-          ...state.featured.featured,
-          loading: false
-        },
         event: payload,
-        loading: false
+        loading: false,
+        error: null
       };
     case FEATURED_LOADING:
       return {
         ...state,
         featured: {
-          ...state.featured.featured,
+          ...state.featured,
           loading: true
         },
         loading: true
@@ -78,10 +68,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         events: {
-          ...state.events.events,
+          ...state.events,
           loading: true
         },
-        loading: true
+        loading: true,
+        error: null
       };
     case SET_SCHOOL:
       return {
@@ -90,17 +81,16 @@ export default function(state = initialState, action) {
       };
     case EVENT_ERROR:
       return {
+        ...state,
         events: {
-          loading: false,
-          events: null
+          ...state.events,
+          loading: false
         },
         featured: {
-          loading: false,
-          featured: null
+          ...state.featured,
+          loading: false
         },
-        event: null,
         loading: false,
-        school: '',
         error: payload
       };
     default:

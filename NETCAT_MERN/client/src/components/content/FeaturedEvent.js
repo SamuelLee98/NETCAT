@@ -1,7 +1,12 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-const FeaturedEvent = ({ event: { _id, title, description }, image }) => {
+const FeaturedEvent = ({
+  event: { _id, title, description },
+  image,
+  openModal,
+  closeModal
+}) => {
   return (
     <Fragment>
       <div className='col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-3'>
@@ -15,18 +20,20 @@ const FeaturedEvent = ({ event: { _id, title, description }, image }) => {
           <div className='card-block'>
             <div className='card-body'>
               <h4 className='card-title'>{title}</h4>
-              <p className='card-text'>{description}</p>
+              <p className='card-text limited-text'>{description}</p>
               <Link
-                to={{
-                  pathname: `/details/${_id}`,
-                  state: {
-                    featured: true
-                  }
-                }}
+                to={`/details/${_id}?featured=true`}
                 className='btn btn-danger'
               >
-                Check it out!
+                Read more!
               </Link>
+              <button
+                id='myBtn'
+                onClick={() => openModal(true, _id)}
+                className='btn btn-danger float-right'
+              >
+                Share
+              </button>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import spinner from './oval.svg';
+import spinner from './spinner.svg';
 
 export default () => {
   return (

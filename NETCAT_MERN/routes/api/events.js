@@ -167,7 +167,7 @@ router.post(
 /**
  * DELETE LATER
  */
-router.get('/test-data', async (req, res) => {
+router.get('/test/generate-test-data', async (req, res) => {
   const random = () => Math.random() * 0.01 - 0.005;
 
   try {
@@ -178,16 +178,16 @@ router.get('/test-data', async (req, res) => {
     for (let i = 0; i < 24; i++) {
       let title, school;
       if (i < 6) {
-        title = 'Test Viterbi Event';
+        title = 'Viterbi Event';
         school = 'viterbi';
       } else if (i < 12) {
-        title = 'Test Dornsife Event';
+        title = 'Dornsife Event';
         school = 'dornsife';
       } else if (i < 18) {
-        title = 'Test Annenberg Event';
+        title = 'Annenberg Event';
         school = 'annenberg';
       } else {
-        title = 'Test Marshall Event';
+        title = 'Marshall Event';
         school = 'marshall';
       }
 
@@ -224,16 +224,16 @@ router.get('/test-data', async (req, res) => {
     for (let i = 0; i < 16; i++) {
       let title, school;
       if (i < 4) {
-        title = 'Test Featured Viterbi Event';
+        title = 'Featured Viterbi Event';
         school = 'viterbi';
       } else if (i < 8) {
-        title = 'Test Featured Dornsife Event';
+        title = 'Featured Dornsife Event';
         school = 'dornsife';
       } else if (i < 12) {
-        title = 'Test Featured Annenberg Event';
+        title = 'Featured Annenberg Event';
         school = 'annenberg';
       } else {
-        title = 'Test Featured Marshall Event';
+        title = 'Featured Marshall Event';
         school = 'marshall';
       }
       let newEvent = {
