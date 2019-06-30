@@ -13,7 +13,7 @@ const Navbar = ({ school }) => {
         <span
           className='closebtn'
           style={{ cursor: 'pointer' }}
-          onClick={() => toggleSideNav(!open)}
+          onClick={() => toggleSideNav(false)}
         >
           &times;
         </span>
@@ -43,7 +43,7 @@ const Navbar = ({ school }) => {
               <svg
                 className='side-menu'
                 style={{ cursor: 'pointer' }}
-                onClick={() => toggleSideNav(!open)}
+                onClick={() => toggleSideNav(true)}
                 width='24'
                 height='24'
                 viewBox='0 0 24 24'
@@ -116,7 +116,7 @@ const Navbar = ({ school }) => {
               <svg
                 className='side-menu'
                 style={{ cursor: 'pointer' }}
-                onClick={() => toggleSideNav(!open)}
+                onClick={() => toggleSideNav(true)}
                 width='24'
                 height='24'
                 viewBox='0 0 24 24'
@@ -147,7 +147,7 @@ const Navbar = ({ school }) => {
               <svg
                 className='side-menu'
                 style={{ cursor: 'pointer' }}
-                onClick={() => toggleSideNav(!open)}
+                onClick={() => toggleSideNav(true)}
                 width='24'
                 height='24'
                 viewBox='0 0 24 24'

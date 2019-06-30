@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import MyMap from './MyMap';
-import API_KEY from './config';
+import API_KEY from '../../utils/config';
 
 export default ({ events, center, zoom }) => {
   const [markerId, setId] = useState('');

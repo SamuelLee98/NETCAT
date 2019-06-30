@@ -1,45 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
+import AddToCalendar from 'react-add-to-calendar';
 
-const MoreEvent = ({
-  event: {
-    _id,
-    title,
-    date: { multiDay, from, to },
-    location: { room, address }
-  },
-  openModal,
-  closeModal
-}) => {
+const MoreEvent = ({ event, openModal }) => {
   return (
     <div className='col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-3'>
       <div className='card'>
         <div className='card-body'>
-          <h5 className='card-title'>{title}</h5>
-          <Moment format='hh:mm A'>{from}</Moment> -{` `}
-          <Moment format='hh:mm A'>{to}</Moment>
+          <h5 className='card-title'>{event.title}</h5>
+          <Moment format='hh:mm A'>{event.datefrom}</Moment> -{` `}
+          <Moment format='hh:mm A'>{event.date.to}</Moment>
           <br />
-          <Moment format='dddd, MMMM D, YYYY'>{from}</Moment>
+          <Moment format='dddd, MMMM D, YYYY'>{event.date.from}</Moment>
           <br />
-          {room}
+          {event.location.room}
+          <br />
+          Type: {event.type}
           <br />
           <br />
-          <Link
-            to={{
-              pathname: `/details/${_id}`
-            }}
-            className='btn btn-danger'
-          >
-            Check it out!
-          </Link>
-          <button
-            id='myBtn'
-            onClick={() => openModal(false, _id)}
-            className='btn btn-danger float-right'
-          >
-            Share
-          </button>
+          <div className='row justify-content-center'>
+            <Link
+              to={`/details/${event._id}`}
+              className='btn btn-danger btn-block m-1'
+            >
+              Read more!
+            </Link>
+            <div className='w-100' />
+            <button
+              onClick={() => {
+                openModal(false, event._id);
+              }}
+              className='btn btn-danger btn-block m-1'
+            >
+              Share
+            </button>
+            <div className='w-100' />
+            <button
+              className='btn btn-danger btn-block m-1'
+              style={{
+                paddingLeft: '0',
+                paddingRight: '0'
+              }}
+            >
+              <AddToCalendar
+                event={{
+                  title: event.title,
+                  description: event.description,
+                  location: event.location.address,
+                  startTime: event.date.from,
+                  endTime: event.date.to
+                }}
+                buttonTemplate={{ calendar: 'left' }}
+              />
+            </button>
+          </div>
         </div>
       </div>
     </div>

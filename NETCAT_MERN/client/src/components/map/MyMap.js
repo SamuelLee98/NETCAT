@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   withScriptjs,
   withGoogleMap,
@@ -47,9 +48,14 @@ const MyMap = withScriptjs(
                     {room}
                     <br />
                     <br />
-                    <a href='details.html' className='btn btn-danger'>
+                    <Link
+                      to={{
+                        pathname: `/details/${_id}`
+                      }}
+                      className='btn btn-danger'
+                    >
                       Check it out!
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </InfoWindow>

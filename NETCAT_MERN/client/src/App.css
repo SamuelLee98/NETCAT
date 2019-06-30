@@ -231,7 +231,7 @@ body {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 60%;
+  width: 50%;
   min-height: 150px;
 }
 
@@ -246,4 +246,37 @@ body {
   line-height: 1.4em;
   height: 11.2em;
   overflow: hidden;
+}
+
+/* React share buttons & icons style */
+.react-add-to-calendar__button {
+  display: block;
+}
+
+.react-share-button:hover:not(:active) {
+  opacity: 0.75;
+}
+
+.custom-icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* Add to calender button style */
+.react-add-to-calendar__dropdown {
+  text-align: left;
+}
+
+.react-add-to-calendar__dropdown ul {
+  list-style: none;
+  margin: 0;
+}
+
+.react-add-to-calendar__dropdown ul li a {
+  text-decoration: none;
+  color: white;
+}
+
+.react-add-to-calendar__dropdown ul li a i {
+  padding-right: 10px;
 }

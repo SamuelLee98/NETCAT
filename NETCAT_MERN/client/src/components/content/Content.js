@@ -15,7 +15,7 @@ import {
   getIndexEvents,
   getIndexFeaturedEvents
 } from '../../actions/event';
-import { openModal, closeModal } from '../../actions/modal';
+import { openModal } from '../../actions/modal';
 
 // Images, delete later
 import facebook from './images/facebook.png';
@@ -29,7 +29,6 @@ const Content = ({
   getIndexFeaturedEvents,
   getIndexEvents,
   openModal,
-  closeModal,
   event: {
     events: { events },
     featured: { featured },
@@ -39,6 +38,7 @@ const Content = ({
   school
 }) => {
   useEffect(() => {
+    window.scrollTo(0, 0);
     setSchool(school);
     getIndexFeaturedEvents(school);
     getIndexEvents(school);
@@ -62,7 +62,6 @@ const Content = ({
               event={event}
               image={images[index]}
               openModal={openModal}
-              closeModal={closeModal}
             />
           ))}
         </div>
@@ -89,7 +88,6 @@ const Content = ({
                   key={event._id}
                   event={event}
                   openModal={openModal}
-                  closeModal={closeModal}
                 />
               ))}
             </div>
@@ -105,7 +103,6 @@ Content.propTypes = {
   getIndexEvents: PropTypes.func.isRequired,
   getIndexFeaturedEvents: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired,
   school: PropTypes.string
 };
@@ -116,5 +113,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setSchool, getIndexEvents, getIndexFeaturedEvents, openModal, closeModal }
+  { setSchool, getIndexEvents, getIndexFeaturedEvents, openModal }
 )(Content);

@@ -10,6 +10,7 @@
   top: 0;
   width: 100%;
 }
+
 /*set google map size*/
 .no-padding {
   padding-left: 0;
@@ -17,6 +18,6 @@
   padding-top: 0;
 }
 #map {
-  height: 200px; /* The height is 400 pixels */
+  height: 250px;
   width: 100%; /* The width is the width of the web page */
 }
