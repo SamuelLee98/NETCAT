@@ -174,6 +174,7 @@ router.get('/test/generate-test-data', async (req, res) => {
     // Remove all existing data
     await Event.deleteMany();
     await Featured.deleteMany();
+    let saveCoord = {};
     // Fake normal events
     for (let i = 0; i < 24; i++) {
       let title, school;
@@ -191,13 +192,23 @@ router.get('/test/generate-test-data', async (req, res) => {
         school = 'marshall';
       }
 
+      let lat = 34.02176870202642 + random();
+      let lng = -118.28651879471587 + random();
+
+      if (i == 0) {
+        saveCoord = { lat, lng };
+      } else if (i < 4) {
+        lat = saveCoord.lat;
+        lng = saveCoord.lng;
+      }
+      console.log({ i, lat, lng });
       let newEvent = {
         title: `${title} ${i + 1}`,
         location: {
           room: 'Taper Hall 112',
           address: '1015 W 34st, LA 90089',
-          latitude: 34.02176870202642 + random(),
-          longitude: -118.28651879471587 + random()
+          latitude: lat,
+          longitude: lng
         },
         date: {
           from: new Date(
