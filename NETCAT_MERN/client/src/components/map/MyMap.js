@@ -39,7 +39,7 @@ const MyMap = withScriptjs(
     return (
       <GoogleMap defaultZoom={zoom} defaultCenter={center}>
         {mapEventsArrays.map(mapEventArray => {
-          // Get first element of mapEvent Arr to populate marker
+          // Use first element of each arr to populate marker with lat & lng
           const firstMapEvent = mapEventArray[0];
 
           return (
@@ -59,7 +59,8 @@ const MyMap = withScriptjs(
                         _id,
                         location: { room, address },
                         title,
-                        date: { multiDay, from, to }
+                        date: { multiDay, from, to },
+                        featured
                       }) => (
                         <Fragment key={_id}>
                           <div
@@ -83,9 +84,11 @@ const MyMap = withScriptjs(
                               <br />
                               <br />
                               <Link
-                                to={{
-                                  pathname: `/details/${_id}`
-                                }}
+                                to={
+                                  featured
+                                    ? `/details/${_id}?featured=true`
+                                    : `/details/${_id}`
+                                }
                                 className='btn btn-danger'
                               >
                                 Check it out!

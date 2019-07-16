@@ -176,15 +176,12 @@ router.get('/test/generate-test-data', async (req, res) => {
     await Featured.deleteMany();
     let saveCoord = {};
     // Fake normal events
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 18; i++) {
       let title, school;
       if (i < 6) {
-        title = 'Viterbi Event';
-        school = 'viterbi';
-      } else if (i < 12) {
         title = 'Dornsife Event';
         school = 'dornsife';
-      } else if (i < 18) {
+      } else if (i < 12) {
         title = 'Annenberg Event';
         school = 'annenberg';
       } else {
