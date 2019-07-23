@@ -104,16 +104,7 @@ router.post(
       .not()
       .isEmpty(),
     check('date.from', "Invalid 'from' date format").isISO8601(),
-    body('date').custom(value => {
-      // If multiDay exists and is true
-      if (value.multiDay && value.multiDay === true) {
-        // If to field is empty or is not a valid datem throw invalid date error
-        if (!value.to || !Date.parse(value.to)) {
-          throw new Error("Invalid 'to' date format");
-        }
-      }
-      return true;
-    })
+    check('date.to', "Invalid 'to' date format").isISO8601()
   ],
   async (req, res) => {
     const errors = validationResult(req);

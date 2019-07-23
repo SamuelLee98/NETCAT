@@ -14,9 +14,12 @@ const User = require('../../models/User');
 router.post(
   '/',
   [
-    check('name', 'Name is required')
+    check('username', 'Username is required')
       .not()
       .isEmpty(),
+    check('username', 'Username must be less than 40 characters').isLength({
+      max: 40
+    }),
     check('email', 'Please include a valid email').isEmail(),
     check(
       'password',
@@ -29,7 +32,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     try {
       // See if user exists
@@ -47,7 +50,7 @@ router.post(
       });
 
       user = new User({
-        name,
+        username,
         email,
         avatar,
         password
@@ -56,10 +59,9 @@ router.post(
       // Encrypt password
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
-
       await user.save();
-      // Return jsonwebtoken
 
+      // Return jsonwebtoken
       const payload = {
         user: {
           id: user.id // user._id from mongodb
@@ -70,7 +72,7 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: 600 }, // 10 minutes
+        { expiresIn: 36000 }, // 10 hour
         (err, token) => {
           if (err) throw err;
           res.json({ token });

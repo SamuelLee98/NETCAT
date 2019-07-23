@@ -26,18 +26,21 @@ const eventSchema = new Schema({
     }
   },
   date: {
-    multiDay: {
-      type: Boolean,
-      default: false
+    type: {
+      multiDay: {
+        type: Boolean,
+        default: false
+      },
+      from: {
+        type: Date,
+        required: true
+      },
+      to: {
+        type: Date,
+        required: true
+      }
     },
-    from: {
-      type: Date,
-      required: true
-    },
-    to: {
-      type: Date,
-      required: true
-    }
+    required: true
   },
   description: {
     type: String
