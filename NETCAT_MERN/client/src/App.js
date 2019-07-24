@@ -5,6 +5,7 @@ import Navbar from './components/layout/Navbar';
 import Routes from './components/routing/Routes';
 import Footer from './components/layout/Footer';
 import ShareModal from './components/layout/ShareModal';
+import Alert from './components/layout/Alert';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -18,6 +19,7 @@ const App = () => (
     <Router>
       <Header />
       <Navbar />
+      <Alert />
       <Switch>
         <Route component={Routes} />
       </Switch>

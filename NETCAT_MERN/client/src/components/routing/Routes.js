@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Content from '../content/Content';
 import Details from '../details/Details';
 import NotFound from '../layout/NotFound';
-// import Alert from '../layout/Alert';
+import Auth from '../auth/Auth';
 // import PrivateRoute from '../routing/PrivateRoute';
 
 const Routes = () => {
@@ -37,6 +37,7 @@ const Routes = () => {
           render={props => <Content {...props} school='dornsife' />}
         />
         <Route exact path='/details/:id' component={Details} />
+        <Route exact path='/auth' component={Auth} />
         <Route component={NotFound} />
       </Switch>
     </Fragment>

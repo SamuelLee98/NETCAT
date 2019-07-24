@@ -66,7 +66,7 @@ const Footer = ({ school }) => {
               <h6 style={{ cursor: 'pointer' }}>Dornsife</h6>
             </Link>
             <br />
-            <Link to='/' className='btn btn-header btn-outline-danger'>
+            <Link to='/auth' className='btn btn-header btn-outline-danger'>
               <h6 style={{ cursor: 'pointer' }}>Register/Login</h6>
             </Link>
             <br />

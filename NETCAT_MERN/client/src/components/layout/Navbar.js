@@ -34,7 +34,7 @@ const Navbar = ({ school }) => {
           DORNSIFE
         </Link>
         <Link to='/'>CONTACT US</Link>
-        <Link to='/'>LOGIN/REGISTER</Link>
+        <Link to='/auth'>LOGIN/REGISTER</Link>
       </div>
       <div className='header sticky' id='myHeader'>
         <div className='container d-none d-md-block'>
