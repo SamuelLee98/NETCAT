@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale=1">
+    <title>NETCAT</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="login.css">
+
+  </head>
+  <body onload="generateMoreEvents()">
+    <!-- top of webpage -->
+    <div class="title-block d-none d-md-block">
+      <div>
+        <h6 class="small-title" style="color: #ac101b;">NETWORK CATALOGUE </h6>
+        <h1 class="large-title">NETCAT</h1>
+      </div>
+    </div>
+
+    <!-- menu-header -->
+      <!-- Sidebar popup -->
+      <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <h1 style="margin-left: 25px; font-family:vogue; margin-top:10px;">NETCAT</h1>
+        <a href="index.html">HOME</a>
+        <a href="index-marshall.html">MARSHALL</a>
+        <a href="index-viterbi.html">VITERBI</a>
+        <a href="#">ANNENBERG</a>
+        <a href="#">DORNSIFE</a>
+        <a href="#">ABOUT</a>
+        <a href="login.html" style="color: #ac101b;">LOGIN/REGISTER</a>
+      </div>
+
+    <div class="header sticky" id="myHeader">
+      <!-- Medium, Large, XL version of header -->
+      <div class="container d-none d-md-block">
+        <div class="row">
+          <div class="col-lg-2 col-md-2">
+            <!-- sidenav button + onclick java script functionality -->
+            <svg class = "side-menu" onclick="openNav()" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none"/>
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+          </div>
+          <div class="col-lg-2 col-md-2">
+            <button type="button" onclick="location.href='index-marshall.html';" class="btn btn-header btn-outline-danger">MARSHALL</button>
+          </div>
+          <div class="col-lg-2 col-md-2">
+            <button type="button" onclick="location.href='index-viterbi.html';" class="btn btn-header btn-outline-danger">VITERBI</button>
+          </div>
+          <div class="col-lg-2 col-md-2">
+            <button type="button" class="btn btn-header btn-outline-danger">ANNENBERG</button>
+          </div>
+          <div class="col-lg-2 col-md-2">
+            <button type="button" class="btn btn-header btn-outline-danger">DORNSIFE</button>
+          </div>
+          <div class="col-lg-2 col-md-2">
+            <!-- <img src="icons/search.svg"> -->
+            <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <!-- Small version of header -->
+      <div class="container d-none d-sm-block d-md-none">
+        <div class="row">
+          <div class="col-sm-2" style="margin-top: 20px;">
+            <!-- sidenav button + onclick java script functionality -->
+            <svg class = "side-menu" onclick="openNav()" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none"/>
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+          </div>
+          <div class="col-sm-8 ">
+              <h1 style="font-family:vogue; margin-top:10px;">NETCAT</h1>
+          </div>
+          <!-- search functionality... not yet implemented -->
+          <div class="col-sm-2 "style="margin-top: 20px;">
+            <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <!-- XS version of header -->
+      <div class="container d-block d-sm-none">
+        <div class="row">
+          <div class="col-xs-6" style="margin-top: 20px;">
+            <!-- sidenav button + onclick java script functionality -->
+            <svg class = "side-menu" onclick="openNav()" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none"/>
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+          </div>
+          <div class="col-xs-12" style="margin-left: 20px;">
+              <h1 style="font-family:vogue; margin-top:10px;">NETCAT</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- signup -->
+    <div class=" container content" style="max-width: 500px">
+      <div class="container">
+        <h3 style="text-align:center">Sign In</h3>
+        <div class="card">
+          <div class="card-body">
+            <br>
+            <div class="center">
+              <button class="btn btn-danger" style="text-align:center">Sign In With Your USC Email</button>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <form>
+              <div class="form-group">
+                <label>Email address</label>
+                <input type="email" class="form-control" placeholder="Enter Email">
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="Password">
+              </div>
+              <br>
+              <div class="center">
+                <button type="submit" class="btn btn-danger">Sign In</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <br>
+      <hr>
+      <br>
+      <div class="container">
+        <h3 style="text-align:center">Create a NETCAT Account</h3>
+        <h6 class="signUpDetails">✔️ Weekly email updates for the best events on campus</h6>
+        <h6 class="signUpDetails">✔️ Push your favorite events to your calendar automatically</h6>
+        <h6 class="signUpDetails">✔️ Send invitations to your friends to go together</h6>
+        <h6 class="signUpDetails">✔️ RSVP automatically through the website</h6>
+        <br>
+        <div class="card">
+          <div class="card-body">
+            <br>
+            <div class="center">
+              <button class="btn btn-danger" style="text-align:center">Register With Your USC Email</button>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <form>
+              <div class="form-group">
+                <label>Email address</label>
+                <input type="email" class="form-control" placeholder="Enter Email">
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <label>Re-Enter Password</label>
+                <input type="password" class="form-control" placeholder="Re-Enter Password">
+              </div>
+              <br>
+              <div class="center">
+                <button type="submit" class="btn btn-danger">Register</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <footer class="myFooter">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align:center;" >
+            <br>
+            <br>
+            <h4 style="font-family:vogue">NETCAT</h4>
+            <h6>Marshall<h6>
+            <h6>Viterbi</h6>
+            <h6>Annenberg</h6>
+            <h6>Dornsife</h6>
+            <h6>Register/Login</h6>
+            <h6>About</h6>
+            <br>
+          </div>
+          <div class="col-lg-1 col-md-1  d-none d-md-block verticalLine fluid-center">
+          </div>
+          <div class="col-lg-8 col-md-8 d-none d-md-block">
+            <br>
+            <h6 style="text-align:center;">Advertise Your Own Events on NETCAT</h6>
+            <hr>
+            <form class="contactForm">
+              <div class="form-group">
+                <label>Email to Contact You</label>
+                <input type="contact" class="form-control" style="font-size: 13px;">
+              </div>
+              <div class="form-group">
+                <label>Summary of Your Event</label>
+                <textarea type="password" class="form-control" style="font-size: 13px;" placeholder=""> </textarea>
+              </div>
+              <div class="center">
+                <button type="submit" class="btn btn-danger" style="font-size: 13px;">Submit</button>
+              </div>
+            </form>
+            <br>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
+    <!-- Side nav functionality -->
+    <script>
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+      }
+
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,164 @@
+@font-face {
+	font-family: vogue;
+	src: url("fonts/Vogue.ttf");
+}
+@font-face {
+  font-family: helvetica-bold;
+  src: url("fonts/Helvetica-Bold.ttf")
+}
+@font-face{
+  font-family: helvetica;
+  src: url("fonts/Helvetica.ttf")
+}
+@font-face{
+  font-family: helvetica-light;
+  src: url("fonts/helvetica-light.ttf")
+}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: white;
+}
+/* title block */
+.title-block {
+  z-index: 0 !important;
+  font-family: vogue;
+  text-align:center;
+  background-color: #f9f9f9;
+  height: 100px;
+}
+/* text within */
+    .small-title {
+      letter-spacing: 11px;
+      margin-top:10px;
+    }
+    .large-title{
+      font-family: vogue;
+      line-height: 85px;
+      letter-spacing: 5px;
+      font-size: 100px;
+    }
+/* menu-header*/
+.header {
+  padding: 10px 10px;
+  z-index: 1 !important;
+  background-color: white;
+  border-top:1px solid #efefef;
+  border-bottom:1px solid #efefef;
+  text-align: center;
+}
+  .btn-header {
+    color:black;
+    font-size: 11px;
+    font-family: helvetica;
+    letter-spacing: 1px;
+    padding: 0px 20px 0px 20px;
+    background-color: transparent;
+    border-color: transparent; /*set the color you want here*/
+  }
+    /*button attribute when hovered*/
+    .btn-header:hover {
+        color: #ac101b;
+        background-color: transparent;
+        border-color: transparent; /*set the color you want here*/
+
+    }
+    /*button attribute when clicked*/
+    .btn-header:active, .btn-header:focus {
+    color: #ac101b !important;
+    background-color: white !important;
+    border-color: white !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  /* Changing nav and search icon color when clicked */
+  .side-menu:hover, .side-menu:active, .side-menu:focus{
+    fill: #ac101b;
+  }
+
+  .search-icon:hover, .search-menu:active, .search-menu:focus{
+    fill: #ac101b;
+  }
+
+  /* Pop up side navigation bar CSS */
+  .sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    border-right:1px solid #efefef;
+		font-size:13px !important;
+  }
+
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    color:black;
+    display: block;
+    transition: 0.3s;
+  }
+
+  .sidenav a:hover {
+    color: #ac101b;
+  }
+
+  .sidenav .closebtn {
+    position: absolute;
+    font-family: helvetica;
+    font-size: 25px;
+    top: 0;
+    right: 25px;
+    margin-left: 50px;
+  }
+
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 11px;}
+  }
+
+/*site body content*/
+.content {
+  z-index:0 !important;
+  padding: 16px;
+  background-color: white;
+  font-family:helvetica-light;
+}
+.sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+/*set google map size*/
+.no-padding {
+  padding-left: 0;
+  padding-right: 0;
+	padding-top: 0;
+}
+#map {
+	height: 200px;  /* The height is 400 pixels */
+	width: 100%;  /* The width is the width of the web page */ */ */
+}
+
+
+
+/* Footer divs */
+.myFooter {
+  background-color: #f9f9f9;
+  border-top-color: red !important;
+  width: 100%;
+  font-family: helvetica-light;
+}
+.verticalLine {
+  border-left:1px solid LightGrey;
+  margin-top: 35px;
+  height: 240px;
+}
+.contactForm {
+  font-size: 13px;
+}
