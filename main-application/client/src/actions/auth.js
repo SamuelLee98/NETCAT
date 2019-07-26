@@ -8,7 +8,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  CLEAR_PROFILE
+  CLEAR_PROFILE,
+  PROFILE_LOADING
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -48,7 +49,9 @@ export const register = ({ username, email, password }) => async dispatch => {
       type: REGISTER_SUCCESS,
       payload: res.data
     });
+
     dispatch(loadUser());
+    dispatch({ type: PROFILE_LOADING });
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
@@ -79,6 +82,7 @@ export const login = (email, password) => async dispatch => {
     });
 
     dispatch(loadUser());
+    dispatch({ type: PROFILE_LOADING });
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {

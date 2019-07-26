@@ -8,7 +8,7 @@ import NotFound from '../layout/NotFound';
 import Alert from '../layout/Alert';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
-import Dashboard from '../Dashboard/Dashboard';
+import Dashboard from '../dashboard/Dashboard';
 
 const Routes = () => {
   return (

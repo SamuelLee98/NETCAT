@@ -42,10 +42,14 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
         {!loading && (
           <Fragment>
             {isAuthenticated ? (
-              <a onClick={logout} href='#!'>
-                <i className='fas fa-sign-out-alt' />
-                <span className='hide-sm'>LOGOUT</span>
-              </a>
+              <Fragment>
+                <Link to='/dashboard' style={toggleStyle('dashboard')}>
+                  DASHBOARD
+                </Link>
+                <a onClick={logout} href='#!'>
+                  <span className='hide-sm'>LOGOUT</span>
+                </a>
+              </Fragment>
             ) : (
               <Fragment>
                 <Link to='/register' style={toggleStyle('register')}>
@@ -134,15 +138,26 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
             {!loading && (
               <Fragment>
                 {isAuthenticated ? (
-                  <div className='col'>
-                    <button
-                      onClick={logout}
-                      href='#!'
-                      className='btn btn-header btn-outline-danger'
-                    >
-                      LOGOUT
-                    </button>
-                  </div>
+                  <Fragment>
+                    <div className='col'>
+                      <Link
+                        to='/dashboard'
+                        className='btn btn-header btn-outline-danger'
+                        style={toggleStyle('dashboard')}
+                      >
+                        <i className='fa fa-user' /> DASHBOARD
+                      </Link>
+                    </div>
+                    <div className='col'>
+                      <button
+                        onClick={logout}
+                        href='#!'
+                        className='btn btn-header btn-outline-danger'
+                      >
+                        <i className='fa fa-sign-out' /> LOGOUT
+                      </button>
+                    </div>
+                  </Fragment>
                 ) : (
                   <Fragment>
                     <div className='col'>
@@ -156,7 +171,7 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
                     </div>
                     <div className='col'>
                       <Link
-                        to='/Login'
+                        to='/login'
                         className='btn btn-header btn-outline-danger'
                         style={toggleStyle('login')}
                       >

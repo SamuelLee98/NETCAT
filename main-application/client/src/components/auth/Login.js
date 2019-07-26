@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { setPage } from '../../actions/event';
 import { login } from '../../actions/auth';
 
-const Login = ({ setPage, login, isAuthenticated }) => {
+const Login = ({ setPage, login, auth: { isAuthenticated, user } }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setPage('login');
@@ -31,8 +31,15 @@ const Login = ({ setPage, login, isAuthenticated }) => {
     login(email, password);
   };
 
-  // Redirect if logged in
-  if (isAuthenticated) {
+  /**
+   * Redirect only after user gets authenticated (in login action) and user gets
+   * loaded (in loadUser action).
+   *
+   * loadUser updates the x-auth-token header to the most current one. If
+   * redirected to dashboard without loadUser being finished, then getCurrentProfile
+   * could get the profile based on previous token
+   */
+  if (isAuthenticated && user) {
     return <Redirect to='/dashboard' />;
   }
 
@@ -102,7 +109,7 @@ Login.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  auth: state.auth
 });
 
 export default connect(
