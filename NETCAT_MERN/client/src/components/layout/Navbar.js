@@ -35,7 +35,6 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
         <Link to='/dornsife' style={toggleStyle('dornsife')}>
           DORNSIFE
         </Link>
-<<<<<<< HEAD
         <Link to='/' style={toggleStyle('contact')}>
           CONTACT US
         </Link>
@@ -59,10 +58,6 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
             )}
           </Fragment>
         )}
-=======
-        <Link to='/'>CONTACT US</Link>
-        <Link to='/auth'>LOGIN/REGISTER</Link>
->>>>>>> f77a29417e1100df103e7382a6b40698f5f06dcf
       </div>
       <div className='header sticky' id='myHeader'>
         <div className='container d-none d-md-block'>

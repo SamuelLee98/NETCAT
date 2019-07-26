@@ -66,23 +66,12 @@ const Footer = ({ page }) => {
               <h6 style={{ cursor: 'pointer' }}>Dornsife</h6>
             </Link>
             <br />
-<<<<<<< HEAD
             {/* <Link to='/' className='btn btn-header btn-outline-danger'>
               <h6 style={{ cursor: 'pointer' }} style={toggleStyle('about')}>
                 About
               </h6>
             </Link> */
             /* <br /> */}
-=======
-            <Link to='/auth' className='btn btn-header btn-outline-danger'>
-              <h6 style={{ cursor: 'pointer' }}>Register/Login</h6>
-            </Link>
-            <br />
-            <Link to='/' className='btn btn-header btn-outline-danger'>
-              <h6 style={{ cursor: 'pointer' }}>About</h6>
-            </Link>
-            <br />
->>>>>>> f77a29417e1100df103e7382a6b40698f5f06dcf
           </div>
           <div className='col-lg-1 col-md-1  d-none d-md-block verticalLine fluid-center' />
           <div className='col-lg-8 col-md-8 d-none d-md-block'>
