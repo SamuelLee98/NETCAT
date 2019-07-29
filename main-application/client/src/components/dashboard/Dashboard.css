@@ -1,0 +1,9 @@
+h1 {
+  font-family: "helvetica-bold";
+}
+
+.dash-buttons a {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.2rem;
+}

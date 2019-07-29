@@ -68,9 +68,7 @@ export const createProfile = (
     dispatch(setAlert(edit ? 'Profile Updated' : 'Profile Created', 'success'));
 
     // Can't use redirect in actions, only in components
-    if (!edit) {
-      history.push('/dashboard');
-    }
+    history.push('/dashboard');
   } catch (err) {
     const errors = err.response.data.errors;
 

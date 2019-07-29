@@ -9,6 +9,8 @@ import Alert from '../layout/Alert';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
 import Dashboard from '../dashboard/Dashboard';
+import CreateProfile from '../profile-forms/CreateProfile';
+import EditProfile from '../profile-forms/EditProfile';
 
 const Routes = () => {
   return (
@@ -44,6 +46,8 @@ const Routes = () => {
         <Route exact path='/register' component={Register} />
         <Route exact path='/login' component={Login} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
+        <PrivateRoute exact path='/create-profile' component={CreateProfile} />
+        <PrivateRoute exact path='/edit-profile' component={EditProfile} />
         <Route component={NotFound} />
       </Switch>
     </Fragment>
