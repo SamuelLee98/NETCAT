@@ -7,3 +7,8 @@ h1 {
   width: 100%;
   margin-bottom: 0.2rem;
 }
+
+.icons a {
+  color: black;
+  margin: 0 0.3rem;
+}

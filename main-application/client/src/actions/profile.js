@@ -6,11 +6,13 @@ import {
   PROFILE_ERROR,
   UPDATE_PROFILE,
   CLEAR_PROFILE,
-  ACCOUNT_DELETED
+  ACCOUNT_DELETED,
+  PROFILE_LOADING
 } from './types';
 
 // Get current users profile
 export const getCurrentProfile = () => async dispatch => {
+  dispatch({ type: PROFILE_LOADING });
   try {
     const res = await axios.get('/api/profile/me');
 

@@ -7,6 +7,7 @@ import AddToCalendar from 'react-add-to-calendar';
 // Actions
 import { getEvent } from '../../actions/event';
 import { openModal } from '../../actions/modal';
+import { addEventToCatalogue } from '../../actions/catalogue';
 
 // Components
 import Spinner from '../layout/Spinner';
@@ -27,7 +28,8 @@ const Details = ({
   match,
   location,
   getEvent,
-  openModal
+  openModal,
+  addEventToCatalogue
 }) => {
   useEffect(() => {
     // Scroll to top of the page
@@ -71,6 +73,17 @@ const Details = ({
               style={{ minHeight: '200px', maxHeight: '400px' }}
             />
             <div className='card-body'>
+              <div className='float-right'>
+                <i
+                  className='fa fa-plus fa-2x'
+                  style={{
+                    color: 'red',
+                    textShadow: '1px 1px 0px black',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => addEventToCatalogue(event._id)}
+                />
+              </div>
               <h3 className='card-title'>{event.title}</h3>
               <h6>Location: {event.location.room}</h6>
               <h6>
@@ -123,6 +136,7 @@ const Details = ({
 Details.propTypes = {
   getEvent: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
+  addEventToCatalogue: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   event: PropTypes.object,
   error: PropTypes.object
@@ -136,5 +150,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getEvent, openModal }
+  { getEvent, openModal, addEventToCatalogue }
 )(Details);

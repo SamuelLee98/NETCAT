@@ -60,10 +60,10 @@ router.post('/:id', auth, async (req, res) => {
   }
 });
 
-// @route   GET api/catalogue
+// @route   GET api/catalogue/me
 // @desc    Get all events in current users catalogue
 // @access  Private
-router.get('/', auth, async (req, res) => {
+router.get('/me', auth, async (req, res) => {
   try {
     const catalogue = await Catalogue.findOne({ user: req.user.id });
     if (!catalogue) {
@@ -71,7 +71,7 @@ router.get('/', auth, async (req, res) => {
     }
     const catalogueEvents = catalogue.events.sort(
       (eventA, eventB) =>
-        new Date(eventA.eventDate) - new Date(eventB.eventDate)
+        new Date(eventB.eventDate) - new Date(eventA.eventDate)
     );
     res.json(catalogueEvents);
   } catch (err) {

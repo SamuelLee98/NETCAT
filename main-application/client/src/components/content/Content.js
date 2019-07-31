@@ -15,6 +15,7 @@ import {
   getIndexEvents,
   getIndexFeaturedEvents
 } from '../../actions/event';
+import { addEventToCatalogue } from '../../actions/catalogue';
 import { openModal } from '../../actions/modal';
 
 // Images, delete later
@@ -28,6 +29,7 @@ const Content = ({
   setPage,
   getIndexFeaturedEvents,
   getIndexEvents,
+  addEventToCatalogue,
   openModal,
   event: {
     events: { events },
@@ -62,6 +64,7 @@ const Content = ({
               event={event}
               image={images[index]}
               openModal={openModal}
+              addEventToCatalogue={addEventToCatalogue}
             />
           ))}
         </div>
@@ -88,6 +91,7 @@ const Content = ({
                   key={event._id}
                   event={event}
                   openModal={openModal}
+                  addEventToCatalogue={addEventToCatalogue}
                 />
               ))}
             </div>
@@ -102,6 +106,7 @@ Content.propTypes = {
   setPage: PropTypes.func.isRequired,
   getIndexEvents: PropTypes.func.isRequired,
   getIndexFeaturedEvents: PropTypes.func.isRequired,
+  addEventToCatalogue: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired,
   page: PropTypes.string
@@ -113,5 +118,11 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setPage, getIndexEvents, getIndexFeaturedEvents, openModal }
+  {
+    setPage,
+    getIndexEvents,
+    getIndexFeaturedEvents,
+    addEventToCatalogue,
+    openModal
+  }
 )(Content);

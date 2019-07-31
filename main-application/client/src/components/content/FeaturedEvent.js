@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import AddToCalendar from 'react-add-to-calendar';
 
-const FeaturedEvent = ({ event, image, openModal }) => {
+const FeaturedEvent = ({ event, image, openModal, addEventToCatalogue }) => {
   return (
     <div className='col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-3'>
       <div className='card'>
@@ -14,6 +14,17 @@ const FeaturedEvent = ({ event, image, openModal }) => {
         />
         <div className='card-block'>
           <div className='card-body'>
+            <div className='float-right'>
+              <i
+                className='fa fa-plus fa-2x'
+                style={{
+                  color: 'red',
+                  textShadow: '1px 1px 0px black',
+                  cursor: 'pointer'
+                }}
+                onClick={() => addEventToCatalogue(event._id)}
+              />
+            </div>
             <h4 className='card-title'>{event.title}</h4>
             <p className='card-text limited-text'>{event.description}</p>
             <div className='row justify-content-center'>
