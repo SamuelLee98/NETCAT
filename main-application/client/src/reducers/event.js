@@ -1,6 +1,7 @@
 import {
   GET_INDEX_EVENTS,
   GET_INDEX_FEATURED_EVENTS,
+  GET_MORE_EVENTS,
   GET_EVENT,
   EVENT_ERROR,
   EVENT_LOADING,
@@ -44,6 +45,16 @@ export default function(state = initialState, action) {
           featured: payload
         },
         loading: state.events.loading || false,
+        error: null
+      };
+    case GET_MORE_EVENTS:
+      return {
+        ...state,
+        events: {
+          loading: false,
+          events: payload
+        },
+        loading: false,
         error: null
       };
     case GET_EVENT:

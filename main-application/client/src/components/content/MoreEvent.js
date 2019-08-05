@@ -2,23 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import AddToCalendar from 'react-add-to-calendar';
+import CatalogueButton from '../layout/CatalogueButton';
 
-const MoreEvent = ({ event, openModal, addEventToCatalogue }) => {
+const MoreEvent = ({ event, openModal }) => {
   return (
     <div className='col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-3'>
       <div className='card'>
         <div className='card-body'>
-          <div className='float-right'>
-            <i
-              className='fa fa-plus fa-2x'
-              style={{
-                color: 'red',
-                textShadow: '1px 1px 0px black',
-                cursor: 'pointer'
-              }}
-              onClick={() => addEventToCatalogue(event._id)}
-            />
-          </div>
+          <CatalogueButton
+            isCatalogued={event.isCatalogued}
+            eventId={event._id}
+          />
           <h5 className='card-title'>{event.title}</h5>
           <Moment format='hh:mm A'>{event.datefrom}</Moment> -{` `}
           <Moment format='hh:mm A'>{event.date.to}</Moment>

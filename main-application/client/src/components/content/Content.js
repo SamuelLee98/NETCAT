@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -15,8 +15,11 @@ import {
   getIndexEvents,
   getIndexFeaturedEvents
 } from '../../actions/event';
-import { addEventToCatalogue } from '../../actions/catalogue';
 import { openModal } from '../../actions/modal';
+import { getCatalogueEventIds } from '../../actions/catalogue';
+
+// utils
+import checkIfCatalogued from '../../utils/checkIfCatalogued';
 
 // Images, delete later
 import facebook from './images/facebook.png';
@@ -29,27 +32,56 @@ const Content = ({
   setPage,
   getIndexFeaturedEvents,
   getIndexEvents,
-  addEventToCatalogue,
+  getCatalogueEventIds,
   openModal,
-  event: {
-    events: { events },
-    featured: { featured },
-    loading,
-    error
-  },
+  event,
+  catalogue,
   page
 }) => {
+  const [eventData, changeEventData] = useState({
+    events: [],
+    featured: []
+  });
+
   useEffect(() => {
     window.scrollTo(0, 0);
     setPage(page);
     getIndexFeaturedEvents(page);
     getIndexEvents(page);
-  }, [setPage, getIndexFeaturedEvents, getIndexEvents, page]);
+    getCatalogueEventIds();
+  }, [
+    setPage,
+    getIndexFeaturedEvents,
+    getIndexEvents,
+    page,
+    getCatalogueEventIds
+  ]);
 
-  if (error && error.status === 500) {
+  useEffect(() => {
+    if (
+      event.events.events &&
+      event.featured.featured &&
+      !event.loading &&
+      !catalogue.loading
+    ) {
+      let events = checkIfCatalogued(event.events.events, catalogue.ids);
+      let featured = checkIfCatalogued(event.featured.featured, catalogue.ids);
+
+      changeEventData({
+        events,
+        featured
+      });
+    }
+  }, [event, catalogue]);
+
+  if (
+    (event.error && event.error.status === 500) ||
+    (catalogue.error && catalogue.error.status === 500)
+  ) {
     return <ServerError />;
   }
-  if (loading || !events || !featured) {
+
+  if (event.loading || catalogue.loading) {
     return <Spinner />;
   }
 
@@ -58,13 +90,12 @@ const Content = ({
       <div className='container'>
         <h3 style={{ textAlign: 'center' }}>Featured Events</h3>
         <div className='row'>
-          {featured.map((event, index) => (
+          {eventData.featured.map((event, index) => (
             <FeaturedEvent
               key={event._id}
               event={event}
               image={images[index]}
               openModal={openModal}
-              addEventToCatalogue={addEventToCatalogue}
             />
           ))}
         </div>
@@ -77,7 +108,7 @@ const Content = ({
             style={{ width: '100%', height: '400px' }}
           >
             <MapWrapper
-              events={events}
+              events={eventData.events}
               center={{ lat: 34.021, lng: -118.286 }}
               zoom={15.3}
             />
@@ -86,12 +117,11 @@ const Content = ({
           <br />
           <div className='moreEvents' id='moreEvents' style={{ width: '100%' }}>
             <div className='row'>
-              {events.map(event => (
+              {eventData.events.map(event => (
                 <MoreEvent
                   key={event._id}
                   event={event}
                   openModal={openModal}
-                  addEventToCatalogue={addEventToCatalogue}
                 />
               ))}
             </div>
@@ -106,14 +136,16 @@ Content.propTypes = {
   setPage: PropTypes.func.isRequired,
   getIndexEvents: PropTypes.func.isRequired,
   getIndexFeaturedEvents: PropTypes.func.isRequired,
-  addEventToCatalogue: PropTypes.func.isRequired,
+  getCatalogueEventIds: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired,
+  catalogue: PropTypes.object.isRequired,
   page: PropTypes.string
 };
 
 const mapStateToProps = state => ({
-  event: state.event
+  event: state.event,
+  catalogue: state.catalogue
 });
 
 export default connect(
@@ -122,7 +154,7 @@ export default connect(
     setPage,
     getIndexEvents,
     getIndexFeaturedEvents,
-    addEventToCatalogue,
+    getCatalogueEventIds,
     openModal
   }
 )(Content);

@@ -60,7 +60,7 @@ const CreateProfile = ({
       instagram: loading || !profile.social ? '' : profile.social.instagram,
       linkedin: loading || !profile.social ? '' : profile.social.linkedin
     });
-  }, [getCurrentProfile, setPage, loading]);
+  }, [getCurrentProfile, setPage, loading, profile]);
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });

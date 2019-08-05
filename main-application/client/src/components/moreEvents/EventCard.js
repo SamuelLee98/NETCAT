@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import AddToCalendar from 'react-add-to-calendar';
 import { openModal } from '../../actions/modal';
-import { deleteFromCatalogueEvents } from '../../actions/catalogue';
+import CatalogueButton from '../layout/CatalogueButton';
+
 import facebook from '../content/images/facebook.png';
 
-const Catalogue = ({ event, openModal, deleteFromCatalogueEvents }) => {
+const EventCard = ({ event, openModal }) => {
   return (
     <div className='card mb-3'>
       <div className='row no-gutters'>
@@ -29,17 +30,10 @@ const Catalogue = ({ event, openModal, deleteFromCatalogueEvents }) => {
           </div>
         </div>
         <div className='col-3 p-2'>
-          <div className='float-right'>
-            <i
-              className='fa fa-close fa-2x'
-              style={{
-                color: 'red',
-                textShadow: '1px 1px 0px black',
-                cursor: 'pointer'
-              }}
-              onClick={() => deleteFromCatalogueEvents(event._id)}
-            />
-          </div>
+          <CatalogueButton
+            isCatalogued={event.isCatalogued}
+            eventId={event._id}
+          />
           <br />
           <br />
           <div className='mx-2'>
@@ -83,13 +77,13 @@ const Catalogue = ({ event, openModal, deleteFromCatalogueEvents }) => {
   );
 };
 
-Catalogue.propTypes = {
+EventCard.propTypes = {
   openModal: PropTypes.func.isRequired,
-  deleteFromCatalogueEvents: PropTypes.func.isRequired,
+
   event: PropTypes.object.isRequired
 };
 
 export default connect(
   null,
-  { openModal, deleteFromCatalogueEvents }
-)(Catalogue);
+  { openModal }
+)(EventCard);

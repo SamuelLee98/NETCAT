@@ -4,7 +4,6 @@ import { setAlert } from './alert';
 import {
   GET_PROFILE,
   PROFILE_ERROR,
-  UPDATE_PROFILE,
   CLEAR_PROFILE,
   ACCOUNT_DELETED,
   PROFILE_LOADING

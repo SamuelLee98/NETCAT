@@ -1,19 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import AddToCalendar from 'react-add-to-calendar';
 
 // Actions
-import { getEvent } from '../../actions/event';
+import { getEventById } from '../../actions/event';
 import { openModal } from '../../actions/modal';
-import { addEventToCatalogue } from '../../actions/catalogue';
+import { getCatalogueEventIds } from '../../actions/catalogue';
 
 // Components
 import Spinner from '../layout/Spinner';
 import MapWrapper from '../map/MapWrapper';
 import NotFound from '../layout/NotFound';
 import ServerError from '../layout/ServerError';
+import CatalogueButton from '../layout/CatalogueButton';
+
+// utils
+import checkIfCatalogued from '../../utils/checkIfCatalogued';
 
 // css
 import './details.css';
@@ -22,30 +26,43 @@ import './details.css';
 import facebook from '../content/images/facebook.png';
 
 const Details = ({
-  loading,
   event,
-  error,
   match,
-  location,
-  getEvent,
+  getEventById,
+  getCatalogueEventIds,
   openModal,
-  addEventToCatalogue
+  catalogue
 }) => {
+  const [eventData, changeEventData] = useState(null);
+  console.log(eventData === null);
+
   useEffect(() => {
     // Scroll to top of the page
     window.scrollTo(0, 0);
-    getEvent(match.params.id);
-  }, [match, getEvent]);
+    getEventById(match.params.id);
+    getCatalogueEventIds();
+  }, [match, getEventById, getCatalogueEventIds]);
 
-  if (error && error.status === 404) {
+  useEffect(() => {
+    if (event.event && !event.loading && !catalogue.loading) {
+      // checkIfCatalogued takes in array and return array
+      let cataloguedEvent = checkIfCatalogued([event.event], catalogue.ids)[0];
+      changeEventData(cataloguedEvent);
+    }
+  }, [event, catalogue, changeEventData]);
+
+  if (event.error && event.error.status === 404) {
     return <NotFound />;
   }
 
-  if (error && error.status === 500) {
+  if (
+    (event.error && event.error.status === 500) ||
+    (catalogue.error && catalogue.error.status === 500)
+  ) {
     return <ServerError />;
   }
 
-  if (loading || !event || error) {
+  if (event.loading || catalogue.loading || eventData === null) {
     return <Spinner />;
   }
 
@@ -57,10 +74,10 @@ const Details = ({
           <div className='card mb-3'>
             <div className='map' id='map'>
               <MapWrapper
-                events={[event]}
+                events={[eventData]}
                 center={{
-                  lat: event.location.latitude,
-                  lng: event.location.longitude
+                  lat: eventData.location.latitude,
+                  lng: eventData.location.longitude
                 }}
                 zoom={15.3}
               />
@@ -73,26 +90,21 @@ const Details = ({
               style={{ minHeight: '200px', maxHeight: '400px' }}
             />
             <div className='card-body'>
-              <div className='float-right'>
-                <i
-                  className='fa fa-plus fa-2x'
-                  style={{
-                    color: 'red',
-                    textShadow: '1px 1px 0px black',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => addEventToCatalogue(event._id)}
-                />
-              </div>
-              <h3 className='card-title'>{event.title}</h3>
-              <h6>Location: {event.location.room}</h6>
+              <CatalogueButton
+                isCatalogued={eventData.isCatalogued}
+                eventId={eventData._id}
+              />
+              <h3 className='card-title'>{eventData.title}</h3>
+              <h6>Location: {eventData.location.room}</h6>
               <h6>
                 Time:{` `}
-                <Moment format='hh:mm A'>{event.date.from}</Moment> -{` `}
-                <Moment format='hh:mm A'>{event.date.to}</Moment> {`, `}
-                <Moment format='dddd MMMM D, YYYY'>{event.date.from}</Moment>
+                <Moment format='hh:mm A'>{eventData.date.from}</Moment> -{` `}
+                <Moment format='hh:mm A'>{eventData.date.to}</Moment> {`, `}
+                <Moment format='dddd MMMM D, YYYY'>
+                  {eventData.date.from}
+                </Moment>
               </h6>
-              <p className='card-text'>{event.description}</p>
+              <p className='card-text'>{eventData.description}</p>
               <div className='row justify-content-center'>
                 <button
                   className='btn btn-danger btn-lg btn-block m-1'
@@ -104,11 +116,11 @@ const Details = ({
                 >
                   <AddToCalendar
                     event={{
-                      title: event.title,
-                      description: event.description,
-                      location: event.location.address,
-                      startTime: event.date.from,
-                      endTime: event.date.to
+                      title: eventData.title,
+                      description: eventData.description,
+                      location: eventData.location.address,
+                      startTime: eventData.date.from,
+                      endTime: eventData.date.to
                     }}
                     buttonTemplate={{ calendar: 'left' }}
                   />
@@ -116,7 +128,7 @@ const Details = ({
                 <div className='w-100' />
                 <button
                   onClick={() => {
-                    openModal(event._id);
+                    openModal(eventData._id);
                   }}
                   className='btn btn-danger btn-lg btn-block m-1'
                   style={{ maxWidth: '500px' }}
@@ -134,21 +146,19 @@ const Details = ({
 };
 
 Details.propTypes = {
-  getEvent: PropTypes.func.isRequired,
+  getEventById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
-  addEventToCatalogue: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  event: PropTypes.object,
-  error: PropTypes.object
+  getCatalogueEventIds: PropTypes.func.isRequired,
+  event: PropTypes.object.isRequired,
+  catalogue: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  loading: state.event.loading,
-  event: state.event.event,
-  error: state.event.error
+  event: state.event,
+  catalogue: state.catalogue
 });
 
 export default connect(
   mapStateToProps,
-  { getEvent, openModal, addEventToCatalogue }
+  { getEventById, openModal, getCatalogueEventIds }
 )(Details);

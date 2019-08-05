@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 
 // Actions
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
-import { getCurrentCatalogue } from '../../actions/catalogue';
+import { getCatalogueEvents } from '../../actions/catalogue';
 import { setPage } from '../../actions/event';
 
 // Components
 import ProfileDisplay from './ProfileDisplay';
 import Catalogue from './Catalogue';
 import Spinner from '../layout/Spinner';
+import ServerError from '../layout/ServerError';
 
 // css
 import './Dashboard.css';
@@ -19,17 +20,26 @@ import './Dashboard.css';
 const Dashboard = ({
   setPage,
   getCurrentProfile,
-  getCurrentCatalogue,
+  getCatalogueEvents,
   deleteAccount,
   auth: { user },
   profile,
   catalogue
 }) => {
   useEffect(() => {
+    window.scrollTo(0, 0);
     setPage('dashboard');
     getCurrentProfile();
-    getCurrentCatalogue();
-  }, [setPage, getCurrentProfile, getCurrentCatalogue]);
+    getCatalogueEvents();
+  }, [setPage, getCurrentProfile, getCatalogueEvents]);
+
+  if (profile.error && profile.error.status === 500) {
+    return <ServerError />;
+  }
+
+  if (catalogue.error && catalogue.error.status === 500) {
+    return <ServerError />;
+  }
 
   return profile.loading || catalogue.loading ? (
     <Spinner />
@@ -98,8 +108,9 @@ const Dashboard = ({
 };
 
 Dashboard.propTypes = {
+  setPage: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
-  getCurrentCatalogue: PropTypes.func.isRequired,
+  getCatalogueEvents: PropTypes.func.isRequired,
   deleteAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
@@ -114,5 +125,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentProfile, getCurrentCatalogue, setPage, deleteAccount }
+  { getCurrentProfile, getCatalogueEvents, setPage, deleteAccount }
 )(Dashboard);

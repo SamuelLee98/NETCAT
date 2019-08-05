@@ -4,6 +4,7 @@ import PrivateRoute from '../routing/PrivateRoute';
 
 import Content from '../content/Content';
 import Details from '../details/Details';
+import MoreEvents from '../moreEvents/MoreEvents';
 import NotFound from '../layout/NotFound';
 import Alert from '../layout/Alert';
 import Register from '../auth/Register';
@@ -43,6 +44,7 @@ const Routes = () => {
           render={props => <Content {...props} page='dornsife' />}
         />
         <Route exact path='/details/:id' component={Details} />
+        <Route exact path='/more' component={MoreEvents} />
         <Route exact path='/register' component={Register} />
         <Route exact path='/login' component={Login} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />

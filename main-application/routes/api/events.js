@@ -3,17 +3,18 @@ const router = express.Router();
 const { body, check, validationResult } = require('express-validator/check');
 const Event = require('../../models/Event');
 
-// @route   GET api/events/
-// @desc    Get events by school, event type, and featured status
+// @route   GET api/events/index
+// @desc    Get events on index page
 // @access  Public
-router.get('/', async (req, res) => {
+router.get('/index', async (req, res) => {
   try {
     let school = req.query.school;
     let type = req.query.type;
-    let featured = req.query.featured ? req.query.featured === 'true' : false;
+    let featured = req.query.featured === 'true';
     let limit = parseInt(req.query.limit, 10);
 
     let events;
+
     if (school && type) {
       events = await Event.find({ school, type, featured })
         .sort({
@@ -22,16 +23,62 @@ router.get('/', async (req, res) => {
         .limit(limit);
     } else if (school) {
       events = await Event.find({ school, featured })
-        .sort({ 'date.from': 1 })
+        .sort({ 'date.from': -1 })
         .limit(limit);
     } else if (type) {
       events = await Event.find({ type, featured })
-        .sort({ 'date.from': 1 })
+        .sort({ 'date.from': -1 })
         .limit(limit);
     } else {
       events = await Event.find({ featured })
-        .sort({ 'date.from': 1 })
+        .sort({ 'date.from': -1 })
         .limit(limit);
+    }
+
+    res.json(events);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET api/events
+// @desc    Get events on more events page
+// @access  Public
+router.get('/', async (req, res) => {
+  try {
+    let school = req.query.school;
+    let type = req.query.type;
+    let featured = req.query.featured ? req.query.featured === 'true' : null;
+
+    let events;
+
+    if (featured !== null) {
+      if (school && type) {
+        events = await Event.find({ school, type, featured }).sort({
+          'date.from': -1
+        });
+      } else if (school) {
+        events = await Event.find({ school, featured }).sort({
+          'date.from': -1
+        });
+      } else if (type) {
+        events = await Event.find({ type, featured }).sort({ 'date.from': -1 });
+      } else {
+        events = await Event.find({ featured }).sort({ 'date.from': -1 });
+      }
+    } else {
+      if (school && type) {
+        events = await Event.find({ school, type }).sort({
+          'date.from': -1
+        });
+      } else if (school) {
+        events = await Event.find({ school }).sort({ 'date.from': -1 });
+      } else if (type) {
+        events = await Event.find({ type }).sort({ 'date.from': -1 });
+      } else {
+        events = await Event.find().sort({ 'date.from': -1 });
+      }
     }
 
     res.json(events);
