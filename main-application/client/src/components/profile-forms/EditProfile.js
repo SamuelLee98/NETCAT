@@ -8,7 +8,7 @@ import Spinner from '../layout/Spinner';
 
 import './forms.css';
 
-const CreateProfile = ({
+const EditProfile = ({
   getCurrentProfile,
   createProfile,
   history,
@@ -45,22 +45,26 @@ const CreateProfile = ({
   } = formData;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setPage('dashboard');
     getCurrentProfile();
-    setFormData({
-      location: loading || !profile.location ? '' : profile.location,
-      bio: loading || !profile.bio ? '' : profile.bio,
-      degree: loading || !profile.education ? '' : profile.education.degree,
-      school: loading || !profile.education ? '' : profile.education.school,
-      fieldofstudy:
-        loading || !profile.education ? '' : profile.education.fieldofstudy,
-      youtube: loading || !profile.social ? '' : profile.social.youtube,
-      facebook: loading || !profile.social ? '' : profile.social.facebook,
-      twitter: loading || !profile.social ? '' : profile.social.twitter,
-      instagram: loading || !profile.social ? '' : profile.social.instagram,
-      linkedin: loading || !profile.social ? '' : profile.social.linkedin
-    });
-  }, [getCurrentProfile, setPage, loading, profile]);
+  }, [getCurrentProfile, setPage]);
+
+  useEffect(() => {
+    if (!loading && profile)
+      setFormData({
+        location: !profile.location ? '' : profile.location,
+        bio: !profile.bio ? '' : profile.bio,
+        degree: !profile.education ? '' : profile.education.degree,
+        school: !profile.education ? '' : profile.education.school,
+        fieldofstudy: !profile.education ? '' : profile.education.fieldofstudy,
+        youtube: !profile.social ? '' : profile.social.youtube,
+        facebook: !profile.social ? '' : profile.social.facebook,
+        twitter: !profile.social ? '' : profile.social.twitter,
+        instagram: !profile.social ? '' : profile.social.instagram,
+        linkedin: !profile.social ? '' : profile.social.linkedin
+      });
+  }, [loading, profile]);
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -80,8 +84,8 @@ const CreateProfile = ({
             Edit Your Profile
           </h1>
           <p className='lead'>
-            <i className='fa fa-user' /> Let's get some information to make your
-            profile stand out
+            <i className='fas fa-user' /> Let's get some information to make
+            your profile stand out
           </p>
           <form className='form' onSubmit={e => onSubmit(e)}>
             <div className='form-group'>
@@ -120,7 +124,7 @@ const CreateProfile = ({
             {displaySocialInputs && (
               <Fragment>
                 <div className='form-group social-input'>
-                  <i className='fa fa-twitter fa-2x' />
+                  <i className='fab fa-twitter fa-2x' />
                   <input
                     type='text'
                     placeholder='Twitter URL'
@@ -131,7 +135,7 @@ const CreateProfile = ({
                 </div>
 
                 <div className='form-group social-input'>
-                  <i className='fa fa-facebook fa-2x' />
+                  <i className='fab fa-facebook-f fa-2x' />
                   <input
                     type='text'
                     placeholder='Facebook URL'
@@ -142,7 +146,7 @@ const CreateProfile = ({
                 </div>
 
                 <div className='form-group social-input'>
-                  <i className='fa fa-youtube fa-2x' />
+                  <i className='fab fa-youtube fa-2x' />
                   <input
                     type='text'
                     placeholder='YouTube URL'
@@ -153,7 +157,7 @@ const CreateProfile = ({
                 </div>
 
                 <div className='form-group social-input'>
-                  <i className='fa fa-linkedin fa-2x' />
+                  <i className='fab fa-linkedin-in fa-2x' />
                   <input
                     type='text'
                     placeholder='Linkedin URL'
@@ -164,7 +168,7 @@ const CreateProfile = ({
                 </div>
 
                 <div className='form-group social-input'>
-                  <i className='fa fa-instagram fa-2x' />
+                  <i className='fab fa-instagram fa-2x' />
                   <input
                     type='text'
                     placeholder='Instagram URL'
@@ -188,7 +192,7 @@ const CreateProfile = ({
             {displayEducationInputs && (
               <Fragment>
                 <p className='lead'>
-                  <i className='fa fa-code-fork fa-2x' /> Add any school or
+                  <i className='fas fa-graduation-cap' /> Add any school or
                   bootcamp that you have attended
                 </p>
                 <small>* = required field</small>
@@ -237,7 +241,7 @@ const CreateProfile = ({
   );
 };
 
-CreateProfile.propTypes = {
+EditProfile.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   createProfile: PropTypes.func.isRequired,
   setPage: PropTypes.func.isRequired
@@ -251,4 +255,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getCurrentProfile, createProfile, setPage }
-)(withRouter(CreateProfile));
+)(withRouter(EditProfile));

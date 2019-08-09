@@ -1,22 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-import AddToCalendar from 'react-add-to-calendar';
-import { openModal } from '../../actions/modal';
-import CatalogueButton from '../layout/CatalogueButton';
+import CardButtons from '../layout/CardButtons';
 
 import facebook from '../content/images/facebook.png';
 
-const EventCard = ({ event, openModal }) => {
+const EventCard = ({ event }) => {
   return (
     <div className='card mb-3'>
-      <div className='row no-gutters'>
-        <div className='col-3'>
-          <img src={facebook} className='card-img' alt='Responsive Thumbnail' />
+      <div className='row'>
+        <div className='col-12 col-md-4'>
+          <img
+            src={facebook}
+            className='card-img'
+            alt='Responsive Thumbnail'
+            style={{ height: '100%', objectFit: 'cover' }}
+          />
         </div>
-        <div className='col-6'>
+        <div className='col-12 col-md-8'>
           <div className='card-body'>
             <h5 className='card-title'>{event.title}</h5>
             <Moment format='hh:mm A'>{event.datefrom}</Moment> -{` `}
@@ -27,49 +28,13 @@ const EventCard = ({ event, openModal }) => {
             {event.location.room}
             <br />
             Type: {event.type}
-          </div>
-        </div>
-        <div className='col-3 p-2'>
-          <CatalogueButton
-            isCatalogued={event.isCatalogued}
-            eventId={event._id}
-          />
-          <br />
-          <br />
-          <div className='mx-2'>
-            <Link
-              to={`/details/${event._id}`}
-              className='btn btn-danger btn-block my-1'
-            >
-              Read more!
-            </Link>
-            <button
-              onClick={() => {
-                openModal(event._id);
-              }}
-              className='btn btn-danger btn-block my-1'
-            >
-              Share
-            </button>
-
-            <button
-              className='btn btn-danger btn-block my-1'
-              style={{
-                paddingLeft: '0',
-                paddingRight: '0'
-              }}
-            >
-              <AddToCalendar
-                event={{
-                  title: event.title,
-                  description: event.description,
-                  location: event.location.address,
-                  startTime: event.date.from,
-                  endTime: event.date.to
-                }}
-                buttonTemplate={{ calendar: 'left' }}
-              />
-            </button>
+            <br />
+            <br />
+            <CardButtons
+              isCatalogued={event.isCatalogued}
+              eventId={event._id}
+              page='more'
+            />
           </div>
         </div>
       </div>
@@ -78,12 +43,7 @@ const EventCard = ({ event, openModal }) => {
 };
 
 EventCard.propTypes = {
-  openModal: PropTypes.func.isRequired,
-
   event: PropTypes.object.isRequired
 };
 
-export default connect(
-  null,
-  { openModal }
-)(EventCard);
+export default EventCard;

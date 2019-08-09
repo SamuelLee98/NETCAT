@@ -61,7 +61,8 @@ body {
   border-bottom: 1px solid #efefef;
   text-align: center;
 }
-.btn-header {
+
+.btn-header-old {
   color: black;
   font-size: 11px;
   font-family: helvetica;
@@ -70,12 +71,25 @@ body {
   background-color: transparent;
   border-color: transparent; /*set the color you want here*/
 }
+
+.btn-header {
+  color: black;
+  font-size: 12px;
+  font-family: helvetica;
+  letter-spacing: 1px;
+  /* padding-left: 16px;
+  padding-right: 16px; */
+  background-color: transparent;
+  border-color: transparent;
+}
+
 /*button attribute when hovered*/
 .btn-header:hover {
   color: #ac101b;
   background-color: transparent;
   border-color: transparent; /*set the color you want here*/
 }
+
 /*button attribute when clicked*/
 .btn-header:active,
 .btn-header:focus {
@@ -85,6 +99,7 @@ body {
   outline: none !important;
   box-shadow: none !important;
 }
+
 /* Changing nav and search icon color when clicked */
 .side-menu:hover,
 .side-menu:active,
@@ -139,6 +154,11 @@ body {
   margin-left: 25px;
   font-family: vogue;
   margin-top: 10px;
+}
+
+.navbar-md-img {
+  height: 5em;
+  width: 5em;
 }
 
 @media screen and (max-height: 450px) {

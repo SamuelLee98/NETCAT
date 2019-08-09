@@ -4,23 +4,23 @@ const ProfileDisplay = ({ profile: { location, education, bio, social } }) => {
   return (
     <Fragment>
       {bio && (
-        <p className='lead'>
-          <i className='fa fa-info' /> {bio}
+        <p>
+          <i className='fas fa-info-circle' /> {bio}
         </p>
       )}
 
       {location && (
-        <p className='lead'>
-          <i className='fa fa-map-marker' /> {location}
+        <p>
+          <i className='fas fa-map-marked-alt' /> {location}
         </p>
       )}
 
       {education && (
         <Fragment>
           {education && (
-            <p className='lead'>
-              <i className='fa fa-book' /> {education.degree} degree in{' '}
-              {education.fieldofstudy} at {education.school}
+            <p>
+              <i className='fas fa-graduation-cap' /> {education.degree} degree
+              in {education.fieldofstudy} at {education.school}
             </p>
           )}
         </Fragment>
@@ -28,22 +28,22 @@ const ProfileDisplay = ({ profile: { location, education, bio, social } }) => {
       <div className='icons my-1'>
         {social && social.twitter && (
           <a href={social.twitter} target='_blank' rel='noopener noreferrer'>
-            <i className='fa fa-twitter fa-2x' />
+            <i className='fab fa-twitter fa-2x' />
           </a>
         )}
         {social && social.facebook && (
           <a href={social.facebook} target='_blank' rel='noopener noreferrer'>
-            <i className='fa fa-facebook fa-2x' />
+            <i className='fab fa-facebook-f fa-2x' />
           </a>
         )}
         {social && social.linkedin && (
           <a href={social.linkedin} target='_blank' rel='noopener noreferrer'>
-            <i className='fa fa-linkedin fa-2x' />
+            <i className='fab fa-linkedin-in fa-2x' />
           </a>
         )}
         {social && social.youtube && (
           <a href={social.youtube} target='_blank' rel='noopener noreferrer'>
-            <i className='fa fa-youtube fa-2x' />
+            <i className='fab fa-youtube fa-2x' />
           </a>
         )}
         {social && social.instagram && (

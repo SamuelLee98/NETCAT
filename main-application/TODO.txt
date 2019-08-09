@@ -1,4 +1,6 @@
-1. Change events post api permission level to developer
-2. Change JWT expiration time to 1 hour
-3. Change share modal event url from localhost3000 to deployment site
-4. Implement messenger share
+- Change events post api permission level to developer
+- remove react-add-to-calender
+- multi day events
+- Change JWT expiration time to 1 hour
+- Change share modal event url from localhost3000 to deployment site
+- Implement messenger share

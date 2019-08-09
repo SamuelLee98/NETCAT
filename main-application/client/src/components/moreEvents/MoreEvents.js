@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -11,6 +11,7 @@ import Spinner from '../layout/Spinner';
 import ServerError from '../layout/ServerError';
 import EventCard from './EventCard';
 import Pagination from '../layout/Pagination';
+import MapWrapper from '../map/MapWrapper';
 
 // utils
 import checkIfCatalogued from '../../utils/checkIfCatalogued';
@@ -132,6 +133,7 @@ const MoreEvents = ({
   }, [catalogue.ids]);
 
   const handlePageClick = data => {
+    console.log(data.selected);
     window.scrollTo(0, 0);
     let currPageNo = data.selected;
     setCurrPageNo(currPageNo);
@@ -159,23 +161,40 @@ const MoreEvents = ({
   return event.loading || catalogue.loading ? (
     <Spinner />
   ) : (
-    <div className='content container'>
-      <h1
-        className='large text-dark mb-4'
-        style={{ fontFamily: 'helvetica-bold' }}
-      >
-        Explore More Events Around You
-      </h1>
-      <hr />
-      <div>
-        {eventData.currPageEvents.map(event => (
-          <EventCard key={event._id} event={event} />
-        ))}
+    <div className='content'>
+      <div className='container'>
+        <h1
+          className='large text-dark mb-4'
+          style={{ fontFamily: 'helvetica-bold' }}
+        >
+          Explore More Events Around USC
+        </h1>
+        <hr />
+        <div className='row'>
+          <div className='col-12 col-lg-8'>
+            {eventData.currPageEvents.map(event => (
+              <EventCard key={event._id} event={event} />
+            ))}
+          </div>
+          <div className='d-none d-lg-block col-lg-4'>
+            <div
+              className='map sticky-top'
+              id='map'
+              style={{ width: '100%', height: '400px' }}
+            >
+              <MapWrapper
+                events={eventData.currPageEvents}
+                center={{ lat: 34.021, lng: -118.286 }}
+                zoom={15.3}
+              />
+            </div>
+          </div>
+        </div>
+        <Pagination
+          pageCount={eventData.pageCount}
+          handlePageClick={handlePageClick}
+        />
       </div>
-      <Pagination
-        pageCount={eventData.pageCount}
-        handlePageClick={handlePageClick}
-      />
     </div>
   );
 };

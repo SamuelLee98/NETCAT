@@ -66,6 +66,14 @@ const Footer = ({ page }) => {
               <h6 style={{ cursor: 'pointer' }}>Dornsife</h6>
             </Link>
             <br />
+            <Link
+              to='/more'
+              className='btn btn-header btn-outline-danger'
+              style={toggleStyle('more')}
+            >
+              <h6 style={{ cursor: 'pointer' }}>Explore</h6>
+            </Link>
+            <br />
             {/* <Link to='/' className='btn btn-header btn-outline-danger'>
               <h6 style={{ cursor: 'pointer' }} style={toggleStyle('about')}>
                 About

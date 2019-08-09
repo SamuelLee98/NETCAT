@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
-import AddToCalendar from 'react-add-to-calendar';
 
 // Actions
 import { getEventById } from '../../actions/event';
-import { openModal } from '../../actions/modal';
 import { getCatalogueEventIds } from '../../actions/catalogue';
 
 // Components
@@ -14,7 +12,7 @@ import Spinner from '../layout/Spinner';
 import MapWrapper from '../map/MapWrapper';
 import NotFound from '../layout/NotFound';
 import ServerError from '../layout/ServerError';
-import CatalogueButton from '../layout/CatalogueButton';
+import CardButtons from '../layout/CardButtons';
 
 // utils
 import checkIfCatalogued from '../../utils/checkIfCatalogued';
@@ -30,7 +28,6 @@ const Details = ({
   match,
   getEventById,
   getCatalogueEventIds,
-  openModal,
   catalogue
 }) => {
   const [eventData, changeEventData] = useState(null);
@@ -69,8 +66,8 @@ const Details = ({
   return (
     <div className='content container'>
       <div className='row'>
-        <div className='col-md-1' />
-        <div className='col-md-10 my-2'>
+        <div className='d-none d-md-block col-md-1' />
+        <div className='col-12 col-md-10 my-2'>
           <div className='card mb-3'>
             <div className='map' id='map'>
               <MapWrapper
@@ -90,10 +87,6 @@ const Details = ({
               style={{ minHeight: '200px', maxHeight: '400px' }}
             />
             <div className='card-body'>
-              <CatalogueButton
-                isCatalogued={eventData.isCatalogued}
-                eventId={eventData._id}
-              />
               <h3 className='card-title'>{eventData.title}</h3>
               <h6>Location: {eventData.location.room}</h6>
               <h6>
@@ -105,41 +98,15 @@ const Details = ({
                 </Moment>
               </h6>
               <p className='card-text'>{eventData.description}</p>
-              <div className='row justify-content-center'>
-                <button
-                  className='btn btn-danger btn-lg btn-block m-1'
-                  style={{
-                    maxWidth: '500px',
-                    paddingLeft: '0',
-                    paddingRight: '0'
-                  }}
-                >
-                  <AddToCalendar
-                    event={{
-                      title: eventData.title,
-                      description: eventData.description,
-                      location: eventData.location.address,
-                      startTime: eventData.date.from,
-                      endTime: eventData.date.to
-                    }}
-                    buttonTemplate={{ calendar: 'left' }}
-                  />
-                </button>
-                <div className='w-100' />
-                <button
-                  onClick={() => {
-                    openModal(eventData._id);
-                  }}
-                  className='btn btn-danger btn-lg btn-block m-1'
-                  style={{ maxWidth: '500px' }}
-                >
-                  Share
-                </button>
-              </div>
+              <CardButtons
+                isCatalogued={eventData.isCatalogued}
+                eventId={eventData._id}
+                page='details'
+              />
             </div>
           </div>
         </div>
-        <div className='col-md-1' />
+        <div className='d-none d-md-block col-md-1' />
       </div>
     </div>
   );
@@ -147,7 +114,6 @@ const Details = ({
 
 Details.propTypes = {
   getEventById: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired,
   getCatalogueEventIds: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired,
   catalogue: PropTypes.object.isRequired
@@ -160,5 +126,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getEventById, openModal, getCatalogueEventIds }
+  { getEventById, getCatalogueEventIds }
 )(Details);

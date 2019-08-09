@@ -4,15 +4,17 @@ import {
   ADD_TO_CATALOGUE,
   CATALOGUE_ERROR,
   CLEAR_CATALOGUE,
-  CATALOGUE_LOADING,
-  DELETE_FROM_CATALOGUE_EVENTS,
-  DELETE_FROM_CATALOGUE_IDS
+  CATALOGUE_EVENTS_LOADING,
+  CATALOGUE_IDS_LOADING,
+  DELETE_FROM_CATALOGUE,
+  PUSH_TO_CATALOGUE
 } from '../actions/types';
 
 const initialState = {
   events: null,
   ids: null,
-  loading: true,
+  eventsLoading: true,
+  idsLoading: true,
   error: null
 };
 
@@ -23,20 +25,26 @@ export default function(state = initialState, action) {
       return {
         ...state,
         events: payload,
-        loading: false,
+        eventsLoading: false,
         error: null
       };
     case GET_CATALOGUE_IDS:
       return {
         ...state,
         ids: payload,
-        loading: false,
+        idsLoading: false,
         error: null
       };
-    case CATALOGUE_LOADING:
+    case CATALOGUE_EVENTS_LOADING:
       return {
         ...state,
-        loading: true,
+        eventsLoading: true,
+        error: null
+      };
+    case CATALOGUE_IDS_LOADING:
+      return {
+        ...state,
+        idsLoading: true,
         error: null
       };
     case ADD_TO_CATALOGUE:
@@ -44,28 +52,34 @@ export default function(state = initialState, action) {
         ...state,
         ids: [...state.ids, payload]
       };
-    case DELETE_FROM_CATALOGUE_IDS:
+    case DELETE_FROM_CATALOGUE:
       return {
         ...state,
-        ids: state.ids.filter(id => id !== payload)
+        ids: state.ids !== null ? state.ids.filter(id => id !== payload) : null,
+        events:
+          state.events !== null
+            ? state.events.filter(event => event._id !== payload)
+            : null
       };
-    case DELETE_FROM_CATALOGUE_EVENTS:
+    case PUSH_TO_CATALOGUE:
       return {
         ...state,
-        events: state.events.filter(event => event._id !== payload)
+        events: [...state.events, payload]
       };
     case CLEAR_CATALOGUE:
       return {
         ids: null,
         events: null,
-        loading: false,
+        eventsLoading: false,
+        idsLoading: false,
         error: null
       };
     case CATALOGUE_ERROR:
       return {
         ...state,
         error: payload,
-        loading: false
+        eventsLoading: false,
+        idsLoading: false
       };
     default:
       return state;

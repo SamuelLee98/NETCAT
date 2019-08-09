@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -15,7 +16,6 @@ import {
   getIndexEvents,
   getIndexFeaturedEvents
 } from '../../actions/event';
-import { openModal } from '../../actions/modal';
 import { getCatalogueEventIds } from '../../actions/catalogue';
 
 // utils
@@ -33,7 +33,6 @@ const Content = ({
   getIndexFeaturedEvents,
   getIndexEvents,
   getCatalogueEventIds,
-  openModal,
   event,
   catalogue,
   page
@@ -95,15 +94,20 @@ const Content = ({
               key={event._id}
               event={event}
               image={images[index]}
-              openModal={openModal}
             />
           ))}
         </div>
+        <div className='d-flex justify-content-end'>
+          <Link className='btn btn-link text-danger' to='/more'>
+            Explore More Events
+          </Link>
+        </div>
+
         <hr />
         <h3 style={{ textAlign: 'center', marginTop: '20px' }}>More Events</h3>
         <div className='container'>
           <div
-            className='map'
+            className='d-none d-md-block map'
             id='map'
             style={{ width: '100%', height: '400px' }}
           >
@@ -118,13 +122,14 @@ const Content = ({
           <div className='moreEvents' id='moreEvents' style={{ width: '100%' }}>
             <div className='row'>
               {eventData.events.map(event => (
-                <MoreEvent
-                  key={event._id}
-                  event={event}
-                  openModal={openModal}
-                />
+                <MoreEvent key={event._id} event={event} />
               ))}
             </div>
+          </div>
+          <div className='d-flex justify-content-end'>
+            <Link className='btn btn-link text-danger' to='/more'>
+              Explore More Events
+            </Link>
           </div>
         </div>
       </div>
@@ -137,7 +142,6 @@ Content.propTypes = {
   getIndexEvents: PropTypes.func.isRequired,
   getIndexFeaturedEvents: PropTypes.func.isRequired,
   getCatalogueEventIds: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired,
   catalogue: PropTypes.object.isRequired,
   page: PropTypes.string
@@ -154,7 +158,6 @@ export default connect(
     setPage,
     getIndexEvents,
     getIndexFeaturedEvents,
-    getCatalogueEventIds,
-    openModal
+    getCatalogueEventIds
   }
 )(Content);
