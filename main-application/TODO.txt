@@ -1,5 +1,13 @@
+- Change delete account pop up window to pop up alert
+- Fix profile page in phone screen sizes, possibly adding new tab profile and catalgoue
+- fix share module size in phone screen
+- implement add to calender
+- Filter / search bar
+- Replace bootstrap css with react-bootstrap 
+
+
+DEPLOYMENT TODOS
 - Change events post api permission level to developer
-- remove react-add-to-calender
 - multi day events
 - Change JWT expiration time to 1 hour
 - Change share modal event url from localhost3000 to deployment site

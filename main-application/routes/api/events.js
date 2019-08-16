@@ -180,7 +180,7 @@ router.get('/test/generate-test-data', async (req, res) => {
 
     let saveCoord = {};
     // Fake events
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 18; i++) {
       let title, school;
       if (i < 6) {
         title = 'Dornsife Event';
@@ -188,9 +188,6 @@ router.get('/test/generate-test-data', async (req, res) => {
       } else if (i < 12) {
         title = 'Annenberg Event';
         school = 'annenberg';
-      } else if (i < 18) {
-        title = 'Marshall Event';
-        school = 'marshall';
       } else {
         title = 'Viterbi Event';
         school = 'viterbi';

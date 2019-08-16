@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -13,8 +13,9 @@ import ServerError from '../layout/ServerError';
 // Actions
 import {
   setPage,
-  getIndexEvents,
-  getIndexFeaturedEvents
+  getMoreEvents,
+  getFeaturedEvents,
+  clearEvents
 } from '../../actions/event';
 import { getCatalogueEventIds } from '../../actions/catalogue';
 
@@ -30,48 +31,67 @@ const images = [facebook, amazon, NBC, vayner];
 
 const Content = ({
   setPage,
-  getIndexFeaturedEvents,
-  getIndexEvents,
+  getFeaturedEvents,
+  getMoreEvents,
   getCatalogueEventIds,
+  clearEvents,
   event,
   catalogue,
   page
 }) => {
-  const [eventData, changeEventData] = useState({
-    events: [],
-    featured: []
-  });
+  // Data from redux
+  const moreEvents = useCallback(event.more.events, [event.more.events]);
+  const moreLoading = useCallback(event.more.loading, [event.more.loading]);
+  const featuredEvents = useCallback(event.featured.events, [
+    event.featured.events
+  ]);
+  const featuredLoading = useCallback(event.featured.loading, [
+    event.featured.loading
+  ]);
+
+  // Catalogue-labeled events
+  const [moreEventsLabelled, setMoreEventsLabelled] = useState(null);
+  const [featuredEventsLabelled, setfeaturedEventsLabelled] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setPage(page);
-    getIndexFeaturedEvents(page);
-    getIndexEvents(page);
+    getFeaturedEvents(page);
+    getMoreEvents(page);
     getCatalogueEventIds();
+
+    return () => clearEvents();
   }, [
-    setPage,
-    getIndexFeaturedEvents,
-    getIndexEvents,
     page,
-    getCatalogueEventIds
+    setPage,
+    getFeaturedEvents,
+    getMoreEvents,
+    getCatalogueEventIds,
+    clearEvents
   ]);
 
   useEffect(() => {
     if (
-      event.events.events &&
-      event.featured.featured &&
-      !event.loading &&
+      moreEvents !== null &&
+      featuredEvents !== null &&
+      !moreLoading &&
+      !featuredLoading &&
       !catalogue.loading
     ) {
-      let events = checkIfCatalogued(event.events.events, catalogue.ids);
-      let featured = checkIfCatalogued(event.featured.featured, catalogue.ids);
+      let more = checkIfCatalogued(moreEvents, catalogue.ids);
+      let featured = checkIfCatalogued(featuredEvents, catalogue.ids);
 
-      changeEventData({
-        events,
-        featured
-      });
+      setMoreEventsLabelled(more);
+      setfeaturedEventsLabelled(featured);
     }
-  }, [event, catalogue]);
+  }, [
+    moreEvents,
+    featuredEvents,
+    moreLoading,
+    featuredLoading,
+    catalogue.loading,
+    catalogue.ids
+  ]);
 
   if (
     (event.error && event.error.status === 500) ||
@@ -80,7 +100,13 @@ const Content = ({
     return <ServerError />;
   }
 
-  if (event.loading || catalogue.loading) {
+  if (
+    moreLoading ||
+    featuredLoading ||
+    catalogue.loading ||
+    moreEventsLabelled === null ||
+    featuredEventsLabelled === null
+  ) {
     return <Spinner />;
   }
 
@@ -89,16 +115,24 @@ const Content = ({
       <div className='container'>
         <h3 style={{ textAlign: 'center' }}>Featured Events</h3>
         <div className='row'>
-          {eventData.featured.map((event, index) => (
-            <FeaturedEvent
-              key={event._id}
-              event={event}
-              image={images[index]}
-            />
-          ))}
+          {featuredEventsLabelled.length === 0 ? (
+            <div className='col'>
+              <h5 style={{ color: 'grey', textAlign: 'center' }}>
+                Nothing here at the moment :(
+              </h5>
+            </div>
+          ) : (
+            featuredEventsLabelled.map((event, index) => (
+              <FeaturedEvent
+                key={event._id}
+                event={event}
+                image={images[index]}
+              />
+            ))
+          )}
         </div>
         <div className='d-flex justify-content-end'>
-          <Link className='btn btn-link text-danger' to='/more'>
+          <Link className='btn btn-link text-danger' to='/explore'>
             Explore More Events
           </Link>
         </div>
@@ -112,7 +146,7 @@ const Content = ({
             style={{ width: '100%', height: '400px' }}
           >
             <MapWrapper
-              events={eventData.events}
+              events={moreEventsLabelled}
               center={{ lat: 34.021, lng: -118.286 }}
               zoom={15.3}
             />
@@ -121,13 +155,22 @@ const Content = ({
           <br />
           <div className='moreEvents' id='moreEvents' style={{ width: '100%' }}>
             <div className='row'>
-              {eventData.events.map(event => (
-                <MoreEvent key={event._id} event={event} />
-              ))}
+              {moreEventsLabelled.length === 0 ? (
+                <div className='col'>
+                  <h5 style={{ color: 'grey', textAlign: 'center' }}>
+                    Nothing here at the moment :(
+                  </h5>
+                  <hr />
+                </div>
+              ) : (
+                moreEventsLabelled.map(event => (
+                  <MoreEvent key={event._id} event={event} />
+                ))
+              )}
             </div>
           </div>
           <div className='d-flex justify-content-end'>
-            <Link className='btn btn-link text-danger' to='/more'>
+            <Link className='btn btn-link text-danger' to='/explore'>
               Explore More Events
             </Link>
           </div>
@@ -139,9 +182,10 @@ const Content = ({
 
 Content.propTypes = {
   setPage: PropTypes.func.isRequired,
-  getIndexEvents: PropTypes.func.isRequired,
-  getIndexFeaturedEvents: PropTypes.func.isRequired,
+  getMoreEvents: PropTypes.func.isRequired,
+  getFeaturedEvents: PropTypes.func.isRequired,
   getCatalogueEventIds: PropTypes.func.isRequired,
+  clearEvents: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired,
   catalogue: PropTypes.object.isRequired,
   page: PropTypes.string
@@ -156,8 +200,9 @@ export default connect(
   mapStateToProps,
   {
     setPage,
-    getIndexEvents,
-    getIndexFeaturedEvents,
-    getCatalogueEventIds
+    getMoreEvents,
+    getFeaturedEvents,
+    getCatalogueEventIds,
+    clearEvents
   }
 )(Content);

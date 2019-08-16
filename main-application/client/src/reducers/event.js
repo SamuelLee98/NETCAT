@@ -1,25 +1,34 @@
 import {
-  GET_INDEX_EVENTS,
-  GET_INDEX_FEATURED_EVENTS,
   GET_MORE_EVENTS,
-  GET_EVENT,
+  GET_FEATURED_EVENTS,
+  GET_EXPLORE_EVENTS,
+  GET_DETAILS_EVENT,
   EVENT_ERROR,
-  EVENT_LOADING,
+  MORE_LOADING,
+  EXPLORE_LOADING,
   FEATURED_LOADING,
-  SET_PAGE
+  DETAILS_LOADING,
+  SET_PAGE,
+  CLEAR_EVENTS
 } from '../actions/types';
 
 const initialState = {
-  events: {
+  more: {
     loading: true,
-    events: []
+    events: null
   },
   featured: {
     loading: true,
-    featured: []
+    events: null
   },
-  event: null,
-  loading: true,
+  explore: {
+    loading: true,
+    events: null
+  },
+  details: {
+    loading: true,
+    event: null
+  },
   page: '',
   error: null
 };
@@ -27,41 +36,40 @@ const initialState = {
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case GET_INDEX_EVENTS:
+    case GET_MORE_EVENTS:
       return {
         ...state,
-        events: {
+        more: {
           loading: false,
           events: payload
         },
-        loading: state.featured.loading || false,
         error: null
       };
-    case GET_INDEX_FEATURED_EVENTS:
+    case GET_FEATURED_EVENTS:
       return {
         ...state,
         featured: {
           loading: false,
-          featured: payload
+          events: payload
         },
-        loading: state.events.loading || false,
         error: null
       };
-    case GET_MORE_EVENTS:
+    case GET_EXPLORE_EVENTS:
       return {
         ...state,
-        events: {
+        explore: {
           loading: false,
           events: payload
         },
-        loading: false,
         error: null
       };
-    case GET_EVENT:
+    case GET_DETAILS_EVENT:
       return {
         ...state,
-        event: payload,
-        loading: false,
+        details: {
+          loading: false,
+          event: payload
+        },
         error: null
       };
     case FEATURED_LOADING:
@@ -70,17 +78,33 @@ export default function(state = initialState, action) {
         featured: {
           ...state.featured,
           loading: true
-        },
-        loading: true
+        }
       };
-    case EVENT_LOADING:
+    case MORE_LOADING:
       return {
         ...state,
-        events: {
-          ...state.events,
+        more: {
+          ...state.more,
           loading: true
         },
-        loading: true,
+        error: null
+      };
+    case EXPLORE_LOADING:
+      return {
+        ...state,
+        explore: {
+          ...state.explore,
+          loading: true
+        },
+        error: null
+      };
+    case DETAILS_LOADING:
+      return {
+        ...state,
+        details: {
+          ...state.details,
+          loading: true
+        },
         error: null
       };
     case SET_PAGE:
@@ -88,18 +112,42 @@ export default function(state = initialState, action) {
         ...state,
         page: payload
       };
+    case CLEAR_EVENTS:
+      return {
+        more: {
+          loading: true,
+          events: null
+        },
+        featured: {
+          loading: true,
+          events: null
+        },
+        explore: {
+          loading: true,
+          events: null
+        },
+        details: {
+          loading: true,
+          event: null
+        },
+        page: '',
+        error: null
+      };
     case EVENT_ERROR:
       return {
         ...state,
-        events: {
-          ...state.events,
+        more: {
+          ...state.more,
           loading: false
         },
         featured: {
           ...state.featured,
           loading: false
         },
-        loading: false,
+        details: {
+          ...state.details,
+          loading: false
+        },
         error: payload
       };
     default:

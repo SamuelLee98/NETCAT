@@ -15,6 +15,7 @@ const initialState = {
   ids: null,
   eventsLoading: true,
   idsLoading: true,
+  hasMore: true,
   error: null
 };
 
@@ -22,9 +23,21 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case GET_CATALOGUE_EVENTS:
+      let idsArr;
+      if (state.events !== null) idsArr = state.events.map(event => event._id);
+
       return {
         ...state,
-        events: payload,
+        events:
+          state.events === null
+            ? payload.events
+            : [
+                ...state.events,
+                ...payload.events.filter(
+                  event => idsArr.includes(event._id) === false
+                )
+              ],
+        hasMore: payload.hasMore,
         eventsLoading: false,
         error: null
       };
@@ -61,17 +74,13 @@ export default function(state = initialState, action) {
             ? state.events.filter(event => event._id !== payload)
             : null
       };
-    case PUSH_TO_CATALOGUE:
-      return {
-        ...state,
-        events: [...state.events, payload]
-      };
     case CLEAR_CATALOGUE:
       return {
         ids: null,
         events: null,
-        eventsLoading: false,
-        idsLoading: false,
+        eventsLoading: true,
+        idsLoading: true,
+        hasMore: true,
         error: null
       };
     case CATALOGUE_ERROR:

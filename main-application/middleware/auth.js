@@ -7,7 +7,9 @@ module.exports = function(req, res, next) {
 
   // Check if no token
   if (!token) {
-    return res.status(401).json({ msg: 'Token is not valid' });
+    return res
+      .status(401)
+      .json({ msg: 'You must be logged in to perform this action' });
   }
 
   // Verify token
@@ -16,6 +18,8 @@ module.exports = function(req, res, next) {
     req.user = decoded.user;
     next();
   } catch (err) {
-    res.status(401).json({ msg: 'Token is not valid' });
+    res
+      .status(401)
+      .json({ msg: 'You must be logged in to perform this action' });
   }
 };

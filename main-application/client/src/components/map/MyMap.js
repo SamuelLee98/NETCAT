@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   withScriptjs,
@@ -11,35 +11,40 @@ import Moment from 'react-moment';
 
 const MyMap = withScriptjs(
   withGoogleMap(({ events, markerId, setId, center, zoom }) => {
-    let mapEventsArrays = [];
+    const [mapEventsArrays, setMapEventsArrays] = useState([]);
+    useEffect(() => {
+      let mapEventsArrays = [];
+      if (events.length !== 0) {
+        events.forEach(event => {
+          // If event does not contain lat lng values, ignore
+          if (!event.location.latitude || !event.location.longitude) return;
 
-    events.forEach(event => {
-      // If event does not contain lat lng values, ignore
-      if (!event.location.latitude || !event.location.longitude) return;
+          // Compare the coordinate of current event with the first event inside
+          // each of the nested array of mapEventsArrays
+          for (let i = 0; i < mapEventsArrays.length; i++) {
+            const { latitude, longitude } = mapEventsArrays[i][0].location;
 
-      // Compare the coordinate of current event with the first event inside
-      // each of the nested array of mapEventsArrays
-      for (let i = 0; i < mapEventsArrays.length; i++) {
-        const { latitude, longitude } = mapEventsArrays[i][0].location;
+            // If coordinates match
+            if (
+              event.location.latitude === latitude &&
+              event.location.longitude === longitude
+            ) {
+              mapEventsArrays[i].push(event);
+              return;
+            }
+          }
 
-        // If coordinates match
-        if (
-          event.location.latitude === latitude &&
-          event.location.longitude === longitude
-        ) {
-          mapEventsArrays[i].push(event);
-          return;
-        }
+          // If coordinates not found
+          mapEventsArrays.push([event]);
+        });
+        setMapEventsArrays(mapEventsArrays);
       }
-
-      // If coordinates not found
-      mapEventsArrays.push([event]);
-    });
+    }, [events]);
 
     return (
       <GoogleMap defaultZoom={zoom} defaultCenter={center}>
         {mapEventsArrays.map(mapEventArray => {
-          // Use first element of each arr to populate marker with lat & lng
+          // Use first element of each arr to populate marker
           const firstMapEvent = mapEventArray[0];
 
           return (
@@ -55,13 +60,16 @@ const MyMap = withScriptjs(
                 <InfoWindow onCloseClick={() => setId('')}>
                   <Fragment>
                     {mapEventArray.map(
-                      ({
-                        _id,
-                        location: { room, address },
-                        title,
-                        date: { multiDay, from, to },
-                        featured
-                      }) => (
+                      (
+                        {
+                          _id,
+                          location: { room, address },
+                          title,
+                          date: { multiDay, from, to },
+                          featured
+                        },
+                        index
+                      ) => (
                         <Fragment key={_id}>
                           <div
                             className='moreEvents card mx-2'
@@ -95,7 +103,7 @@ const MyMap = withScriptjs(
                               </Link>
                             </div>
                           </div>
-                          <hr />
+                          {index !== mapEventArray.length - 1 && <hr />}
                         </Fragment>
                       )
                     )}

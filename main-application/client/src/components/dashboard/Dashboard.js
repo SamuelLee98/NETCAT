@@ -1,16 +1,16 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import ReactPaginate from 'react-paginate';
+import React, { Fragment, useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroller';
 
 // Actions
-import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import {
-  getCatalogueEvents,
-  getCatalogueEventIds,
-  pushToCatalogue
-} from '../../actions/catalogue';
+  getCurrentProfile,
+  clearProfile,
+  deleteAccount
+} from '../../actions/profile';
+import { getCatalogueEvents, clearCatalogue } from '../../actions/catalogue';
 import { setPage } from '../../actions/event';
 
 // Components
@@ -19,85 +19,74 @@ import Catalogue from './Catalogue';
 import Spinner from '../layout/Spinner';
 import ServerError from '../layout/ServerError';
 
+// Spinner svg
+import spinner from '../layout/spinner.svg';
+
 // css
 import './Dashboard.css';
+
+const eventsPerPage = 5;
+
+// Loader for inifiniteScroll
+const Loader = (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}
+    key={0}
+  >
+    <img
+      src={spinner}
+      style={{ height: '50px', width: '50px' }}
+      alt='Loading'
+    />
+  </div>
+);
 
 const Dashboard = ({
   setPage,
   getCurrentProfile,
   getCatalogueEvents,
-  getCatalogueEventIds,
-  pushToCatalogue,
+  clearCatalogue,
+  clearProfile,
   deleteAccount,
   auth: { user },
   profile,
   catalogue
 }) => {
-  const eventsPerPage = 10;
-  const [pageCount, setPageCount] = useState(null);
-  const [currPageNo, setCurrPageNo] = useState(0);
-  const [initialLoad, toggleInitialLoad] = useState(true);
+  const [currOffset, setCurrOffset] = useState(eventsPerPage);
+  // Only update events when exploreEvents change
+  const events = useCallback(catalogue.events, [catalogue.events]);
+  const hasMore = useCallback(catalogue.hasMore, [catalogue.hasMore]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setPage('dashboard');
     getCurrentProfile();
-    getCatalogueEventIds();
-    getCatalogueEvents(0, eventsPerPage);
-  }, [setPage, getCurrentProfile, getCatalogueEventIds, getCatalogueEvents]);
+    getCatalogueEvents(0, eventsPerPage, true);
 
-  useEffect(() => {
-    if (
-      !catalogue.eventsLoading &&
-      !catalogue.idsLoading &&
-      catalogue.ids !== null &&
-      catalogue.events !== null
-    ) {
-      if (initialLoad) {
-        toggleInitialLoad(false);
-        setPageCount(Math.ceil(catalogue.ids.length / eventsPerPage));
-      }
-    }
-  }, [catalogue, initialLoad]);
+    return () => {
+      clearCatalogue();
+      clearProfile();
+    };
+  }, [
+    setPage,
+    getCurrentProfile,
+    getCatalogueEvents,
+    clearCatalogue,
+    clearProfile
+  ]);
 
-  // Run this useEffect when user clicks on add/remove button
-  const handleDeleteEvent = () => {
-    // Recalculate page count
-    setPageCount(Math.ceil((catalogue.ids.length - 1) / eventsPerPage));
+  // On add/remove from catalogue click
+  const onDeleteClick = useCallback(() => {
+    setCurrOffset(currOffset - 1);
+  }, [currOffset]);
 
-    // If deleting last event from a certain page
-    if (catalogue.events.length === 1) {
-      // If no more events left
-      if (catalogue.ids.length === 1) return;
-
-      // Go to the previous page
-      setCurrPageNo(currPageNo - 1);
-
-      // Get previous 10 events
-      let offset = Math.ceil((currPageNo - 1) * eventsPerPage);
-      getCatalogueEvents(offset, offset + eventsPerPage);
-
-      return;
-    }
-
-    // Get index of event to add to events array
-    const indexToAdd = (currPageNo + 1) * eventsPerPage;
-
-    // If event deleted is from last page of catalogue
-    if (indexToAdd >= catalogue.ids.length) return;
-
-    const eventIdToAdd = catalogue.ids[indexToAdd];
-
-    // Push first event of next page to events array
-    pushToCatalogue(eventIdToAdd);
-  };
-
-  const handlePageClick = data => {
-    window.scrollTo(0, 0);
-    let currPageNo = data.selected;
-    setCurrPageNo(currPageNo);
-    let offset = Math.ceil(currPageNo * eventsPerPage);
-    getCatalogueEvents(offset, offset + eventsPerPage);
+  const loadEvents = async () => {
+    await getCatalogueEvents(currOffset, eventsPerPage);
+    setCurrOffset(currOffset + eventsPerPage);
   };
 
   if (profile.error && profile.error.status === 500) {
@@ -108,12 +97,7 @@ const Dashboard = ({
     return <ServerError />;
   }
 
-  if (
-    profile.loading ||
-    profile.profile === null ||
-    initialLoad ||
-    pageCount === null
-  ) {
+  if (profile.loading || catalogue.eventsLoading || events === null) {
     return <Spinner />;
   }
 
@@ -164,42 +148,38 @@ const Dashboard = ({
           <hr className='d-block d-md-none' />
         </div>
         <div className='col-md-9'>
-          {catalogue.eventsLoading ? (
-            <Spinner />
-          ) : catalogue.events === null || catalogue.events.length === 0 ? (
-            <p>You do not have any events in your catalogue.</p>
-          ) : (
-            <Fragment>
-              {catalogue.events.map(event => (
-                <Catalogue
-                  key={event._id}
-                  event={event}
-                  handleDeleteEvent={handleDeleteEvent}
-                />
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={() => loadEvents()}
+            hasMore={hasMore}
+            loader={Loader}
+          >
+            {events.map(event => (
+              <Catalogue
+                key={event._id}
+                event={event}
+                onDeleteClick={onDeleteClick}
+              />
+            ))}
+            {!hasMore &&
+              (events.length === 0 ? (
+                <p>You do not have any events in your catalogue.</p>
+              ) : (
+                <Fragment>
+                  <div className='d-flex justify-content-center'>
+                    <h5>No more events left...</h5>
+                  </div>
+                  <div className='d-flex justify-content-center'>
+                    <button
+                      className='btn btn-link text-danger'
+                      onClick={() => window.scrollTo(0, 0)}
+                    >
+                      Scroll To Top
+                    </button>
+                  </div>
+                </Fragment>
               ))}
-              <nav aria-label='more-events nav'>
-                <ReactPaginate
-                  previousLabel={'previous'}
-                  nextLabel={'next'}
-                  breakLabel={'...'}
-                  breakClassName={'break-me'}
-                  pageCount={pageCount}
-                  marginPagesDisplayed={2}
-                  pageRangeDisplayed={5}
-                  onPageChange={handlePageClick}
-                  containerClassName={'pagination'}
-                  pageClassName={'page-item'}
-                  previousClassName={'page-item'}
-                  nextClassName={'page-item'}
-                  pageLinkClassName={'page-link'}
-                  previousLinkClassName={'page-link'}
-                  nextLinkClassName={'page-link'}
-                  activeClassName={'active'}
-                  forcePage={currPageNo}
-                />
-              </nav>
-            </Fragment>
-          )}
+          </InfiniteScroll>
         </div>
       </div>
     </div>
@@ -210,8 +190,8 @@ Dashboard.propTypes = {
   setPage: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
   getCatalogueEvents: PropTypes.func.isRequired,
-  getCatalogueEventIds: PropTypes.func.isRequired,
-  pushToCatalogue: PropTypes.func.isRequired,
+  clearCatalogue: PropTypes.func.isRequired,
+  clearProfile: PropTypes.func.isRequired,
   deleteAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
@@ -229,8 +209,8 @@ export default connect(
   {
     getCurrentProfile,
     getCatalogueEvents,
-    getCatalogueEventIds,
-    pushToCatalogue,
+    clearCatalogue,
+    clearProfile,
     setPage,
     deleteAccount
   }

@@ -13,13 +13,13 @@ const CardButtons = ({
   openModal,
   isCatalogued,
   eventId,
-  handleDeleteEvent,
+  onDeleteClick,
   page
 }) => {
-  // Used only for deleting events from user's catalogue
-  const onCatalogueDeleteClick = async () => {
+  // Function used in dashboard page
+  const handleDashboardDeleteClick = () => {
     deleteFromCatalogue(eventId);
-    handleDeleteEvent();
+    onDeleteClick();
   };
 
   // Different styling for different pages
@@ -47,7 +47,7 @@ const CardButtons = ({
             data-toggle='tooltip'
             data-placement='top'
             title='Remove from catalogue'
-            onClick={() => deleteFromCatalogue()}
+            onClick={() => deleteFromCatalogue(eventId)}
             style={{ color: 'red' }}
           />
         ) : (
@@ -133,7 +133,7 @@ const CardButtons = ({
             data-toggle='tooltip'
             data-placement='top'
             title='Remove from catalogue'
-            onClick={() => onCatalogueDeleteClick()}
+            onClick={() => handleDashboardDeleteClick()}
             style={{ color: 'red' }}
           />
         </div>

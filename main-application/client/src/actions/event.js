@@ -1,12 +1,15 @@
 import axios from 'axios';
 import {
-  GET_INDEX_EVENTS,
-  GET_INDEX_FEATURED_EVENTS,
-  GET_EVENT,
   GET_MORE_EVENTS,
+  GET_FEATURED_EVENTS,
+  GET_DETAILS_EVENT,
+  GET_EXPLORE_EVENTS,
   EVENT_ERROR,
-  EVENT_LOADING,
+  MORE_LOADING,
   FEATURED_LOADING,
+  EXPLORE_LOADING,
+  DETAILS_LOADING,
+  CLEAR_EVENTS,
   SET_PAGE
 } from '../actions/types';
 import loading from './loading';
@@ -19,17 +22,17 @@ export const setPage = (page = '') => dispatch => {
   });
 };
 
-// Get normal events on index page
-export const getIndexEvents = (school = '') => async dispatch => {
+// Get more events on index page
+export const getMoreEvents = (school = '') => async dispatch => {
   try {
     // Set loading
-    dispatch(loading(EVENT_LOADING));
+    dispatch(loading(MORE_LOADING));
     const res = await axios.get(
       `/api/events/index?school=${school}&limit=6&featured=false`
     );
 
     dispatch({
-      type: GET_INDEX_EVENTS,
+      type: GET_MORE_EVENTS,
       payload: res.data
     });
   } catch (err) {
@@ -41,7 +44,7 @@ export const getIndexEvents = (school = '') => async dispatch => {
 };
 
 // Get FEATURED events on index page
-export const getIndexFeaturedEvents = (school = '') => async dispatch => {
+export const getFeaturedEvents = (school = '') => async dispatch => {
   try {
     // Set loading
     dispatch(loading(FEATURED_LOADING));
@@ -50,7 +53,7 @@ export const getIndexFeaturedEvents = (school = '') => async dispatch => {
     );
 
     dispatch({
-      type: GET_INDEX_FEATURED_EVENTS,
+      type: GET_FEATURED_EVENTS,
       payload: res.data
     });
   } catch (err) {
@@ -65,11 +68,11 @@ export const getIndexFeaturedEvents = (school = '') => async dispatch => {
 export const getEventById = id => async dispatch => {
   try {
     // Set loading
-    dispatch(loading(EVENT_LOADING));
+    dispatch(loading(DETAILS_LOADING));
     const res = await axios.get(`/api/events/${id}`);
 
     dispatch({
-      type: GET_EVENT,
+      type: GET_DETAILS_EVENT,
       payload: res.data
     });
   } catch (err) {
@@ -80,23 +83,37 @@ export const getEventById = id => async dispatch => {
   }
 };
 
-// Get event by for details page
-export const getMoreEvents = (
+// Get explore events
+export const getExploreEvents = (
   school = '',
   type = '',
   featured = ''
 ) => async dispatch => {
   try {
-    // Set loading
-    dispatch(loading(EVENT_LOADING));
+    dispatch(loading(EXPLORE_LOADING));
     const res = await axios.get(
       `/api/events?school=${school}&type=${type}&featured=${featured}`
     );
 
     dispatch({
-      type: GET_MORE_EVENTS,
+      type: GET_EXPLORE_EVENTS,
       payload: res.data
     });
+  } catch (err) {
+    dispatch({
+      type: EVENT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Clear all events on cleanup
+export const clearEvents = () => async dispatch => {
+  try {
+    dispatch({
+      type: CLEAR_EVENTS
+    });
+    console.log('clear event done');
   } catch (err) {
     dispatch({
       type: EVENT_ERROR,

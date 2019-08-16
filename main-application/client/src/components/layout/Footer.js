@@ -67,7 +67,7 @@ const Footer = ({ page }) => {
             </Link>
             <br />
             <Link
-              to='/more'
+              to='/explore'
               className='btn btn-header btn-outline-danger'
               style={toggleStyle('more')}
             >

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
 
 // Actions
-import { getEventById } from '../../actions/event';
+import { getEventById, clearEvents } from '../../actions/event';
 import { getCatalogueEventIds } from '../../actions/catalogue';
 
 // Components
@@ -27,30 +27,34 @@ const Details = ({
   event,
   match,
   getEventById,
+  clearEvents,
   getCatalogueEventIds,
   catalogue
 }) => {
-  const [eventData, changeEventData] = useState(null);
-  console.log(eventData === null);
+  const detailsEvent = useCallback(event.details.event, [event.details.event]);
+  const detailsLoading = useCallback(event.details.loading, [
+    event.details.loading
+  ]);
+  const [detailsEventLabelled, setDetailsEventLabelled] = useState(null);
 
   useEffect(() => {
     // Scroll to top of the page
     window.scrollTo(0, 0);
     getEventById(match.params.id);
     getCatalogueEventIds();
-  }, [match, getEventById, getCatalogueEventIds]);
+    return () => clearEvents();
+  }, [match, getEventById, getCatalogueEventIds, clearEvents]);
 
   useEffect(() => {
-    if (event.event && !event.loading && !catalogue.loading) {
+    if (detailsEvent && !detailsLoading && !catalogue.loading) {
       // checkIfCatalogued takes in array and return array
-      let cataloguedEvent = checkIfCatalogued([event.event], catalogue.ids)[0];
-      changeEventData(cataloguedEvent);
+      let labelledDetailsEvent = checkIfCatalogued(
+        [detailsEvent],
+        catalogue.ids
+      )[0];
+      setDetailsEventLabelled(labelledDetailsEvent);
     }
-  }, [event, catalogue, changeEventData]);
-
-  if (event.error && event.error.status === 404) {
-    return <NotFound />;
-  }
+  }, [detailsEvent, detailsLoading, catalogue.loading, catalogue.ids]);
 
   if (
     (event.error && event.error.status === 500) ||
@@ -59,7 +63,11 @@ const Details = ({
     return <ServerError />;
   }
 
-  if (event.loading || catalogue.loading || eventData === null) {
+  if (event.error && event.error.status === 404) {
+    return <NotFound />;
+  }
+
+  if (detailsLoading || catalogue.loading || detailsEventLabelled === null) {
     return <Spinner />;
   }
 
@@ -71,10 +79,10 @@ const Details = ({
           <div className='card mb-3'>
             <div className='map' id='map'>
               <MapWrapper
-                events={[eventData]}
+                events={[detailsEventLabelled]}
                 center={{
-                  lat: eventData.location.latitude,
-                  lng: eventData.location.longitude
+                  lat: detailsEventLabelled.location.latitude,
+                  lng: detailsEventLabelled.location.longitude
                 }}
                 zoom={15.3}
               />
@@ -87,20 +95,26 @@ const Details = ({
               style={{ minHeight: '200px', maxHeight: '400px' }}
             />
             <div className='card-body'>
-              <h3 className='card-title'>{eventData.title}</h3>
-              <h6>Location: {eventData.location.room}</h6>
+              <h3 className='card-title'>{detailsEventLabelled.title}</h3>
+              <h6>Location: {detailsEventLabelled.location.room}</h6>
               <h6>
                 Time:{` `}
-                <Moment format='hh:mm A'>{eventData.date.from}</Moment> -{` `}
-                <Moment format='hh:mm A'>{eventData.date.to}</Moment> {`, `}
+                <Moment format='hh:mm A'>
+                  {detailsEventLabelled.date.from}
+                </Moment>{' '}
+                -{` `}
+                <Moment format='hh:mm A'>
+                  {detailsEventLabelled.date.to}
+                </Moment>{' '}
+                {`, `}
                 <Moment format='dddd MMMM D, YYYY'>
-                  {eventData.date.from}
+                  {detailsEventLabelled.date.from}
                 </Moment>
               </h6>
-              <p className='card-text'>{eventData.description}</p>
+              <p className='card-text'>{detailsEventLabelled.description}</p>
               <CardButtons
-                isCatalogued={eventData.isCatalogued}
-                eventId={eventData._id}
+                isCatalogued={detailsEventLabelled.isCatalogued}
+                eventId={detailsEventLabelled._id}
                 page='details'
               />
             </div>
@@ -114,6 +128,7 @@ const Details = ({
 
 Details.propTypes = {
   getEventById: PropTypes.func.isRequired,
+  clearEvents: PropTypes.func.isRequired,
   getCatalogueEventIds: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired,
   catalogue: PropTypes.object.isRequired
@@ -126,5 +141,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getEventById, getCatalogueEventIds }
+  { getEventById, clearEvents, getCatalogueEventIds }
 )(Details);

@@ -96,8 +96,10 @@ export const login = (email, password) => async dispatch => {
 };
 
 // Logout / Clear Profile
-export const logout = () => dispatch => {
+export const logout = history => dispatch => {
+  setAuthToken(null);
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: CLEAR_CATALOGUE });
   dispatch({ type: LOGOUT });
+  history.push('/login');
 };

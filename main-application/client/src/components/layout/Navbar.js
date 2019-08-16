@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
@@ -10,7 +10,12 @@ import marshall from './images/marshall.jpg';
 import annenberg from './images/annenberg.jpg';
 import dornsife from './images/dornsife.png';
 
-const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
+const Navbar = ({
+  page,
+  auth: { isAuthenticated, loading },
+  logout,
+  history
+}) => {
   const [open, toggleSideNav] = useState(false);
   const toggleStyle = link => (link === page ? { color: '#ac101b' } : {});
   const sidenavRef = useRef(null);
@@ -46,22 +51,46 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
           &times;
         </span>
         <h1 className='sidenav-title'>NETCAT</h1>
-        <Link to='/' style={toggleStyle('')}>
+        <Link
+          to='/'
+          style={toggleStyle('')}
+          onClick={() => toggleSideNav(false)}
+        >
           HOME
         </Link>
-        <Link to='/marshall' style={toggleStyle('marshall')}>
+        <Link
+          to='/marshall'
+          style={toggleStyle('marshall')}
+          onClick={() => toggleSideNav(false)}
+        >
           MARSHALL
         </Link>
-        <Link to='/viterbi' style={toggleStyle('viterbi')}>
+        <Link
+          to='/viterbi'
+          style={toggleStyle('viterbi')}
+          onClick={() => toggleSideNav(false)}
+        >
           VITERBI
         </Link>
-        <Link to='/annenberg' style={toggleStyle('annenberg')}>
+        <Link
+          to='/annenberg'
+          style={toggleStyle('annenberg')}
+          onClick={() => toggleSideNav(false)}
+        >
           ANNENBERG
         </Link>
-        <Link to='/dornsife' style={toggleStyle('dornsife')}>
+        <Link
+          to='/dornsife'
+          style={toggleStyle('dornsife')}
+          onClick={() => toggleSideNav(false)}
+        >
           DORNSIFE
         </Link>
-        <Link to='/more' style={toggleStyle('more')}>
+        <Link
+          to='/explore'
+          style={toggleStyle('explore')}
+          onClick={() => toggleSideNav(false)}
+        >
           EXPLORE
         </Link>
         <hr />
@@ -69,19 +98,37 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
           <Fragment>
             {isAuthenticated ? (
               <Fragment>
-                <Link to='/dashboard' style={toggleStyle('dashboard')}>
+                <Link
+                  to='/dashboard'
+                  style={toggleStyle('dashboard')}
+                  onClick={() => toggleSideNav(false)}
+                >
                   DASHBOARD
                 </Link>
-                <a onClick={logout} href='#!'>
+                <a
+                  onClick={() => {
+                    logout(history);
+                    toggleSideNav(false);
+                  }}
+                  href='#!'
+                >
                   <span className='hide-sm'>LOGOUT</span>
                 </a>
               </Fragment>
             ) : (
               <Fragment>
-                <Link to='/register' style={toggleStyle('register')}>
+                <Link
+                  to='/register'
+                  style={toggleStyle('register')}
+                  onClick={() => toggleSideNav(false)}
+                >
                   REGISTER
                 </Link>
-                <Link to='/login' style={toggleStyle('login')}>
+                <Link
+                  to='/login'
+                  style={toggleStyle('login')}
+                  onClick={() => toggleSideNav(false)}
+                >
                   LOGIN
                 </Link>
               </Fragment>
@@ -148,7 +195,7 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
                 </li>
                 <li className='nav-item'>
                   <Link
-                    to='/marshall'
+                    to='/dornsife'
                     className='btn btn-header btn-outline-danger'
                     style={toggleStyle('dornsife')}
                   >
@@ -157,9 +204,9 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
                 </li>
                 <li className='nav-item'>
                   <Link
-                    to='/more'
+                    to='/explore'
                     className='btn btn-header btn-outline-danger'
-                    style={toggleStyle('more')}
+                    style={toggleStyle('explore')}
                   >
                     <i className='fas fa-search-location fa-sm' /> EXPLORE
                   </Link>
@@ -178,7 +225,7 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
                   </li>
                   <li className='nav-item'>
                     <button
-                      onClick={logout}
+                      onClick={() => logout(history)}
                       href='#!'
                       className='btn btn-header btn-outline-danger'
                     >
@@ -294,9 +341,9 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
                 </li>
                 <li className='nav-item my-auto'>
                   <Link
-                    to='/more'
+                    to='/explore'
                     className='btn btn-header btn-outline-danger'
-                    style={toggleStyle('more')}
+                    style={toggleStyle('explore')}
                   >
                     <i className='fas fa-search-location fa-4x' />
                   </Link>
@@ -315,7 +362,7 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
                   </li>
                   <li className='nav-item my-auto'>
                     <button
-                      onClick={logout}
+                      onClick={() => logout(history)}
                       href='#!'
                       className='btn btn-header btn-outline-danger'
                     >
@@ -434,7 +481,7 @@ const Navbar = ({ page, auth: { isAuthenticated, loading }, logout }) => {
                     </div>
                     <div className='col'>
                       <button
-                        onClick={logout}
+                        onClick={() => logout(history)}
                         href='#!'
                         className='btn btn-header btn-outline-danger'
                       >
@@ -537,4 +584,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { logout }
-)(Navbar);
+)(withRouter(Navbar));

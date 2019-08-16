@@ -84,6 +84,18 @@ export const createProfile = (
   }
 };
 
+// Clear profile
+export const clearProfile = () => async dispatch => {
+  try {
+    dispatch({ type: CLEAR_PROFILE });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 // Delete account & profile
 export const deleteAccount = () => async dispatch => {
   if (window.confirm('Are you sure? This can NOT be undone!')) {

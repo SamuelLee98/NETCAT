@@ -5,7 +5,7 @@ import CardButtons from '../layout/CardButtons';
 
 import facebook from '../content/images/facebook.png';
 
-const Catalogue = ({ event, handleDeleteEvent }) => {
+const Catalogue = ({ event, onDeleteClick }) => {
   return (
     <div className='card mb-3'>
       <div className='row'>
@@ -33,8 +33,8 @@ const Catalogue = ({ event, handleDeleteEvent }) => {
             <CardButtons
               isCatalogued={true}
               eventId={event._id}
-              handleDeleteEvent={handleDeleteEvent}
               page='catalogue'
+              onDeleteClick={onDeleteClick}
             />
           </div>
         </div>
@@ -44,6 +44,7 @@ const Catalogue = ({ event, handleDeleteEvent }) => {
 };
 
 Catalogue.propTypes = {
+  onDeleteClick: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired
 };
 

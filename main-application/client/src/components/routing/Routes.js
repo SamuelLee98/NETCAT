@@ -4,9 +4,9 @@ import PrivateRoute from '../routing/PrivateRoute';
 
 import Content from '../content/Content';
 import Details from '../details/Details';
-import MoreEvents from '../moreEvents/MoreEvents';
+import ExploreMore from '../exploreMore/ExploreMore';
 import NotFound from '../layout/NotFound';
-import Alert from '../layout/Alert';
+import Alerts from '../alert/Alerts';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
 import Dashboard from '../dashboard/Dashboard';
@@ -16,7 +16,7 @@ import EditProfile from '../profile-forms/EditProfile';
 const Routes = () => {
   return (
     <Fragment>
-      <Alert />
+      <Alerts />
       <Switch>
         <Route
           exact
@@ -44,7 +44,7 @@ const Routes = () => {
           render={props => <Content {...props} page='dornsife' />}
         />
         <Route exact path='/details/:id' component={Details} />
-        <Route exact path='/more' component={MoreEvents} />
+        <Route exact path='/explore' component={ExploreMore} />
         <Route exact path='/register' component={Register} />
         <Route exact path='/login' component={Login} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
