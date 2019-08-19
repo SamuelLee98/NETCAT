@@ -31,6 +31,10 @@ const eventSchema = new Schema({
         type: Boolean,
         default: false
       },
+      allDay: {
+        type: Boolean,
+        default: false
+      },
       from: {
         type: Date,
         required: true
@@ -45,7 +49,7 @@ const eventSchema = new Schema({
   description: {
     type: String
   },
-  thumbNailUrl: {
+  thumbnailUrl: {
     type: String
   },
   school: {
@@ -55,9 +59,11 @@ const eventSchema = new Schema({
     type: Boolean,
     default: false
   },
-  type: {
-    type: String
-  },
+  tags: [
+    {
+      type: String
+    }
+  ],
   rsvpLink: {
     type: String
   }

@@ -20,9 +20,6 @@ import checkIfCatalogued from '../../utils/checkIfCatalogued';
 // css
 import './details.css';
 
-// Img, delete later
-import facebook from '../content/images/facebook.png';
-
 const Details = ({
   event,
   match,
@@ -88,7 +85,7 @@ const Details = ({
               />
             </div>
             <img
-              src={facebook}
+              src={detailsEventLabelled.thumbnailUrl}
               id='featured-thumbnail'
               className='img-thumbnail my-2 mx-auto'
               alt='Responsive Thumbnail'

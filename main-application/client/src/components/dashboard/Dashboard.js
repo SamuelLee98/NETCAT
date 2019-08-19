@@ -163,7 +163,9 @@ const Dashboard = ({
             ))}
             {!hasMore &&
               (events.length === 0 ? (
-                <p>You do not have any events in your catalogue.</p>
+                <h5 className='font-italic my-2' style={{ color: 'grey' }}>
+                  You do not have any events in your catalogue.
+                </h5>
               ) : (
                 <Fragment>
                   <div className='d-flex justify-content-center'>

@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import CardButtons from '../layout/CardButtons';
 
-import facebook from '../content/images/facebook.png';
-
 const Catalogue = ({ event, onDeleteClick }) => {
   return (
     <div className='card mb-3'>
       <div className='row'>
         <div className='col-12 col-md-4'>
           <img
-            src={facebook}
+            src={event.thumbnailUrl}
             className='card-img'
             alt='Responsive Thumbnail'
             style={{ height: '100%', objectFit: 'cover' }}

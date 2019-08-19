@@ -1,9 +1,8 @@
-- Change delete account pop up window to pop up alert
-- Fix profile page in phone screen sizes, possibly adding new tab profile and catalgoue
-- fix share module size in phone screen
 - implement add to calender
 - Filter / search bar
-- Replace bootstrap css with react-bootstrap 
+- Replace bootstrap css with react-bootstrap
+- Fix profile page in phone screen sizes, possibly adding new tab profile and catalgoue
+- Change delete account pop up window to pop up alert
 
 
 DEPLOYMENT TODOS

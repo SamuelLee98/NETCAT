@@ -1,4 +1,5 @@
-import React, { Fragment, useState, useEffect } from 'react';
+/* global google */
+import React, { Fragment, useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   withScriptjs,
@@ -12,8 +13,14 @@ import Moment from 'react-moment';
 const MyMap = withScriptjs(
   withGoogleMap(({ events, markerId, setId, center, zoom }) => {
     const [mapEventsArrays, setMapEventsArrays] = useState([]);
+    const [mapBounds, setMapBounds] = useState(null);
+    const mapRef = useRef(null);
+
     useEffect(() => {
       let mapEventsArrays = [];
+      // Marker bounds
+      const bounds = new google.maps.LatLngBounds();
+
       if (events.length !== 0) {
         events.forEach(event => {
           // If event does not contain lat lng values, ignore
@@ -36,13 +43,27 @@ const MyMap = withScriptjs(
 
           // If coordinates not found
           mapEventsArrays.push([event]);
+          // Also extend to bounds
+          bounds.extend(
+            new google.maps.LatLng(
+              event.location.latitude,
+              event.location.longitude
+            )
+          );
         });
         setMapEventsArrays(mapEventsArrays);
+        setMapBounds(bounds);
       }
     }, [events]);
 
+    useEffect(() => {
+      if (mapRef !== null && mapBounds !== null) {
+        mapRef.current.fitBounds(mapBounds);
+      }
+    }, [mapRef, mapBounds]);
+
     return (
-      <GoogleMap defaultZoom={zoom} defaultCenter={center}>
+      <GoogleMap defaultZoom={zoom} defaultCenter={center} ref={mapRef}>
         {mapEventsArrays.map(mapEventArray => {
           // Use first element of each arr to populate marker
           const firstMapEvent = mapEventArray[0];
@@ -54,6 +75,7 @@ const MyMap = withScriptjs(
                 lat: firstMapEvent.location.latitude,
                 lng: firstMapEvent.location.longitude
               }}
+              animation={google.maps.Animation.DROP}
               onClick={() => setId(firstMapEvent._id)}
             >
               {firstMapEvent._id === markerId && (

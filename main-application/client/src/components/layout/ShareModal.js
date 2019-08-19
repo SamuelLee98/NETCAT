@@ -13,11 +13,11 @@ import {
 } from 'react-share';
 import MessengerIcon from './messenger.svg';
 
+// Message to be shared
+const shareMessage = 'Check out this event on NETCAT!';
+
 const ShareModal = ({ onDisplay, url, closeModal }) => {
   const [copySuccess, setCopySuccess] = useState(false);
-
-  // Message to be shared
-  const shareMessage = 'Check out this event on NETCAT!';
 
   // Handle closing modal when clicked anywhere on screen other than itself
   window.onclick = event => {
@@ -55,59 +55,53 @@ const ShareModal = ({ onDisplay, url, closeModal }) => {
       className='modal'
       style={onDisplay ? { display: 'block' } : { display: 'none' }}
     >
-      <div className='modal-content'>
-        <div className='container'>
-          <span className='close' onClick={() => onCloseClick()}>
-            &times;
-          </span>
-          <h4 className='text-center'>Share this event</h4>
+      <div className='container'>
+        <div className='modal-content'>
+          <h4 className='text-center my-0'>
+            Share this event{' '}
+            <span className='close-modal' onClick={() => onCloseClick()}>
+              &times;
+            </span>
+          </h4>
 
-          <div className='row justify-content-md-center my-2'>
-            <div className='col col-lg-2' />
-            <div className='col-md-auto'>
-              <div className='row my-2'>
-                <div className='col' style={{ paddingRight: '2px' }}>
-                  <FacebookShareButton
-                    url={url}
-                    quote={shareMessage}
-                    className='react-share-button'
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <FacebookIcon size={32} round />
-                  </FacebookShareButton>
-                </div>
-                <div className='col' style={{ paddingRight: '2px' }}>
-                  <img
-                    src={MessengerIcon}
-                    className='react-share-button custom-icon'
-                    alt='Messenger'
-                    onClick={() => onMessengerShare()}
-                    style={{ cursor: 'pointer' }}
-                  />
-                </div>
-                <div className='col' style={{ paddingRight: '2px' }}>
-                  <TwitterShareButton
-                    url={url}
-                    title={shareMessage}
-                    className='react-share-button'
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <TwitterIcon size={32} round />
-                  </TwitterShareButton>
-                </div>
-                <div className='col' style={{ paddingRight: '2px' }}>
-                  <EmailShareButton
-                    url={url}
-                    subject={shareMessage}
-                    className='react-share-button'
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <EmailIcon size={32} round />
-                  </EmailShareButton>
-                </div>
-              </div>
+          <div className='d-flex justify-content-center my-2'>
+            <div className='icon-wrapper'>
+              <FacebookShareButton
+                className='react-share-button'
+                url={url}
+                quote={shareMessage}
+              >
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
             </div>
-            <div className='col col-lg-2' />
+
+            <div className='icon-wrapper'>
+              <img
+                src={MessengerIcon}
+                className='react-share-button custom-icon'
+                alt='Messenger'
+                onClick={() => onMessengerShare()}
+              />
+            </div>
+
+            <div className='icon-wrapper'>
+              <TwitterShareButton
+                url={url}
+                title={shareMessage}
+                className='react-share-button'
+              >
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+            </div>
+            <div className='icon-wrapper'>
+              <EmailShareButton
+                url={url}
+                subject={shareMessage}
+                className='react-share-button'
+              >
+                <EmailIcon size={32} round />
+              </EmailShareButton>
+            </div>
           </div>
 
           <div className='input-group'>

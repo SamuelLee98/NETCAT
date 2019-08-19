@@ -22,13 +22,6 @@ import { getCatalogueEventIds } from '../../actions/catalogue';
 // utils
 import checkIfCatalogued from '../../utils/checkIfCatalogued';
 
-// Images, delete later
-import facebook from './images/facebook.png';
-import amazon from './images/amazon.png';
-import NBC from './images/NBC.png';
-import vayner from './images/vayner.png';
-const images = [facebook, amazon, NBC, vayner];
-
 const Content = ({
   setPage,
   getFeaturedEvents,
@@ -117,17 +110,16 @@ const Content = ({
         <div className='row'>
           {featuredEventsLabelled.length === 0 ? (
             <div className='col'>
-              <h5 style={{ color: 'grey', textAlign: 'center' }}>
+              <h5
+                className='font-italic'
+                style={{ color: 'grey', textAlign: 'center' }}
+              >
                 Nothing here at the moment :(
               </h5>
             </div>
           ) : (
             featuredEventsLabelled.map((event, index) => (
-              <FeaturedEvent
-                key={event._id}
-                event={event}
-                image={images[index]}
-              />
+              <FeaturedEvent key={event._id} event={event} />
             ))
           )}
         </div>
@@ -157,7 +149,10 @@ const Content = ({
             <div className='row'>
               {moreEventsLabelled.length === 0 ? (
                 <div className='col'>
-                  <h5 style={{ color: 'grey', textAlign: 'center' }}>
+                  <h5
+                    className='font-italic'
+                    style={{ color: 'grey', textAlign: 'center' }}
+                  >
                     Nothing here at the moment :(
                   </h5>
                   <hr />

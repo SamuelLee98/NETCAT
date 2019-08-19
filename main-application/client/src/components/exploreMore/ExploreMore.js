@@ -133,7 +133,10 @@ const ExploreMore = ({
             </InfiniteScroll>
             {!hasMore &&
               (events.length === 0 ? (
-                <h5 style={{ color: 'grey', textAlign: 'center' }}>
+                <h5
+                  className='font-italic'
+                  style={{ color: 'grey', textAlign: 'center' }}
+                >
                   Nothing here at the moment :(
                 </h5>
               ) : (

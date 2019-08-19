@@ -6,8 +6,7 @@ import {
   CLEAR_CATALOGUE,
   CATALOGUE_EVENTS_LOADING,
   CATALOGUE_IDS_LOADING,
-  DELETE_FROM_CATALOGUE,
-  PUSH_TO_CATALOGUE
+  DELETE_FROM_CATALOGUE
 } from '../actions/types';
 
 const initialState = {

@@ -1,12 +1,12 @@
 import React from 'react';
 import CardButtons from '../layout/CardButtons';
 
-const FeaturedEvent = ({ event, image }) => {
+const FeaturedEvent = ({ event }) => {
   return (
     <div className='col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-3'>
       <div className='card'>
         <img
-          src={image}
+          src={event.thumbnailUrl}
           id='featured-thumbnail1'
           className='card-img-top img-fluid'
           alt='Responsive Thumbnail'

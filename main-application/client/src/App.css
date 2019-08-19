@@ -206,6 +206,7 @@ body {
 .center {
   text-align: center;
 }
+
 /* Footer divs */
 .myFooter {
   background-color: #f9f9f9;
@@ -230,7 +231,6 @@ body {
   width: 0px;
 }
 
-/*More Event Divs */
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -251,17 +251,20 @@ body {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 100%;
+  max-width: 650px;
   min-height: 150px;
 }
 
 /* The Close Button */
 .close-modal {
   color: #aaaaaa;
-  float: right;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
+  cursor: pointer;
+  float: right;
 }
+
 .limited-text {
   line-height: 1.4em;
   height: 11.2em;
@@ -269,10 +272,9 @@ body {
 }
 
 /* React share buttons & icons style */
-.react-add-to-calendar__button {
-  display: block;
+.react-share-button {
+  cursor: pointer;
 }
-
 .react-share-button:hover:not(:active) {
   opacity: 0.75;
 }
@@ -282,21 +284,9 @@ body {
   height: 32px;
 }
 
-/* Add to calender button style */
-.react-add-to-calendar__dropdown {
-  text-align: left;
-}
-
-.react-add-to-calendar__dropdown ul {
-  list-style: none;
-  margin: 0;
-}
-
-.react-add-to-calendar__dropdown ul li a {
-  text-decoration: none;
-  color: white;
-}
-
-.react-add-to-calendar__dropdown ul li a i {
-  padding-right: 10px;
+.icon-wrapper {
+  vertical-align: top;
+  display: inline-block;
+  margin-right: 5px;
+  text-align: center;
 }

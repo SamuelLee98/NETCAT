@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { body, check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator/check');
 const Event = require('../../models/Event');
 
 // @route   GET api/events/index
@@ -16,7 +16,11 @@ router.get('/index', async (req, res) => {
     let events;
 
     if (school && type) {
-      events = await Event.find({ school, type, featured })
+      events = await Event.find({
+        school,
+        type,
+        featured
+      })
         .sort({
           'date.from': -1
         })
@@ -43,7 +47,7 @@ router.get('/index', async (req, res) => {
 });
 
 // @route   GET api/events
-// @desc    Get events on more events page
+// @desc    Get events on explore events page
 // @access  Public
 router.get('/', async (req, res) => {
   try {
@@ -77,7 +81,9 @@ router.get('/', async (req, res) => {
       } else if (type) {
         events = await Event.find({ type }).sort({ 'date.from': -1 });
       } else {
-        events = await Event.find().sort({ 'date.from': -1 });
+        events = await Event.find({
+          // 'date.from': { $gte: new Date('2019-06-06') }
+        }).sort({ 'date.from': -1 });
       }
     }
 
@@ -134,7 +140,7 @@ router.post(
       location,
       date,
       description,
-      thumbNailUrl,
+      thumbnailUrl,
       school,
       featured,
       type,
@@ -146,7 +152,7 @@ router.post(
       location,
       date,
       description,
-      thumbNailUrl,
+      thumbnailUrl,
       school,
       featured,
       type,
@@ -185,9 +191,6 @@ router.get('/test/generate-test-data', async (req, res) => {
       if (i < 6) {
         title = 'Dornsife Event';
         school = 'dornsife';
-      } else if (i < 12) {
-        title = 'Annenberg Event';
-        school = 'annenberg';
       } else {
         title = 'Viterbi Event';
         school = 'viterbi';
@@ -223,9 +226,9 @@ router.get('/test/generate-test-data', async (req, res) => {
         featured: false,
         description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        thumbNailUrl: 'www.facebook.com',
+        thumbnailUrl: 'https://dummyimage.com/600x400/000/fff',
         school,
-        type: i % 2 === 0 ? 'workshop' : 'career'
+        tags: ['WORKSHOP', 'CAREER']
       };
       newEvent = new Event(newEvent);
       newEvent = await newEvent.save();
@@ -264,9 +267,9 @@ router.get('/test/generate-test-data', async (req, res) => {
         featured: true,
         description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        thumbNailUrl: 'www.facebook.com',
+        thumbnailUrl: 'https://dummyimage.com/600x400/000/fff',
         school,
-        type: i % 2 === 0 ? 'workshop' : 'career'
+        tags: ['WORKSHOP', 'CAREER']
       };
       newEvent = new Event(newEvent);
       newEvent = await newEvent.save();
