@@ -22,7 +22,6 @@ const Navbar = ({
 
   // Close sidediv if clicked outside
   const handleClickOutside = event => {
-    console.log(event.target.id);
     if (
       sidenavRef.current &&
       !sidenavRef.current.contains(event.target) &&
