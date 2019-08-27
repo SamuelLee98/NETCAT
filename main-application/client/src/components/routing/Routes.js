@@ -38,11 +38,6 @@ const Routes = () => {
           path='/marshall'
           render={props => <Content {...props} page='marshall' />}
         />
-        <Route
-          exact
-          path='/dornsife'
-          render={props => <Content {...props} page='dornsife' />}
-        />
         <Route exact path='/details/:id' component={Details} />
         <Route exact path='/explore' component={ExploreMore} />
         <Route exact path='/register' component={Register} />

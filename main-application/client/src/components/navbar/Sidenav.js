@@ -52,13 +52,6 @@ const Sidenav = ({
         ANNENBERG
       </Link>
       <Link
-        to='/dornsife'
-        style={toggleStyle('dornsife')}
-        onClick={() => toggleSideNav(false)}
-      >
-        DORNSIFE
-      </Link>
-      <Link
         to='/explore'
         style={toggleStyle('explore')}
         onClick={() => toggleSideNav(false)}

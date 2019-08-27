@@ -9,7 +9,6 @@ import Sidenav from './Sidenav';
 import viterbi from '../layout/images/viterbi.png';
 import marshall from '../layout/images/marshall.jpg';
 import annenberg from '../layout/images/annenberg.jpg';
-import dornsife from '../layout/images/dornsife.png';
 
 const Navbar = ({
   page,
@@ -23,7 +22,12 @@ const Navbar = ({
 
   // Close sidediv if clicked outside
   const handleClickOutside = event => {
-    if (sidenavRef.current && !sidenavRef.current.contains(event.target)) {
+    console.log(event.target.id);
+    if (
+      sidenavRef.current &&
+      !sidenavRef.current.contains(event.target) &&
+      event.target.id !== 'side-menu'
+    ) {
       if (open) toggleSideNav(!open);
     }
   };
@@ -60,14 +64,18 @@ const Navbar = ({
                 <li className='nav-item my-auto'>
                   <svg
                     className='side-menu'
+                    id='side-menu'
                     style={{ cursor: 'pointer' }}
-                    onClick={() => toggleSideNav(true)}
+                    onClick={() => toggleSideNav(!open)}
                     width='24'
                     height='24'
                     viewBox='0 0 24 24'
                   >
-                    <path d='M0 0h24v24H0z' fill='none' />
-                    <path d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z' />
+                    <path id='side-menu' d='M0 0h24v24H0z' fill='none' />
+                    <path
+                      id='side-menu'
+                      d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z'
+                    />
                   </svg>
                 </li>
                 <li className='nav-item'>
@@ -104,15 +112,6 @@ const Navbar = ({
                     style={toggleStyle('annenberg')}
                   >
                     <i className='fas fa-comments fa-sm' /> ANNENBERG
-                  </Link>
-                </li>
-                <li className='nav-item'>
-                  <Link
-                    to='/dornsife'
-                    className='btn btn-header btn-outline-danger'
-                    style={toggleStyle('dornsife')}
-                  >
-                    <i className='fas fa-book fa-sm' /> DORNSIFE
                   </Link>
                 </li>
                 <li className='nav-item'>
@@ -183,8 +182,9 @@ const Navbar = ({
                 <li className='nav-item my-auto'>
                   <svg
                     className='side-menu'
+                    id='side-menu'
                     style={{ cursor: 'pointer' }}
-                    onClick={() => toggleSideNav(true)}
+                    onClick={() => toggleSideNav(!open)}
                     width='24'
                     height='24'
                     viewBox='0 0 24 24'
@@ -241,19 +241,7 @@ const Navbar = ({
                     />
                   </Link>
                 </li>
-                <li className='nav-item my-auto'>
-                  <Link
-                    to='/marshall'
-                    className='btn btn-header btn-outline-danger'
-                    style={toggleStyle('dornsife')}
-                  >
-                    <img
-                      src={dornsife}
-                      className='rounded navbar-md-img'
-                      alt='Dornsife'
-                    />
-                  </Link>
-                </li>
+
                 <li className='nav-item my-auto'>
                   <Link
                     to='/explore'
@@ -317,8 +305,9 @@ const Navbar = ({
             <div className='col'>
               <svg
                 className='side-menu'
+                id='side-menu'
                 style={{ cursor: 'pointer' }}
-                onClick={() => toggleSideNav(true)}
+                onClick={() => toggleSideNav(!open)}
                 width='24'
                 height='24'
                 viewBox='0 0 24 24'
@@ -363,15 +352,7 @@ const Navbar = ({
                 ANNENBERG
               </Link>
             </div>
-            <div className='col'>
-              <Link
-                to='/dornsife'
-                className='btn btn-header btn-outline-danger'
-                style={toggleStyle('dornsife')}
-              >
-                DORNSIFE
-              </Link>
-            </div>
+
             {/* <div className='col'>
               <svg
                 className='search-icon'
@@ -437,8 +418,9 @@ const Navbar = ({
             <div className='col-sm-2' style={{ marginTop: '20px' }}>
               <svg
                 className='side-menu'
+                id='side-menu'
                 style={{ cursor: 'pointer' }}
-                onClick={() => toggleSideNav(true)}
+                onClick={() => toggleSideNav(!open)}
                 width='24'
                 height='24'
                 viewBox='0 0 24 24'
@@ -468,8 +450,9 @@ const Navbar = ({
             <div className='col-xs-6' style={{ marginTop: '20px' }}>
               <svg
                 className='side-menu'
+                id='side-menu'
                 style={{ cursor: 'pointer' }}
-                onClick={() => toggleSideNav(true)}
+                onClick={() => toggleSideNav(!open)}
                 width='24'
                 height='24'
                 viewBox='0 0 24 24'
