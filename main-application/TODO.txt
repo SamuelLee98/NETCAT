@@ -1,3 +1,5 @@
+- Break dance side nav
+- explore footer not working
 - implement add to calender
 - Filter / search bar
 - Replace bootstrap css with react-bootstrap
