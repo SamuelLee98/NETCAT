@@ -12,6 +12,7 @@ router.get('/index', async (req, res) => {
     let type = req.query.type;
     let featured = req.query.featured === 'true';
     let limit = parseInt(req.query.limit, 10);
+    const dateNow = new Date();
 
     let events;
 
@@ -22,20 +23,24 @@ router.get('/index', async (req, res) => {
         featured
       })
         .sort({
-          'date.from': -1
+          'date.from': 1
         })
         .limit(limit);
     } else if (school) {
-      events = await Event.find({ school, featured })
-        .sort({ 'date.from': -1 })
+      events = await Event.find({
+        school,
+        featured,
+        'date.from': { $gte: new Date(dateNow.toISOString()) }
+      })
+        .sort({ 'date.from': 1 })
         .limit(limit);
     } else if (type) {
       events = await Event.find({ type, featured })
-        .sort({ 'date.from': -1 })
+        .sort({ 'date.from': 1 })
         .limit(limit);
     } else {
       events = await Event.find({ featured })
-        .sort({ 'date.from': -1 })
+        .sort({ 'date.from': 1 })
         .limit(limit);
     }
 
@@ -57,33 +62,35 @@ router.get('/', async (req, res) => {
 
     let events;
 
+    const dateNow = new Date();
+
     if (featured !== null) {
       if (school && type) {
         events = await Event.find({ school, type, featured }).sort({
-          'date.from': -1
+          'date.from': 1
         });
       } else if (school) {
         events = await Event.find({ school, featured }).sort({
-          'date.from': -1
+          'date.from': 1
         });
       } else if (type) {
-        events = await Event.find({ type, featured }).sort({ 'date.from': -1 });
+        events = await Event.find({ type, featured }).sort({ 'date.from': 1 });
       } else {
-        events = await Event.find({ featured }).sort({ 'date.from': -1 });
+        events = await Event.find({ featured }).sort({ 'date.from': 1 });
       }
     } else {
       if (school && type) {
         events = await Event.find({ school, type }).sort({
-          'date.from': -1
+          'date.from': 1
         });
       } else if (school) {
-        events = await Event.find({ school }).sort({ 'date.from': -1 });
+        events = await Event.find({ school }).sort({ 'date.from': 1 });
       } else if (type) {
-        events = await Event.find({ type }).sort({ 'date.from': -1 });
+        events = await Event.find({ type }).sort({ 'date.from': 1 });
       } else {
         events = await Event.find({
-          // 'date.from': { $gte: new Date('2019-06-06') }
-        }).sort({ 'date.from': -1 });
+          'date.from': { $gte: new Date(dateNow.toISOString()) }
+        }).sort({ 'date.from': 1 });
       }
     }
 

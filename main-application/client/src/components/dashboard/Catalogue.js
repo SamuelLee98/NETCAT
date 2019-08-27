@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Moment from 'react-moment';
-import CardButtons from '../layout/CardButtons';
+import CardContent from '../layout/CardContent';
 
 const Catalogue = ({ event, onDeleteClick }) => {
   return (
@@ -16,25 +15,11 @@ const Catalogue = ({ event, onDeleteClick }) => {
           />
         </div>
         <div className='col-12 col-md-8'>
-          <div className='card-body'>
-            <h5 className='card-title'>{event.title}</h5>
-            <Moment format='hh:mm A'>{event.datefrom}</Moment> -{` `}
-            <Moment format='hh:mm A'>{event.date.to}</Moment>
-            <br />
-            <Moment format='dddd, MMMM D, YYYY'>{event.date.from}</Moment>
-            <br />
-            {event.location.room}
-            <br />
-            Type: {event.type}
-            <br />
-            <br />
-            <CardButtons
-              isCatalogued={true}
-              eventId={event._id}
-              page='catalogue'
-              onDeleteClick={onDeleteClick}
-            />
-          </div>
+          <CardContent
+            event={event}
+            page='catalogue'
+            onDeleteClick={onDeleteClick}
+          />
         </div>
       </div>
     </div>

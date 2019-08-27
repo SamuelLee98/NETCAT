@@ -189,7 +189,6 @@ CardButtons.propTypes = {
   deleteFromCatalogue: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   eventId: PropTypes.string.isRequired,
-  isCatalogued: PropTypes.bool.isRequired,
   page: PropTypes.string.isRequired
 };
 
