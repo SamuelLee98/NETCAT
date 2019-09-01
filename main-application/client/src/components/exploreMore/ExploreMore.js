@@ -9,6 +9,7 @@ import { getCatalogueEventIds } from '../../actions/catalogue';
 
 // Components
 import ServerError from '../layout/ServerError';
+import DropDown from './DropDown';
 import EventCard from './EventCard';
 import MapWrapper from '../map/MapWrapper';
 import Spinner from '../layout/Spinner';
@@ -54,6 +55,24 @@ const ExploreMore = ({
   const eventLoading = useCallback(event.explore.loading, [
     event.explore.loading
   ]);
+
+  // Filters
+  const [searchField, setSearchField] = useState({
+    school: '',
+    featured: '',
+    tags: ''
+  });
+
+  const handleSearchClick = useCallback(() => {
+    // Set currEvents to null to trigger useEffect
+    setCurrEvents(null);
+    toggleHasMore(true);
+    getExploreEvents(
+      searchField.school,
+      searchField.featured,
+      searchField.tags
+    );
+  }, [searchField]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -104,12 +123,7 @@ const ExploreMore = ({
     return <ServerError />;
   }
 
-  return events === null ||
-    eventLoading ||
-    catalogue.idsLoading ||
-    currEvents === null ? (
-    <Spinner />
-  ) : (
+  return (
     <div className='content'>
       <div className='container'>
         <h1
@@ -118,58 +132,70 @@ const ExploreMore = ({
         >
           Explore More Events Around USC
         </h1>
+        <DropDown
+          searchField={searchField}
+          setSearchField={setSearchField}
+          handleSearchClick={handleSearchClick}
+        />
         <hr />
-        <div className='row'>
-          <div className='col-12 col-lg-8'>
-            <InfiniteScroll
-              pageStart={0}
-              loadMore={() => loadEvents()}
-              hasMore={hasMore}
-              loader={Loader}
-            >
-              {currEvents.map(event => (
-                <EventCard key={event._id} event={event} />
-              ))}
-            </InfiniteScroll>
-            {!hasMore &&
-              (events.length === 0 ? (
-                <h5
-                  className='font-italic'
-                  style={{ color: 'grey', textAlign: 'center' }}
-                >
-                  Nothing here at the moment :(
-                </h5>
-              ) : (
-                <Fragment>
-                  <div className='d-flex justify-content-center'>
-                    <h5>No more events left...</h5>
-                  </div>
-                  <div className='d-flex justify-content-center'>
-                    <button
-                      className='btn btn-link text-danger'
-                      onClick={() => window.scrollTo(0, 0)}
-                    >
-                      Scroll To Top
-                    </button>
-                  </div>
-                </Fragment>
-              ))}
-          </div>
+        {events === null ||
+        eventLoading ||
+        catalogue.idsLoading ||
+        currEvents === null ? (
+          <Spinner />
+        ) : (
+          <div className='row'>
+            <div className='col-12 col-lg-8'>
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={() => loadEvents()}
+                hasMore={hasMore}
+                loader={Loader}
+              >
+                {currEvents.map(event => (
+                  <EventCard key={event._id} event={event} />
+                ))}
+              </InfiniteScroll>
+              {!hasMore &&
+                (events.length === 0 ? (
+                  <h5
+                    className='font-italic'
+                    style={{ color: 'grey', textAlign: 'center' }}
+                  >
+                    Nothing here at the moment :(
+                  </h5>
+                ) : (
+                  <Fragment>
+                    <div className='d-flex justify-content-center'>
+                      <h5>No more events left...</h5>
+                    </div>
+                    <div className='d-flex justify-content-center'>
+                      <button
+                        className='btn btn-link text-danger'
+                        onClick={() => window.scrollTo(0, 0)}
+                      >
+                        Scroll To Top
+                      </button>
+                    </div>
+                  </Fragment>
+                ))}
+            </div>
 
-          <div className='d-none d-lg-block col-lg-4'>
-            <div
-              className='map sticky-top'
-              id='map'
-              style={{ width: '100%', height: '400px' }}
-            >
-              <MapWrapper
-                events={currEvents}
-                center={{ lat: 34.021, lng: -118.286 }}
-                zoom={15.3}
-              />
+            <div className='d-none d-lg-block col-lg-4'>
+              <div
+                className='map sticky-top'
+                id='map'
+                style={{ width: '100%', height: '400px' }}
+              >
+                <MapWrapper
+                  events={currEvents}
+                  center={{ lat: 34.021, lng: -118.286 }}
+                  zoom={15.3}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -86,13 +86,13 @@ export const getEventById = id => async dispatch => {
 // Get explore events
 export const getExploreEvents = (
   school = '',
-  type = '',
-  featured = ''
+  featured = '',
+  tags = ''
 ) => async dispatch => {
   try {
     dispatch(loading(EXPLORE_LOADING));
     const res = await axios.get(
-      `/api/events?school=${school}&type=${type}&featured=${featured}`
+      `/api/events?school=${school}&tags=${tags}&featured=${featured}`
     );
 
     dispatch({
@@ -113,7 +113,6 @@ export const clearEvents = () => async dispatch => {
     dispatch({
       type: CLEAR_EVENTS
     });
-    console.log('clear event done');
   } catch (err) {
     dispatch({
       type: EVENT_ERROR,
