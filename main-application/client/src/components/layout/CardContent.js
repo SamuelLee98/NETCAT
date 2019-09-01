@@ -65,7 +65,12 @@ const CardContent = ({ event, page, onDeleteClick }) => {
         {event.school}
       </span>
       <br />
-      Type: {event.type}
+      Tags:{' '}
+      {event.tags.map((tag, index) => (
+        <span key={index} className='badge badge-pill badge-secondary mx-1'>
+          {tag}
+        </span>
+      ))}
       <br />
       <br />
       <CardButtons

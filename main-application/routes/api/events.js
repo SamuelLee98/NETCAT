@@ -9,17 +9,17 @@ const Event = require('../../models/Event');
 router.get('/index', async (req, res) => {
   try {
     let school = req.query.school;
-    let type = req.query.type;
+    let tags = req.query.tags;
     let featured = req.query.featured === 'true';
     let limit = parseInt(req.query.limit, 10);
     const dateNow = new Date();
 
     let events;
 
-    if (school && type) {
+    if (school && tags) {
       events = await Event.find({
         school,
-        type,
+        tags,
         featured
       })
         .sort({
@@ -34,8 +34,8 @@ router.get('/index', async (req, res) => {
       })
         .sort({ 'date.from': 1 })
         .limit(limit);
-    } else if (type) {
-      events = await Event.find({ type, featured })
+    } else if (tags) {
+      events = await Event.find({ tags, featured })
         .sort({ 'date.from': 1 })
         .limit(limit);
     } else {
@@ -57,7 +57,7 @@ router.get('/index', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     let school = req.query.school;
-    let type = req.query.type;
+    let tags = req.query.tags !== '' ? req.query.tags.split(',') : null;
     let featured = req.query.featured ? req.query.featured === 'true' : null;
 
     let events;
@@ -65,28 +65,36 @@ router.get('/', async (req, res) => {
     const dateNow = new Date();
 
     if (featured !== null) {
-      if (school && type) {
-        events = await Event.find({ school, type, featured }).sort({
+      if (school && tags) {
+        events = await Event.find({
+          school,
+          featured,
+          tags: { $in: tags }
+        }).sort({
           'date.from': 1
         });
       } else if (school) {
         events = await Event.find({ school, featured }).sort({
           'date.from': 1
         });
-      } else if (type) {
-        events = await Event.find({ type, featured }).sort({ 'date.from': 1 });
+      } else if (tags) {
+        events = await Event.find({ tags: { $in: tags }, featured }).sort({
+          'date.from': 1
+        });
       } else {
         events = await Event.find({ featured }).sort({ 'date.from': 1 });
       }
     } else {
-      if (school && type) {
-        events = await Event.find({ school, type }).sort({
+      if (school && tags) {
+        events = await Event.find({ school, tags: { $in: tags } }).sort({
           'date.from': 1
         });
       } else if (school) {
         events = await Event.find({ school }).sort({ 'date.from': 1 });
-      } else if (type) {
-        events = await Event.find({ type }).sort({ 'date.from': 1 });
+      } else if (tags) {
+        events = await Event.find({ tags: { $in: tags } }).sort({
+          'date.from': 1
+        });
       } else {
         events = await Event.find({
           'date.from': { $gte: new Date(dateNow.toISOString()) }
@@ -150,7 +158,7 @@ router.post(
       thumbnailUrl,
       school,
       featured,
-      type,
+      tags,
       rsvpLink
     } = req.body;
 
@@ -162,7 +170,7 @@ router.post(
       thumbnailUrl,
       school,
       featured,
-      type,
+      tags,
       rsvpLink
     };
 
