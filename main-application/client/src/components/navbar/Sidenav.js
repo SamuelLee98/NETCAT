@@ -9,6 +9,7 @@ const Sidenav = ({
   toggleStyle,
   sidenavRef,
   isAuthenticated,
+  isAdmin,
   loading,
   history,
   logout
@@ -64,7 +65,7 @@ const Sidenav = ({
           {isAuthenticated ? (
             <Fragment>
               <Link
-                to='/dashboard'
+                to={isAdmin ? '/admin-dashboard' : '/dashboard'}
                 style={toggleStyle('dashboard')}
                 onClick={() => toggleSideNav(false)}
               >

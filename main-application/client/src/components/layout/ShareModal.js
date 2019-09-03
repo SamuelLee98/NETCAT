@@ -18,6 +18,7 @@ const shareMessage = 'Check out this event on NETCAT!';
 
 const ShareModal = ({ onDisplay, url, closeModal }) => {
   const [copySuccess, setCopySuccess] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
 
   // Handle closing modal when clicked anywhere on screen other than itself
   window.onclick = event => {
@@ -29,8 +30,12 @@ const ShareModal = ({ onDisplay, url, closeModal }) => {
 
   // Handle closing modal when clicked on the close button
   const onCloseClick = () => {
-    closeModal();
-    setCopySuccess(false);
+    setFadeOut(true);
+    setTimeout(() => {
+      closeModal();
+      setFadeOut(false);
+      setCopySuccess(false);
+    }, 500);
   };
 
   // Handle sharing on messenger
@@ -52,7 +57,7 @@ const ShareModal = ({ onDisplay, url, closeModal }) => {
   return (
     <div
       id='myModal'
-      className='modal'
+      className={`modal ${fadeOut ? 'fade-out' : 'fade-in'}`}
       style={onDisplay ? { display: 'block' } : { display: 'none' }}
     >
       <div className='container'>
@@ -139,7 +144,6 @@ const ShareModal = ({ onDisplay, url, closeModal }) => {
 
 ShareModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
-  onDisplay: PropTypes.bool.isRequired,
   url: PropTypes.string.isRequired
 };
 

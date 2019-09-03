@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const auth = require('../../middleware/auth');
+const { userAuth } = require('../../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator/check');
@@ -11,7 +11,7 @@ const User = require('../../models/User');
 // @route   GET api/auth
 // @desc    Find user by id
 // @access  Public
-router.get('/', auth, async (req, res) => {
+router.get('/', userAuth, async (req, res) => {
   try {
     // Return all data associated with user except for password
     const user = await User.findById(req.user.id).select('-password');
@@ -62,7 +62,8 @@ router.post(
       // Set up payload. This info would be encrypted and stored in a token
       const payload = {
         user: {
-          id: user.id // user._id from mongodb
+          id: user.id,
+          admin: user.admin
         }
       };
 

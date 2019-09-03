@@ -8,7 +8,13 @@ import { setPage } from '../../actions/event';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 
-const Register = ({ setAlert, setPage, register, isAuthenticated }) => {
+const Register = ({
+  setAlert,
+  setPage,
+  register,
+  isAuthenticated,
+  isAdmin
+}) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setPage('register');
@@ -39,6 +45,10 @@ const Register = ({ setAlert, setPage, register, isAuthenticated }) => {
   };
 
   // Redirect if registered
+  if (isAuthenticated && isAdmin) {
+    return <Redirect to='/admin-dashboard' />;
+  }
+
   if (isAuthenticated) {
     return <Redirect to='/dashboard' />;
   }
@@ -140,11 +150,13 @@ Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   setPage: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  isAdmin: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  isAdmin: state.auth.isAdmin
 });
 
 export default connect(

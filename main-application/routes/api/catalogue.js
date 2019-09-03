@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../middleware/auth');
+const { userAuth } = require('../../middleware/auth');
 
 const Catalogue = require('../../models/Catalogue');
-const User = require('../../models/User');
 
 // @route   POST api/catalogue/:id
 // @desc    Add an event to catalogue
 // @access  Private
-router.post('/:id', auth, async (req, res) => {
+router.post('/:id', userAuth, async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
     if (!event) {
@@ -63,7 +62,7 @@ router.post('/:id', auth, async (req, res) => {
 // @route   GET api/catalogue/me
 // @desc    Get all events in current users catalogue
 // @access  Private
-router.get('/me', auth, async (req, res) => {
+router.get('/me', userAuth, async (req, res) => {
   try {
     const catalogue = await Catalogue.findOne({ user: req.user.id });
     if (!catalogue) {
@@ -83,7 +82,7 @@ router.get('/me', auth, async (req, res) => {
 // @route   DELETE api/catalogue/:id
 // @desc    Delete event from catalogue
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', userAuth, async (req, res) => {
   try {
     // Get the current user's catalogue
     let catalogue = await Catalogue.findOne({ user: req.user.id });

@@ -5,14 +5,9 @@ import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 import Sidenav from './Sidenav';
 
-// Navbar icon images
-import viterbi from '../layout/images/viterbi.png';
-import marshall from '../layout/images/marshall.jpg';
-import annenberg from '../layout/images/annenberg.jpg';
-
 const Navbar = ({
   page,
-  auth: { isAuthenticated, loading },
+  auth: { isAuthenticated, isAdmin, loading },
   logout,
   history
 }) => {
@@ -48,6 +43,7 @@ const Navbar = ({
         toggleStyle={toggleStyle}
         sidenavRef={sidenavRef}
         isAuthenticated={isAuthenticated}
+        isAdmin={isAdmin}
         loading={loading}
         history={history}
         logout={logout}
@@ -129,7 +125,7 @@ const Navbar = ({
                   <ul className='navbar-nav'>
                     <li className='nav-item'>
                       <Link
-                        to='/dashboard'
+                        to={isAdmin ? '/admin-dashboard' : '/dashboard'}
                         className='btn btn-header btn-outline-danger'
                         style={toggleStyle('dashboard')}
                       >
@@ -188,66 +184,56 @@ const Navbar = ({
                     height='24'
                     viewBox='0 0 24 24'
                   >
-                    <path d='M0 0h24v24H0z' fill='none' />
-                    <path d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z' />
+                    <path id='side-menu' d='M0 0h24v24H0z' fill='none' />
+                    <path
+                      id='side-menu'
+                      d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z'
+                    />
                   </svg>
                 </li>
-                <li className='nav-item my-auto'>
+                <li className='nav-item'>
                   <Link
                     to='/'
                     className='btn btn-header btn-outline-danger'
                     style={toggleStyle('')}
                   >
-                    <i className='fas fa-home fa-4x' />
+                    <i className='fas fa-home fa-sm' /> HOME
                   </Link>
                 </li>
-                <li className='nav-item my-auto'>
+                <li className='nav-item'>
                   <Link
                     to='/marshall'
                     className='btn btn-header btn-outline-danger'
                     style={toggleStyle('marshall')}
                   >
-                    <img
-                      src={marshall}
-                      className='rounded navbar-md-img'
-                      alt='Marshall'
-                    />
+                    <i className='fas fa-briefcase fa-sm' /> MARSHALL
                   </Link>
                 </li>
-                <li className='nav-item my-auto'>
+                <li className='nav-item'>
                   <Link
                     to='/viterbi'
                     className='btn btn-header btn-outline-danger'
                     style={toggleStyle('viterbi')}
                   >
-                    <img
-                      src={viterbi}
-                      className='rounded navbar-md-img'
-                      alt='Viterbi'
-                    />
+                    <i className='fas fa-robot fa-sm' /> VITERBI
                   </Link>
                 </li>
-                <li className='nav-item my-auto'>
+                <li className='nav-item'>
                   <Link
                     to='/annenberg'
                     className='btn btn-header btn-outline-danger'
                     style={toggleStyle('annenberg')}
                   >
-                    <img
-                      src={annenberg}
-                      className='rounded navbar-md-img'
-                      alt='Annenberg'
-                    />
+                    <i className='fas fa-comments fa-sm' /> ANNENBERG
                   </Link>
                 </li>
-
-                <li className='nav-item my-auto'>
+                <li className='nav-item'>
                   <Link
                     to='/explore'
                     className='btn btn-header btn-outline-danger'
                     style={toggleStyle('explore')}
                   >
-                    <i className='fas fa-search-location fa-4x' />
+                    <i className='fas fa-search-location fa-sm' /> EXPLORE
                   </Link>
                 </li>
               </ul>
@@ -255,43 +241,43 @@ const Navbar = ({
                 isAuthenticated !== null &&
                 (isAuthenticated ? (
                   <ul className='navbar-nav'>
-                    <li className='nav-item my-auto'>
+                    <li className='nav-item'>
                       <Link
-                        to='/dashboard'
+                        to={isAdmin ? '/admin-dashboard' : '/dashboard'}
                         className='btn btn-header btn-outline-danger'
                         style={toggleStyle('dashboard')}
                       >
-                        <i className='fas fa-user fa-2x' />
+                        <i className='fas fa-user fa-lg' />
                       </Link>
                     </li>
-                    <li className='nav-item my-auto'>
+                    <li className='nav-item'>
                       <button
                         onClick={() => logout(history)}
                         href='#!'
                         className='btn btn-header btn-outline-danger'
                       >
-                        <i className='fas fa-sign-out-alt fa-2x' />
+                        <i className='fas fa-sign-out-alt fa-lg' />
                       </button>
                     </li>
                   </ul>
                 ) : (
                   <ul className='navbar-nav'>
-                    <li className='nav-item my-auto'>
+                    <li className='nav-item'>
                       <Link
                         to='/register'
                         className='btn btn-header btn-outline-danger'
                         style={toggleStyle('register')}
                       >
-                        <i className='fas fa-user-plus fa-2x' />
+                        <i className='fas fa-user-plus fa-lg' />
                       </Link>
                     </li>
-                    <li className='nav-item my-auto'>
+                    <li className='nav-item'>
                       <Link
                         to='/login'
                         className='btn btn-header btn-outline-danger'
                         style={toggleStyle('login')}
                       >
-                        <i className='fas fa-sign-in-alt fa-2x' />
+                        <i className='fas fa-sign-in-alt fa-lg' />
                       </Link>
                     </li>
                   </ul>
@@ -369,7 +355,7 @@ const Navbar = ({
                   <Fragment>
                     <div className='col'>
                       <Link
-                        to='/dashboard'
+                        to={isAdmin ? '/admin-dashboard' : '/dashboard'}
                         className='btn btn-header btn-outline-danger'
                         style={toggleStyle('dashboard')}
                       >

@@ -7,7 +7,11 @@ import PropTypes from 'prop-types';
 import { setPage } from '../../actions/event';
 import { login } from '../../actions/auth';
 
-const Login = ({ setPage, login, auth: { isAuthenticated, user } }) => {
+const Login = ({
+  setPage,
+  login,
+  auth: { isAuthenticated, isAdmin, user }
+}) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setPage('login');
@@ -39,6 +43,10 @@ const Login = ({ setPage, login, auth: { isAuthenticated, user } }) => {
    * redirected to dashboard without loadUser being finished, then getCurrentProfile
    * could get the profile based on previous token
    */
+  if (isAuthenticated && isAdmin && user) {
+    return <Redirect to='/admin-dashboard' />;
+  }
+
   if (isAuthenticated && user) {
     return <Redirect to='/dashboard' />;
   }

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
 const Event = require('../../models/Event');
+const { adminAuth } = require('../../middleware/auth');
 
 // @route   GET api/events/index
 // @desc    Get events on index page
@@ -20,7 +21,8 @@ router.get('/index', async (req, res) => {
       events = await Event.find({
         school,
         tags,
-        featured
+        featured,
+        'date.from': { $gte: new Date(dateNow.toISOString()) }
       })
         .sort({
           'date.from': 1
@@ -35,11 +37,18 @@ router.get('/index', async (req, res) => {
         .sort({ 'date.from': 1 })
         .limit(limit);
     } else if (tags) {
-      events = await Event.find({ tags, featured })
+      events = await Event.find({
+        tags,
+        featured,
+        'date.from': { $gte: new Date(dateNow.toISOString()) }
+      })
         .sort({ 'date.from': 1 })
         .limit(limit);
     } else {
-      events = await Event.find({ featured })
+      events = await Event.find({
+        featured,
+        'date.from': { $gte: new Date(dateNow.toISOString()) }
+      })
         .sort({ 'date.from': 1 })
         .limit(limit);
     }
@@ -69,30 +78,52 @@ router.get('/', async (req, res) => {
         events = await Event.find({
           school,
           featured,
-          tags: { $in: tags }
+          tags: { $in: tags },
+          'date.from': { $gte: new Date(dateNow.toISOString()) }
         }).sort({
           'date.from': 1
         });
       } else if (school) {
-        events = await Event.find({ school, featured }).sort({
+        events = await Event.find({
+          school,
+          featured,
+          'date.from': { $gte: new Date(dateNow.toISOString()) }
+        }).sort({
           'date.from': 1
         });
       } else if (tags) {
-        events = await Event.find({ tags: { $in: tags }, featured }).sort({
+        events = await Event.find({
+          tags: { $in: tags },
+          featured,
+          'date.from': { $gte: new Date(dateNow.toISOString()) }
+        }).sort({
           'date.from': 1
         });
       } else {
-        events = await Event.find({ featured }).sort({ 'date.from': 1 });
+        events = await Event.find({
+          featured,
+          'date.from': { $gte: new Date(dateNow.toISOString()) }
+        }).sort({ 'date.from': 1 });
       }
     } else {
       if (school && tags) {
-        events = await Event.find({ school, tags: { $in: tags } }).sort({
+        events = await Event.find({
+          school,
+          tags: { $in: tags },
+          'date.from': { $gte: new Date(dateNow.toISOString()) }
+        }).sort({
           'date.from': 1
         });
       } else if (school) {
-        events = await Event.find({ school }).sort({ 'date.from': 1 });
+        events = await Event.find({
+          school,
+          'date.from': { $gte: new Date(dateNow.toISOString()) }
+        }).sort({ 'date.from': 1 });
       } else if (tags) {
-        events = await Event.find({ tags: { $in: tags } }).sort({
+        events = await Event.find({
+          tags: { $in: tags },
+          'date.from': { $gte: new Date(dateNow.toISOString()) }
+        }).sort({
           'date.from': 1
         });
       } else {
@@ -128,17 +159,38 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// @route   PUT api/events/feature/:id
+// @desc    Update feature status of an event
+// @access  Admin
+router.put('/feature/:id', adminAuth, async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    if (!event) {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+
+    // Toggle featured
+    event.featured = !event.featured;
+    await event.save();
+
+    res.json(event);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route   POST api/events
 // @desc    Create a NORMAL or FEATURED event
 // @access  Developer
-
-/**
- * TODO: Change permission level to developer
- */
 router.post(
   '/',
   [
+    adminAuth,
     check('title', 'Title is required')
+      .not()
+      .isEmpty(),
+    check('description', 'Description is requried')
       .not()
       .isEmpty(),
     check('date.from', "Invalid 'from' date format").isISO8601(),

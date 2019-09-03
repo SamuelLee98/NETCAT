@@ -1,6 +1,5 @@
 /* global google */
 import React, { Fragment, useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import {
   withScriptjs,
   withGoogleMap,
@@ -8,11 +7,12 @@ import {
   Marker,
   InfoWindow
 } from 'react-google-maps';
-import Moment from 'react-moment';
+import InfoCard from './InfoCard';
 
 const MyMap = withScriptjs(
-  withGoogleMap(({ events, markerId, setId, center, zoom }) => {
+  withGoogleMap(({ events, center, zoom, clickedEventId }) => {
     const [mapEventsArrays, setMapEventsArrays] = useState([]);
+    const [markerId, setId] = useState('');
     const [mapBounds, setMapBounds] = useState(null);
     const mapRef = useRef(null);
 
@@ -62,6 +62,40 @@ const MyMap = withScriptjs(
       }
     }, [mapRef, mapBounds]);
 
+    // If event card is clicked
+    useEffect(() => {
+      let found = false;
+      const bounds = new google.maps.LatLngBounds();
+
+      if (mapEventsArrays !== null && mapRef !== null && mapBounds !== null) {
+        if (clickedEventId !== null) {
+          mapEventsArrays.forEach(mapEventsArray => {
+            mapEventsArray.forEach(mapEvent => {
+              if (mapEvent._id === clickedEventId) {
+                setId(mapEventsArray[0]._id);
+                found = true;
+                bounds.extend(
+                  new google.maps.LatLng(
+                    mapEvent.location.latitude,
+                    mapEvent.location.longitude
+                  )
+                );
+                if (mapRef !== null && mapBounds !== null)
+                  mapRef.current.fitBounds(bounds);
+                return;
+              }
+            });
+            if (found) return;
+          });
+        }
+
+        if (!found) {
+          setId(null);
+          mapRef.current.fitBounds(mapBounds);
+        }
+      }
+    }, [clickedEventId]);
+
     return (
       <GoogleMap defaultZoom={zoom} defaultCenter={center} ref={mapRef}>
         {mapEventsArrays.map(mapEventArray => {
@@ -81,54 +115,11 @@ const MyMap = withScriptjs(
               {firstMapEvent._id === markerId && (
                 <InfoWindow onCloseClick={() => setId('')}>
                   <Fragment>
-                    {mapEventArray.map(
-                      (
-                        {
-                          _id,
-                          location: { room, address },
-                          title,
-                          date: { multiDay, from, to },
-                          featured
-                        },
-                        index
-                      ) => (
-                        <Fragment key={_id}>
-                          <div
-                            className='moreEvents card mx-2'
-                            style={{
-                              padding: '0px',
-                              border: 'none',
-                              maxWidth: '300px'
-                            }}
-                          >
-                            <div className='card-body'>
-                              <h5 className='card-title'>{title}</h5>
-                              <Moment format='hh:mm A'>{from}</Moment> -{` `}
-                              <Moment format='hh:mm A'>{to}</Moment>
-                              <br />
-                              <Moment format='dddd, MMMM D, YYYY'>
-                                {from}
-                              </Moment>
-                              <br />
-                              {room}
-                              <br />
-                              <br />
-                              <Link
-                                to={
-                                  featured
-                                    ? `/details/${_id}?featured=true`
-                                    : `/details/${_id}`
-                                }
-                                className='btn btn-danger'
-                              >
-                                Check it out!
-                              </Link>
-                            </div>
-                          </div>
-                          {index !== mapEventArray.length - 1 && <hr />}
-                        </Fragment>
-                      )
-                    )}
+                    {mapEventArray.map(event => (
+                      <Fragment key={event._id}>
+                        <InfoCard event={event} />
+                      </Fragment>
+                    ))}
                   </Fragment>
                 </InfoWindow>
               )}

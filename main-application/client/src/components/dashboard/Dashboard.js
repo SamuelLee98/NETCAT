@@ -1,23 +1,18 @@
 import React, { Fragment, useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
 
 // Actions
-import {
-  getCurrentProfile,
-  clearProfile,
-  deleteAccount
-} from '../../actions/profile';
 import { getCatalogueEvents, clearCatalogue } from '../../actions/catalogue';
 import { setPage } from '../../actions/event';
 
 // Components
-import ProfileDisplay from './ProfileDisplay';
 import Catalogue from './Catalogue';
 import Spinner from '../layout/Spinner';
 import ServerError from '../layout/ServerError';
+import MapWrapper from '../map/MapWrapper';
 
 // Spinner svg
 import spinner from '../layout/spinner.svg';
@@ -47,13 +42,9 @@ const Loader = (
 
 const Dashboard = ({
   setPage,
-  getCurrentProfile,
   getCatalogueEvents,
   clearCatalogue,
-  clearProfile,
-  deleteAccount,
-  auth: { user },
-  profile,
+  auth: { user, isAdmin },
   catalogue
 }) => {
   const [currOffset, setCurrOffset] = useState(eventsPerPage);
@@ -61,127 +52,118 @@ const Dashboard = ({
   const events = useCallback(catalogue.events, [catalogue.events]);
   const hasMore = useCallback(catalogue.hasMore, [catalogue.hasMore]);
 
+  // On event card click, rezoom map and show info box
+  const [clickedEventId, setClickedEventId] = useState(null);
+  const onEventCardClick = useCallback(
+    (e, id) => {
+      // If card buttons clicked, do nothing
+      if (e.target.id === 'card-button-icon') return;
+      // Set id back to null if clicked again
+      setClickedEventId(
+        clickedEventId === null || id !== clickedEventId ? id : null
+      );
+    },
+    [clickedEventId]
+  );
+
   useEffect(() => {
     window.scrollTo(0, 0);
     setPage('dashboard');
-    getCurrentProfile();
     getCatalogueEvents(0, eventsPerPage, true);
-
     return () => {
       clearCatalogue();
-      clearProfile();
     };
-  }, [
-    setPage,
-    getCurrentProfile,
-    getCatalogueEvents,
-    clearCatalogue,
-    clearProfile
-  ]);
+  }, [setPage, getCatalogueEvents, clearCatalogue]);
 
   // On add/remove from catalogue click
   const onDeleteClick = useCallback(() => {
     setCurrOffset(currOffset - 1);
   }, [currOffset]);
 
-  const loadEvents = async () => {
-    await getCatalogueEvents(currOffset, eventsPerPage);
+  console.log(events);
+
+  const loadEvents = () => {
+    getCatalogueEvents(currOffset, eventsPerPage);
     setCurrOffset(currOffset + eventsPerPage);
   };
 
-  if (profile.error && profile.error.status === 500) {
-    return <ServerError />;
+  if (isAdmin) {
+    return <Redirect to='/admin-dashboard' />;
   }
 
   if (catalogue.error && catalogue.error.status === 500) {
     return <ServerError />;
   }
 
-  if (profile.loading || catalogue.eventsLoading || events === null) {
+  if (catalogue.eventsLoading || events === null) {
     return <Spinner />;
   }
 
   return (
-    <div className='content container'>
-      <h1 className='large text-dark mb-2'>
-        {user && `${user.username}'s`} Catalogue
-      </h1>
-      <div className='row'>
-        <div className='col-md-3 mb-2'>
-          {user && user.avatar && (
-            <img
-              className='round-img my-2'
-              src={user.avatar}
-              alt=''
-              style={{ width: '100%', border: '2px solid black' }}
-            />
-          )}
-          <p>
-            <i className='fas fa-user' /> Welcome {user && user.username}
-          </p>
-          {profile.profile !== null ? (
-            <Fragment>
-              <ProfileDisplay profile={profile.profile} />
-              <div className='my-2'>
-                <Link to='/edit-profile' className='btn btn-info btn-block m-1'>
-                  <i className='fas fa-user-edit' /> Edit Profile
-                </Link>
-              </div>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <p>You have not yet setup a profile, please add some info</p>
-              <Link
-                to='/create-profile'
-                className='btn btn-primary btn-block m-1'
-              >
-                <i className='fas fa-user-plus' /> Create Profile
-              </Link>
-            </Fragment>
-          )}
-          <button
-            className='btn btn-danger btn-block m-1'
-            onClick={() => deleteAccount()}
-          >
-            <i className='fas fa-user-minus' /> Delete Account
-          </button>
-          <hr className='d-block d-md-none' />
-        </div>
-        <div className='col-md-9'>
-          <InfiniteScroll
-            pageStart={0}
-            loadMore={() => loadEvents()}
-            hasMore={hasMore}
-            loader={Loader}
-          >
-            {events.map(event => (
-              <Catalogue
-                key={event._id}
-                event={event}
-                onDeleteClick={onDeleteClick}
-              />
-            ))}
-            {!hasMore &&
-              (events.length === 0 ? (
-                <h5 className='font-italic my-2' style={{ color: 'grey' }}>
-                  You do not have any events in your catalogue.
-                </h5>
-              ) : (
-                <Fragment>
-                  <div className='d-flex justify-content-center'>
-                    <h5>No more events left...</h5>
-                  </div>
-                  <div className='d-flex justify-content-center'>
-                    <button
-                      className='btn btn-link text-danger'
-                      onClick={() => window.scrollTo(0, 0)}
-                    >
-                      Scroll To Top
-                    </button>
-                  </div>
-                </Fragment>
+    <div className='content'>
+      <div className='container'>
+        <h1
+          className='large text-dark mb-4'
+          style={{ fontFamily: 'helvetica-bold' }}
+        >
+          <span className='text-capitalize'>
+            {user && `${user.username}'s`} Catalogue
+          </span>
+        </h1>
+        <hr />
+        <div className='row'>
+          <div className='col-12 col-lg-8'>
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={() => loadEvents()}
+              hasMore={hasMore}
+              loader={Loader}
+            >
+              {events.map(event => (
+                <Catalogue
+                  key={event._id}
+                  event={event}
+                  onDeleteClick={onDeleteClick}
+                  onEventCardClick={onEventCardClick}
+                />
               ))}
-          </InfiniteScroll>
+              {!hasMore &&
+                (events.length === 0 ? (
+                  <h5 id='no-content'>
+                    You do not have any events in your catalogue.
+                  </h5>
+                ) : (
+                  <Fragment>
+                    <div className='d-flex justify-content-center'>
+                      <h5>No more events left...</h5>
+                    </div>
+                    <div className='d-flex justify-content-center'>
+                      <button
+                        className='btn btn-link text-danger'
+                        onClick={() => window.scrollTo(0, 0)}
+                      >
+                        Scroll To Top
+                      </button>
+                    </div>
+                  </Fragment>
+                ))}
+            </InfiniteScroll>
+          </div>
+          <div className='d-none d-lg-block col-lg-4'>
+            <div
+              className='sticky-container'
+              style={{ width: '100%', height: '400px' }}
+            >
+              <div id='map-container'>
+                <MapWrapper
+                  events={events}
+                  center={{ lat: 34.021, lng: -118.286 }}
+                  clickedEventId={clickedEventId}
+                  zoom={15.3}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -190,18 +172,13 @@ const Dashboard = ({
 
 Dashboard.propTypes = {
   setPage: PropTypes.func.isRequired,
-  getCurrentProfile: PropTypes.func.isRequired,
   getCatalogueEvents: PropTypes.func.isRequired,
   clearCatalogue: PropTypes.func.isRequired,
-  clearProfile: PropTypes.func.isRequired,
-  deleteAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired,
   catalogue: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.profile,
   catalogue: state.catalogue,
   auth: state.auth
 });
@@ -209,11 +186,8 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    getCurrentProfile,
     getCatalogueEvents,
     clearCatalogue,
-    clearProfile,
-    setPage,
-    deleteAccount
+    setPage
   }
 )(Dashboard);

@@ -1,32 +1,34 @@
+html {
+  scroll-behavior: smooth;
+}
+
 @font-face {
-  font-family: 'vogue';
-  src: url('./fonts/vogue-webfont.woff2') format('woff2'),
-    url('./fonts/vogue-webfont.ttf') format('truetype'),
-    url('./fonts/vogue-webfont.woff') format('woff');
+  font-family: "vogue";
+  src: url("./fonts/vogue-webfont.woff2") format("woff2"), url("./fonts/vogue-webfont.ttf") format("truetype"),
+    url("./fonts/vogue-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
-  font-family: 'helvetica-bold';
-  src: url('./fonts/helvetica-bold-webfont.woff2') format('woff2'),
-    url('./fonts/helvetica-bold-webfont.ttf') format('truetype'),
-    url('./fonts/helvetica-bold-webfont.woff') format('woff');
+  font-family: "helvetica-bold";
+  src: url("./fonts/helvetica-bold-webfont.woff2") format("woff2"),
+    url("./fonts/helvetica-bold-webfont.ttf") format("truetype"),
+    url("./fonts/helvetica-bold-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
-  font-family: 'helvetica';
-  src: url('./fonts/helvetica-webfont.woff2') format('woff2'),
-    url('./fonts/helvetica-webfont.ttf') format('truetype'),
-    url('./fonts/helvetica-webfont.woff') format('woff');
+  font-family: "helvetica";
+  src: url("./fonts/helvetica-webfont.woff2") format("woff2"), url("./fonts/helvetica-webfont.ttf") format("truetype"),
+    url("./fonts/helvetica-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
-  font-family: 'helvetica-light';
-  src: url('./fonts/helvetica-light-webfont.woff2') format('woff2'),
-    url('./fonts/helvetica-light-webfont.woff') format('woff'),
-    url('./fonts/helvetica-light-webfont.ttf') format('truetype');
+  font-family: "helvetica-light";
+  src: url("./fonts/helvetica-light-webfont.woff2") format("woff2"),
+    url("./fonts/helvetica-light-webfont.woff") format("woff"),
+    url("./fonts/helvetica-light-webfont.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -49,7 +51,7 @@ body {
   margin-top: 10px;
 }
 .large-title {
-  font-family: 'vogue';
+  font-family: "vogue";
   line-height: 85px;
   letter-spacing: 5px;
   font-size: 100px;
@@ -175,7 +177,6 @@ body {
 /*site body content*/
 .content {
   z-index: 0 !important;
-  padding: 16px;
   background-color: white;
   font-family: helvetica-light;
   position: relative;
@@ -189,21 +190,26 @@ body {
 .btn-danger {
   background-color: #ac101b;
   border-color: #ac101b;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .card-body {
   font-size: 13px;
   color: gray;
 }
 
-.moreEvents .card-body {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 .card-title {
   font-size: 16px;
   color: black;
 }
+
+/* .limited-text {
+  max-height: 250px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+} */
 
 .center {
   text-align: center;
@@ -267,12 +273,6 @@ body {
   float: right;
 }
 
-.limited-text {
-  line-height: 1.4em;
-  height: 11.2em;
-  overflow: hidden;
-}
-
 /* React share buttons & icons style */
 .react-share-button {
   cursor: pointer;
@@ -291,4 +291,69 @@ body {
   display: inline-block;
   margin-right: 5px;
   text-align: center;
+}
+
+/* fa icons transitions */
+#card-button-icon {
+  transition: all 0.3s ease-in-out;
+}
+
+#card-button-icon:hover {
+  color: red;
+  transform: scale(1.2);
+}
+
+/* Fade in, fade out */
+.fade-in {
+  -webkit-animation: fadeIn 0.5s linear forwards;
+  animation: fadeIn 0.5s linear forwards;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-out {
+  -webkit-animation: fadeOut 0.5s linear forwards;
+  animation: fadeOut 0.5s linear forwards;
+}
+
+@-webkit-keyframes fadeOut {
+  100% {
+    opacity: 0;
+  }
+  0% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  100% {
+    opacity: 0;
+  }
+  0% {
+    opacity: 1;
+  }
+}
+
+/* Nothing here at the moment */
+#no-content {
+  color: grey;
+  text-align: center;
+  height: 300px;
+  font-style: italic;
 }

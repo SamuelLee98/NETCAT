@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -14,19 +14,35 @@ const CardButtons = ({
   isCatalogued,
   eventId,
   onDeleteClick,
+  onIntermediateDeleteClick,
   page
 }) => {
   // Function used in dashboard page
   const handleDashboardDeleteClick = () => {
-    deleteFromCatalogue(eventId);
-    onDeleteClick();
+    // Trigger fade-out
+    onIntermediateDeleteClick();
+    // Remove event after .5s
+    setTimeout(() => {
+      deleteFromCatalogue(eventId);
+      onDeleteClick();
+    }, 500);
   };
 
   // Different styling for different pages
+  if (page === 'map')
+    return (
+      <div className='d-flex justify-content-center'>
+        <Link className='btn btn-danger btn-block' to={`/details/${eventId}`}>
+          READ MORE
+        </Link>
+      </div>
+    );
+
   if (page === 'details')
     return (
       <div>
         <i
+          id='card-button-icon'
           className='btn fas fa-share-alt fa-2x'
           data-toggle='tooltip'
           data-placement='top'
@@ -36,6 +52,7 @@ const CardButtons = ({
           }}
         />
         <i
+          id='card-button-icon'
           className='btn fas fa-calendar-alt fa-2x'
           data-toggle='tooltip'
           data-placement='top'
@@ -43,6 +60,7 @@ const CardButtons = ({
         />
         {isCatalogued ? (
           <i
+            id='card-button-icon'
             className='btn fas fa-heart fa-2x'
             data-toggle='tooltip'
             data-placement='top'
@@ -52,6 +70,7 @@ const CardButtons = ({
           />
         ) : (
           <i
+            id='card-button-icon'
             className='btn fas fa-heart fa-2x'
             data-toggle='tooltip'
             data-placement='top'
@@ -62,48 +81,54 @@ const CardButtons = ({
       </div>
     );
 
-  if (page === 'content')
+  if (page === 'feature')
     return (
-      <div>
-        <Link className='btn btn-danger' to={`/details/${eventId}`}>
-          READ MORE
-        </Link>
-        <div className='float-right'>
-          <i
-            className='btn fas fa-share-alt px-0 my-1'
-            data-toggle='tooltip'
-            data-placement='top'
-            title='Share this post'
-            onClick={() => {
-              openModal(eventId);
-            }}
-          />
-          <i
-            className='btn fas fa-calendar-alt px-0 my-1 mx-3 mx-md-1'
-            data-toggle='tooltip'
-            data-placement='top'
-            title='Add to calender'
-          />
-          {isCatalogued ? (
+      <Fragment>
+        <div>
+          <Link className='btn btn-danger' to={`/details/${eventId}`}>
+            READ MORE
+          </Link>
+          <div className='float-right'>
             <i
-              className='btn fas fa-heart px-0 my-1'
+              id='card-button-icon'
+              className='btn fas fa-share-alt px-0 my-1'
               data-toggle='tooltip'
               data-placement='top'
-              title='Remove from catalogue'
-              onClick={() => deleteFromCatalogue(eventId)}
-              style={{ color: 'red' }}
+              title='Share this post'
+              onClick={() => {
+                openModal(eventId);
+              }}
             />
-          ) : (
             <i
-              className='btn fas fa-heart px-0 my-1'
+              id='card-button-icon'
+              className='btn fas fa-calendar-alt px-0 my-1 mx-3 mx-md-1'
               data-toggle='tooltip'
               data-placement='top'
-              title='Add to catalogue'
-              onClick={() => addToCatalogue(eventId)}
+              title='Add to calender'
             />
-          )}
+            {isCatalogued ? (
+              <i
+                id='card-button-icon'
+                className='btn fas fa-heart px-0 my-1'
+                data-toggle='tooltip'
+                data-placement='top'
+                title='Remove from catalogue'
+                onClick={() => deleteFromCatalogue(eventId)}
+                style={{ color: 'red' }}
+              />
+            ) : (
+              <i
+                id='card-button-icon'
+                className='btn fas fa-heart px-0 my-1'
+                data-toggle='tooltip'
+                data-placement='top'
+                title='Add to catalogue'
+                onClick={() => addToCatalogue(eventId)}
+              />
+            )}
+          </div>
         </div>
-      </div>
+      </Fragment>
     );
 
   if (page === 'catalogue')
@@ -114,6 +139,7 @@ const CardButtons = ({
         </Link>
         <div className='float-right'>
           <i
+            id='card-button-icon'
             className='btn fas fa-share-alt fa-2x px-0 my-1'
             data-toggle='tooltip'
             data-placement='top'
@@ -123,12 +149,14 @@ const CardButtons = ({
             }}
           />
           <i
+            id='card-button-icon'
             className='btn fas fa-calendar-alt fa-2x px-0 my-1 mx-3'
             data-toggle='tooltip'
             data-placement='top'
             title='Add to calender'
           />
           <i
+            id='card-button-icon'
             className='btn fas fa-heart fa-2x px-0 my-1'
             data-toggle='tooltip'
             data-placement='top'
@@ -147,6 +175,7 @@ const CardButtons = ({
       </Link>
       <div className='float-right'>
         <i
+          id='card-button-icon'
           className='btn fas fa-share-alt fa-2x px-0 my-1'
           data-toggle='tooltip'
           data-placement='top'
@@ -156,6 +185,7 @@ const CardButtons = ({
           }}
         />
         <i
+          id='card-button-icon'
           className='btn fas fa-calendar-alt fa-2x px-0 my-1 mx-3'
           data-toggle='tooltip'
           data-placement='top'
@@ -163,6 +193,7 @@ const CardButtons = ({
         />
         {isCatalogued ? (
           <i
+            id='card-button-icon'
             className='btn fas fa-heart fa-2x px-0 my-1'
             data-toggle='tooltip'
             data-placement='top'
@@ -172,6 +203,7 @@ const CardButtons = ({
           />
         ) : (
           <i
+            id='card-button-icon'
             className='btn fas fa-heart fa-2x px-0 my-1'
             data-toggle='tooltip'
             data-placement='top'
