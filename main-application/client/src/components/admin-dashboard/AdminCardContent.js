@@ -1,24 +1,16 @@
 import React, { Fragment, useEffect } from 'react';
 import Moment from 'react-moment';
 import 'moment-timezone';
-import LinesEllipsis from 'react-lines-ellipsis';
-import CardButtons from './CardButtons';
+import AdminCardButtons from './AdminCardButtons';
 
-const CardContent = ({
-  event,
-  page,
-  onDeleteClick,
-  onIntermediateDeleteClick,
-  setCardHeight
-}) => {
-  let MomentComponent;
-
+const AdminCardContent = ({ event, setCardHeight }) => {
   useEffect(() => {
     if (setCardHeight != null) {
       setCardHeight(document.getElementById('card-body').clientHeight);
     }
-  }, [setCardHeight]);
+  }, []);
 
+  let MomentComponent;
   if (event.date.multiDay && event.date.allDay) {
     MomentComponent = (
       <div>
@@ -64,7 +56,6 @@ const CardContent = ({
       </div>
     );
   }
-
   return (
     <div id='card-body' className='card-body'>
       <h5 className='card-title'>{event.title}</h5>
@@ -75,22 +66,11 @@ const CardContent = ({
           <br />
         </Fragment>
       )}
-      <div className='text-capitalize'>
+      <span className='text-capitalize'>
         <i className='fas fa-graduation-cap' />
         {event.school}
-      </div>
-      {page === 'feature' && (
-        <Fragment>
-          <LinesEllipsis
-            text={event.description}
-            maxLine='6'
-            ellipsis='...'
-            trimRight
-            basedOn='letters'
-          />
-          <br />
-        </Fragment>
-      )}
+      </span>
+      <br />
       Tags:{' '}
       {event.tags.map((tag, index) => (
         <span key={index} className='badge badge-pill badge-secondary mx-1'>
@@ -99,15 +79,9 @@ const CardContent = ({
       ))}
       <br />
       <br />
-      <CardButtons
-        isCatalogued={event.isCatalogued}
-        eventId={event._id}
-        page={page}
-        onDeleteClick={onDeleteClick}
-        onIntermediateDeleteClick={onIntermediateDeleteClick}
-      />
+      <AdminCardButtons featured={event.featured} eventId={event._id} />
     </div>
   );
 };
 
-export default CardContent;
+export default AdminCardContent;

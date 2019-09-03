@@ -3,7 +3,6 @@ import event from './event';
 import modal from './modal';
 import alert from './alert';
 import auth from './auth';
-import profile from './profile';
 import catalogue from './catalogue';
 
 export default combineReducers({
@@ -11,6 +10,5 @@ export default combineReducers({
   modal,
   alert,
   auth,
-  profile,
   catalogue
 });

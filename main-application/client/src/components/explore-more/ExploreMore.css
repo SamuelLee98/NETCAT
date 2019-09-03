@@ -1,0 +1,10 @@
+.sticky-container {
+  z-index: 1;
+  position: sticky;
+  top: 75px;
+}
+
+#map-container {
+  height: 400px;
+  width: 100%;
+}

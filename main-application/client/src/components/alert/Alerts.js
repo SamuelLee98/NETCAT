@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { removeAlert } from '../../actions/alert';
 import AlertComponent from './AlertComponent';
+import { removeAlert } from '../../actions/alert';
 
 const Alerts = ({ alerts, removeAlert }) => {
   return (
@@ -22,8 +22,8 @@ const Alerts = ({ alerts, removeAlert }) => {
 };
 
 Alerts.propTypes = {
-  removeAlert: PropTypes.func.isRequired,
-  alerts: PropTypes.array.isRequired
+  alerts: PropTypes.array.isRequired,
+  removeAlert: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

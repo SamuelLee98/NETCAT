@@ -1,15 +1,8 @@
-- **List of event tags
-- implement add to calender?
+- implement add to calender (google only)
 - about us page
-- Change delete account pop up window to pop up alert
-- Fix profile page in phone screen sizes, possibly adding new tab profile and catalgoue
-- Replace bootstrap css with react-bootstrap
-
-
 
 DEPLOYMENT TODOS
-- Change events post api permission level to developer
-- multi day events
 - Change JWT expiration time to 1 hour
+- Refresh token
 - Change share modal event url from localhost3000 to deployment site
 - Implement messenger share

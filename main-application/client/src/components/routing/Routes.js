@@ -1,17 +1,17 @@
 import React, { Fragment } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PrivateRoute from '../routing/PrivateRoute';
+import AdminRoute from '../routing/AdminRoute';
 
-import Content from '../content/Content';
+import Feature from '../feature/Feature';
 import Details from '../details/Details';
-import ExploreMore from '../exploreMore/ExploreMore';
+import ExploreMore from '../explore-more/ExploreMore';
 import NotFound from '../layout/NotFound';
 import Alerts from '../alert/Alerts';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
 import Dashboard from '../dashboard/Dashboard';
-import CreateProfile from '../profile-forms/CreateProfile';
-import EditProfile from '../profile-forms/EditProfile';
+import AdminDashboard from '../admin-dashboard/AdminDashboard.js';
 
 const Routes = () => {
   return (
@@ -21,30 +21,29 @@ const Routes = () => {
         <Route
           exact
           path='/'
-          render={props => <Content {...props} page='' />}
+          render={props => <Feature {...props} page='' />}
         />
         <Route
           exact
           path='/viterbi'
-          render={props => <Content {...props} page='viterbi' />}
+          render={props => <Feature {...props} page='viterbi' />}
         />
         <Route
           exact
           path='/annenberg'
-          render={props => <Content {...props} page='annenberg' />}
+          render={props => <Feature {...props} page='annenberg' />}
         />
         <Route
           exact
           path='/marshall'
-          render={props => <Content {...props} page='marshall' />}
+          render={props => <Feature {...props} page='marshall' />}
         />
         <Route exact path='/details/:id' component={Details} />
         <Route exact path='/explore' component={ExploreMore} />
         <Route exact path='/register' component={Register} />
         <Route exact path='/login' component={Login} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
-        <PrivateRoute exact path='/create-profile' component={CreateProfile} />
-        <PrivateRoute exact path='/edit-profile' component={EditProfile} />
+        <AdminRoute exact path='/admin-dashboard' component={AdminDashboard} />
         <Route component={NotFound} />
       </Switch>
     </Fragment>

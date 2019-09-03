@@ -1,9 +1,7 @@
 const express = require('express');
-const request = require('request');
-const config = require('config');
 const router = express.Router();
-const auth = require('../../middleware/auth');
-const { check, validationResult } = require('express-validator/check');
+const { userAuth } = require('../../middleware/auth');
+const { validationResult } = require('express-validator/check');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
@@ -12,7 +10,7 @@ const Catalogue = require('../../models/Catalogue');
 // @route   GET api/profile/me
 // @desc    Get current users profile
 // @access  Private
-router.get('/me', auth, async (req, res) => {
+router.get('/me', userAuth, async (req, res) => {
   try {
     // Populate: add 'name' and 'avatar' fields from user schema to the current query
     const profile = await Profile.findOne({ user: req.user.id }).populate(
@@ -34,7 +32,7 @@ router.get('/me', auth, async (req, res) => {
 // @route   POST api/profile
 // @desc    Create or update user profile
 // @access  Private
-router.post('/', auth, async (req, res) => {
+router.post('/', userAuth, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -122,7 +120,7 @@ router.get('/user/:user_id', async (req, res) => {
 // @route   DELETE api/profile
 // @desc    Delete current user's profile, user & catalogue
 // @access  Private
-router.delete('/', auth, async (req, res) => {
+router.delete('/', userAuth, async (req, res) => {
   try {
     // Remove catalogue
     await Catalogue.findOneAndRemove({

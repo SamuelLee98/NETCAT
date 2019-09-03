@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import CardContent from '../layout/CardContent';
 
-const Catalogue = ({ event, onDeleteClick, onEventCardClick }) => {
+const EventCard = ({ event, onEventCardClick }) => {
   const [cardHeight, setCardHeight] = useState(null);
-  const [onDelete, toggleOnDelete] = useState(false);
-
-  const onIntermediateDeleteClick = () => toggleOnDelete(true);
 
   return (
     <div
       id='event-card'
-      className={`card mb-3 ${onDelete && 'fade-out'}`}
+      className='card mb-3'
       onClick={e => onEventCardClick(e, event._id)}
     >
       <div className='row'>
@@ -29,10 +26,8 @@ const Catalogue = ({ event, onDeleteClick, onEventCardClick }) => {
         <div className='col-12 col-md-8'>
           <CardContent
             event={event}
-            page='catalogue'
-            onDeleteClick={onDeleteClick}
+            page='more'
             setCardHeight={setCardHeight}
-            onIntermediateDeleteClick={onIntermediateDeleteClick}
           />
         </div>
       </div>
@@ -40,9 +35,9 @@ const Catalogue = ({ event, onDeleteClick, onEventCardClick }) => {
   );
 };
 
-Catalogue.propTypes = {
-  onDeleteClick: PropTypes.func.isRequired,
-  event: PropTypes.object.isRequired
+EventCard.propTypes = {
+  event: PropTypes.object.isRequired,
+  onEventCardClick: PropTypes.func.isRequired
 };
 
-export default Catalogue;
+export default EventCard;

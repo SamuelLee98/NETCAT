@@ -38,7 +38,6 @@ export const getCatalogueEvents = (
       type: GET_CATALOGUE_EVENTS,
       payload: { events, hasMore }
     });
-    console.log(`${offset}, ${offset + limit} getCatalogue action done`);
   } catch (err) {
     dispatch({
       type: CATALOGUE_ERROR,

@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Select from 'react-dropdown-select';
+import './SearchDropdown.css';
 
 const options = [
   {
@@ -26,7 +27,7 @@ const DropDown = ({ searchField, setSearchField, handleSearchClick }) => {
       key={item.tag}
       className='badge badge-pill badge-danger
                  mb-1 mr-1'
-      style={{ maxWidth: '100px', overflow: 'hidden' }}
+      id='search-tag'
     >
       <span
         onClick={() => methods.removeItem(null, item)}
@@ -43,7 +44,12 @@ const DropDown = ({ searchField, setSearchField, handleSearchClick }) => {
     const regexp = new RegExp(state.search, 'i');
 
     return (
-      <div style={{ maxHeight: '300px', padding: '10px' }}>
+      <div
+        style={{
+          maxHeight: '300px',
+          padding: '10px'
+        }}
+      >
         <div className='d-flex justify-content-between'>
           <span className='text-dark' style={{ padding: '4px 8px' }}>
             <span style={{ fontSize: '16px' }}>Select Tags: </span>
@@ -67,7 +73,7 @@ const DropDown = ({ searchField, setSearchField, handleSearchClick }) => {
           )}
         </div>
         <hr />
-        <div style={{ msOverflowY: 'auto' }}>
+        <div style={{ overflowY: 'auto' }}>
           {props.options
             .filter(item => regexp.test(item[props.searchBy] || item.tag))
             .map(option => (
@@ -77,6 +83,7 @@ const DropDown = ({ searchField, setSearchField, handleSearchClick }) => {
                   methods.isSelected(option) ? 'danger' : 'secondary'
                 } mx-1`}
                 style={{ cursor: 'pointer' }}
+                id='search-tag'
                 onClick={() => methods.addItem(option)}
               >
                 {option.tag}

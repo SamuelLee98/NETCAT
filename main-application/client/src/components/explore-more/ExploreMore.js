@@ -9,7 +9,7 @@ import { getCatalogueEventIds } from '../../actions/catalogue';
 
 // Components
 import ServerError from '../layout/ServerError';
-import DropDown from './DropDown';
+import SearchDropdown from '../search-dropdown/SeachDropdown';
 import EventCard from './EventCard';
 import MapWrapper from '../map/MapWrapper';
 import Spinner from '../layout/Spinner';
@@ -19,6 +19,9 @@ import checkIfCatalogued from '../../utils/checkIfCatalogued';
 
 // Spinner svg
 import spinner from '../layout/spinner.svg';
+
+// css
+import './ExploreMore.css';
 
 const eventsPerPage = 5;
 
@@ -56,6 +59,20 @@ const ExploreMore = ({
     event.explore.loading
   ]);
 
+  // On event card click, rezoom map and show info box
+  const [clickedEventId, setClickedEventId] = useState(null);
+  const onEventCardClick = useCallback(
+    (e, id) => {
+      // If card buttons clicked, do nothing
+      if (e.target.id === 'card-button-icon') return;
+      // Set id back to null if clicked again
+      setClickedEventId(
+        clickedEventId === null || id !== clickedEventId ? id : null
+      );
+    },
+    [clickedEventId]
+  );
+
   // Filters
   const [searchField, setSearchField] = useState({
     school: '',
@@ -72,7 +89,7 @@ const ExploreMore = ({
       searchField.featured,
       searchField.tags
     );
-  }, [searchField]);
+  }, [searchField, getExploreEvents]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -132,7 +149,7 @@ const ExploreMore = ({
         >
           Explore More Events Around USC
         </h1>
-        <DropDown
+        <SearchDropdown
           searchField={searchField}
           setSearchField={setSearchField}
           handleSearchClick={handleSearchClick}
@@ -153,17 +170,16 @@ const ExploreMore = ({
                 loader={Loader}
               >
                 {currEvents.map(event => (
-                  <EventCard key={event._id} event={event} />
+                  <EventCard
+                    key={event._id}
+                    event={event}
+                    onEventCardClick={onEventCardClick}
+                  />
                 ))}
               </InfiniteScroll>
               {!hasMore &&
                 (events.length === 0 ? (
-                  <h5
-                    className='font-italic'
-                    style={{ color: 'grey', textAlign: 'center' }}
-                  >
-                    Nothing here at the moment :(
-                  </h5>
+                  <h5 id='no-content'>Nothing here at the moment :(</h5>
                 ) : (
                   <Fragment>
                     <div className='d-flex justify-content-center'>
@@ -183,15 +199,17 @@ const ExploreMore = ({
 
             <div className='d-none d-lg-block col-lg-4'>
               <div
-                className='map sticky-top'
-                id='map'
+                className='sticky-container'
                 style={{ width: '100%', height: '400px' }}
               >
-                <MapWrapper
-                  events={currEvents}
-                  center={{ lat: 34.021, lng: -118.286 }}
-                  zoom={15.3}
-                />
+                <div id='map-container'>
+                  <MapWrapper
+                    events={currEvents}
+                    center={{ lat: 34.021, lng: -118.286 }}
+                    clickedEventId={clickedEventId}
+                    zoom={15.3}
+                  />
+                </div>
               </div>
             </div>
           </div>

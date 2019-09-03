@@ -8,6 +8,7 @@ import {
   EXPLORE_LOADING,
   FEATURED_LOADING,
   DETAILS_LOADING,
+  UPDATE_FEATURED,
   SET_PAGE,
   CLEAR_EVENTS
 } from '../actions/types';
@@ -93,7 +94,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         explore: {
-          ...state.explore,
+          events: null,
           loading: true
         },
         error: null
@@ -106,6 +107,18 @@ export default function(state = initialState, action) {
           loading: true
         },
         error: null
+      };
+    case UPDATE_FEATURED:
+      return {
+        ...state,
+        explore: {
+          events: state.explore.events.map(event =>
+            event._id === payload
+              ? { ...event, featured: !event.featured }
+              : event
+          ),
+          loading: false
+        }
       };
     case SET_PAGE:
       return {

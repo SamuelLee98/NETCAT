@@ -64,7 +64,8 @@ router.post(
       // Return jsonwebtoken
       const payload = {
         user: {
-          id: user.id // user._id from mongodb
+          id: user.id,
+          admin: user.admin
         }
       };
 

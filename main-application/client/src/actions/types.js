@@ -13,6 +13,7 @@ export const FEATURED_LOADING = 'FEATURED_LOADING';
 export const DETAILS_LOADING = 'DETAILS_LOADING';
 export const SET_PAGE = 'SET_PAGE';
 export const GET_DETAILS_EVENT = 'GET_DETAILS_EVENT';
+export const UPDATE_FEATURED = 'UPDATE_FEATURED';
 export const CLEAR_EVENTS = 'CLEAR_EVENTS';
 
 // Alert

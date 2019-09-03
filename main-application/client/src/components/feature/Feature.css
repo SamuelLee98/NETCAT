@@ -1,0 +1,50 @@
+#event-card {
+  transition: box-shadow 0.5s;
+}
+
+#event-card:hover {
+  box-shadow: 10px 20px 40px -5px gray;
+}
+
+.limited-text {
+  max-height: 250px;
+}
+
+#map-container {
+  height: 80vh;
+}
+
+.sticky-container {
+  z-index: 1;
+  position: sticky;
+  top: 75px;
+}
+
+@media (min-width: 576px) {
+  .card-columns {
+    column-count: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .card-columns {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 992px) {
+  .card-columns {
+    column-count: 2;
+    /* column-count: 3; */
+  }
+  #event-card {
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 1200px) {
+  .card-columns {
+    column-count: 2;
+    /* column-count: 4; */
+  }
+}
