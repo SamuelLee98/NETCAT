@@ -1,8 +1,5 @@
-- implement add to calender (google only)
 - about us page
 
 DEPLOYMENT TODOS
 - Change JWT expiration time to 1 hour
 - Refresh token
-- Change share modal event url from localhost3000 to deployment site
-- Implement messenger share

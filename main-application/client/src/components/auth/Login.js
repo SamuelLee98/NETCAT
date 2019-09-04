@@ -44,11 +44,11 @@ const Login = ({
    * could get the profile based on previous token
    */
   if (isAuthenticated && isAdmin && user) {
-    return <Redirect to='/admin-dashboard' />;
+    return <Redirect to='/admin-catalogue' />;
   }
 
   if (isAuthenticated && user) {
-    return <Redirect to='/dashboard' />;
+    return <Redirect to='/catalogue' />;
   }
 
   return (

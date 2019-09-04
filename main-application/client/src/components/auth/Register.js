@@ -46,11 +46,11 @@ const Register = ({
 
   // Redirect if registered
   if (isAuthenticated && isAdmin) {
-    return <Redirect to='/admin-dashboard' />;
+    return <Redirect to='/admin-catalogue' />;
   }
 
   if (isAuthenticated) {
-    return <Redirect to='/dashboard' />;
+    return <Redirect to='/catalogue' />;
   }
 
   return (

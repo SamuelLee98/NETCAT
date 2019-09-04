@@ -43,7 +43,6 @@ const ShareModal = ({ onDisplay, url, closeModal }) => {
     console.log(url);
     window.FB.ui({
       method: 'send',
-      name: shareMessage,
       link: url
     });
   };

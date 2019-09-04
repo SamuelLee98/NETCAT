@@ -135,9 +135,6 @@ const CardButtons = ({
               title='Add to Google Calender'
               onClick={() => window.open(buildGoogleCalendarString(), '_blank')}
             />
-            {console.log(
-              event.date.from.replace(/-|:|\.\d\d\d/g, '').slice(0, -1)
-            )}
             <i
               id='card-button-icon'
               className='btn fas fa-heart px-0 my-1'
