@@ -58,7 +58,7 @@ const Login = ({
         <div className='card'>
           <div className='card-body'>
             <br />
-            <div className='center'>
+            {/* <div className='center'>
               <button
                 className='btn btn-danger'
                 style={{ textAlign: 'center' }}
@@ -67,7 +67,7 @@ const Login = ({
               </button>
             </div>
             <br />
-            <hr />
+            <hr /> */}
             <br />
             <form>
               <div className='form-group'>

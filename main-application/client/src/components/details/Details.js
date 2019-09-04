@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Moment from 'react-moment';
 
 // Actions
 import { getEventById, clearEvents } from '../../actions/event';
@@ -12,7 +11,7 @@ import Spinner from '../layout/Spinner';
 import MapWrapper from '../map/MapWrapper';
 import NotFound from '../layout/NotFound';
 import ServerError from '../layout/ServerError';
-import CardButtons from '../layout/CardButtons';
+import CardContent from '../layout/CardContent';
 
 // utils
 import checkIfCatalogued from '../../utils/checkIfCatalogued';
@@ -91,30 +90,7 @@ const Details = ({
               alt='Responsive Thumbnail'
               style={{ minHeight: '200px', maxHeight: '400px' }}
             />
-            <div className='card-body'>
-              <h3 className='card-title'>{detailsEventLabelled.title}</h3>
-              <h6>Location: {detailsEventLabelled.location.room}</h6>
-              <h6>
-                Time:{` `}
-                <Moment format='hh:mm A'>
-                  {detailsEventLabelled.date.from}
-                </Moment>{' '}
-                -{` `}
-                <Moment format='hh:mm A'>
-                  {detailsEventLabelled.date.to}
-                </Moment>{' '}
-                {`, `}
-                <Moment format='dddd MMMM D, YYYY'>
-                  {detailsEventLabelled.date.from}
-                </Moment>
-              </h6>
-              <p className='card-text'>{detailsEventLabelled.description}</p>
-              <CardButtons
-                isCatalogued={detailsEventLabelled.isCatalogued}
-                eventId={detailsEventLabelled._id}
-                page='details'
-              />
-            </div>
+            <CardContent page='details' event={detailsEventLabelled} />
           </div>
         </div>
         <div className='d-none d-md-block col-md-1' />

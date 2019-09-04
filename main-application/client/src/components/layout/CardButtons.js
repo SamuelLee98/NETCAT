@@ -30,7 +30,9 @@ const CardButtons = ({
 
   // Date string used for google calendar
   const buildGoogleCalendarString = () => {
-    let dateFrom, dateTo;
+    let dateFrom, dateTo, location;
+
+    // Format date
     if (event.date.allDay) {
       dateFrom = event.date.from.replace(/-|:|\.\d\d\d/g, '').slice(0, 8);
       let toDateObj = new Date(event.date.to);
@@ -42,17 +44,19 @@ const CardButtons = ({
       dateFrom = event.date.from.replace(/-|:|\.\d\d\d/g, '').slice(0, -1);
       dateTo = event.date.to.replace(/-|:|\.\d\d\d/g, '').slice(0, -1);
     }
-    return `https://www.google.com/calendar/render?action=TEMPLATE&text=${
-      event.title
-    }&dates=${dateFrom}/${dateTo}${
-      event.location.address
-        ? `&location=${
-            event.location.room
-              ? event.location.room + ', ' + event.location.address
-              : event.location.address
-          }`
-        : null
-    }&sf=true&output=xml`;
+
+    // Format location
+    if (event.location.address && event.location.room) {
+      location = `&location=${event.location.room +
+        ', ' +
+        event.location.address}`;
+    } else if (event.location.address) {
+      location = `&location=${event.location.address}`;
+    } else {
+      location = '';
+    }
+
+    return `https://www.google.com/calendar/render?action=TEMPLATE&text=${event.title}&dates=${dateFrom}/${dateTo}${location}&sf=true&output=xml`;
   };
 
   // Different styling for different pages

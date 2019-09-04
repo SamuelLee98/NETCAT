@@ -82,10 +82,15 @@ const CardContent = ({
       {page === 'feature' && (
         <Fragment>
           <EllipsisText text={event.description} length={300} />
-          <br />
-          <br />
         </Fragment>
       )}
+      {page === 'details' && (
+        <Fragment>
+          <p>{event.description}</p>
+        </Fragment>
+      )}
+      <br />
+      <br />
       Tags:{' '}
       {event.tags.map((tag, index) => (
         <span key={index} className='badge badge-pill badge-secondary mx-1'>
