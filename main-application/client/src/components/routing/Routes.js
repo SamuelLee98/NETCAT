@@ -10,8 +10,8 @@ import NotFound from '../layout/NotFound';
 import Alerts from '../alert/Alerts';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
-import Dashboard from '../dashboard/Dashboard';
-import AdminDashboard from '../admin-dashboard/AdminDashboard.js';
+import Catalogue from '../catalogue/Catalogue';
+import AdminCatalogue from '../admin-catalogue/AdminCatalogue.js';
 
 const Routes = () => {
   return (
@@ -42,8 +42,8 @@ const Routes = () => {
         <Route exact path='/explore' component={ExploreMore} />
         <Route exact path='/register' component={Register} />
         <Route exact path='/login' component={Login} />
-        <PrivateRoute exact path='/dashboard' component={Dashboard} />
-        <AdminRoute exact path='/admin-dashboard' component={AdminDashboard} />
+        <PrivateRoute exact path='/catalogue' component={Catalogue} />
+        <AdminRoute exact path='/admin-catalogue' component={AdminCatalogue} />
         <Route component={NotFound} />
       </Switch>
     </Fragment>

@@ -59,7 +59,9 @@ const Feature = ({
     getFeaturedEvents(page);
     getCatalogueEventIds();
 
-    return () => clearEvents();
+    return () => {
+      clearEvents();
+    };
   }, [page, setPage, getFeaturedEvents, getCatalogueEventIds, clearEvents]);
 
   useEffect(() => {

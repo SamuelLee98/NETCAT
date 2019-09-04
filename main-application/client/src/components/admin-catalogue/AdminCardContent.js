@@ -8,7 +8,7 @@ const AdminCardContent = ({ event, setCardHeight }) => {
     if (setCardHeight != null) {
       setCardHeight(document.getElementById('card-body').clientHeight);
     }
-  }, []);
+  }, [setCardHeight]);
 
   let MomentComponent;
   if (event.date.multiDay && event.date.allDay) {

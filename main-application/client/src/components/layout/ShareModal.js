@@ -43,14 +43,8 @@ const ShareModal = ({ onDisplay, url, closeModal }) => {
     console.log(url);
     window.FB.ui({
       method: 'send',
-      /**
-       * @todo
-       * FIX THIS URL WHEN DEPLOYING
-       *
-       * May need to implement this for mobile users
-       * https://developers.facebook.com/docs/sharing/messenger/web
-       */
-      link: 'http://google.com'
+      name: shareMessage,
+      link: url
     });
   };
 

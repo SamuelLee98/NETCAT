@@ -21,18 +21,17 @@ export const getCatalogueEvents = (
   try {
     if (initialLoad) dispatch({ type: CATALOGUE_EVENTS_LOADING });
     let res = await axios.get('/api/catalogue/me');
+    let ids = res.data;
 
-    let eventsPromises = res.data
-      .slice(offset, offset + limit)
-      .map(async event => {
-        let res2 = await axios.get(`/api/events/${event.eventId}`);
-        return res2.data;
-      });
+    let eventsPromises = ids.slice(offset, offset + limit).map(async event => {
+      let res2 = await axios.get(`/api/events/${event.eventId}`);
+      return res2.data;
+    });
 
     let events = await Promise.all(eventsPromises);
 
     let hasMore = true;
-    if (offset + limit >= res.data.length) hasMore = false;
+    if (offset + limit >= ids.length) hasMore = false;
 
     dispatch({
       type: GET_CATALOGUE_EVENTS,

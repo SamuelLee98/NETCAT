@@ -65,11 +65,11 @@ const Sidenav = ({
           {isAuthenticated ? (
             <Fragment>
               <Link
-                to={isAdmin ? '/admin-dashboard' : '/dashboard'}
-                style={toggleStyle('dashboard')}
+                to={isAdmin ? '/admin-catalogue' : '/catalogue'}
+                style={toggleStyle('catalogue')}
                 onClick={() => toggleSideNav(false)}
               >
-                DASHBOARD
+                CATALOGUE
               </Link>
               <a
                 onClick={() => {

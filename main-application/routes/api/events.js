@@ -182,7 +182,7 @@ router.put('/feature/:id', adminAuth, async (req, res) => {
 
 // @route   POST api/events
 // @desc    Create a NORMAL or FEATURED event
-// @access  Developer
+// @access  Admin
 router.post(
   '/',
   [

@@ -64,7 +64,7 @@ const ExploreMore = ({ setPage, getExploreEvents, clearEvents, event }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setPage('dashboard');
+    setPage('catalogue');
     getExploreEvents();
     return () => clearEvents();
   }, [setPage, getExploreEvents, clearEvents]);

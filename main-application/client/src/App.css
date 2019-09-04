@@ -357,3 +357,12 @@ body {
   height: 300px;
   font-style: italic;
 }
+
+/* Event card */
+#event-card {
+  transition: box-shadow 0.5s;
+}
+
+#event-card:hover {
+  box-shadow: 10px 20px 40px -5px gray;
+}

@@ -125,11 +125,11 @@ const Navbar = ({
                   <ul className='navbar-nav'>
                     <li className='nav-item'>
                       <Link
-                        to={isAdmin ? '/admin-dashboard' : '/dashboard'}
+                        to={isAdmin ? '/admin-catalogue' : '/catalogue'}
                         className='btn btn-header btn-outline-danger'
-                        style={toggleStyle('dashboard')}
+                        style={toggleStyle('catalogue')}
                       >
-                        <i className='fas fa-user fa-sm' /> DASHBOARD
+                        <i className='fas fa-user fa-sm' /> CATALOGUE
                       </Link>
                     </li>
                     <li className='nav-item'>
@@ -243,9 +243,9 @@ const Navbar = ({
                   <ul className='navbar-nav'>
                     <li className='nav-item'>
                       <Link
-                        to={isAdmin ? '/admin-dashboard' : '/dashboard'}
+                        to={isAdmin ? '/admin-catalogue' : '/catalogue'}
                         className='btn btn-header btn-outline-danger'
-                        style={toggleStyle('dashboard')}
+                        style={toggleStyle('catalogue')}
                       >
                         <i className='fas fa-user fa-lg' />
                       </Link>
@@ -355,11 +355,11 @@ const Navbar = ({
                   <Fragment>
                     <div className='col'>
                       <Link
-                        to={isAdmin ? '/admin-dashboard' : '/dashboard'}
+                        to={isAdmin ? '/admin-catalogue' : '/catalogue'}
                         className='btn btn-header btn-outline-danger'
-                        style={toggleStyle('dashboard')}
+                        style={toggleStyle('catalogue')}
                       >
-                        <i className='fa fa-user' /> DASHBOARD
+                        <i className='fa fa-user' /> CATALOGUE
                       </Link>
                     </div>
                     <div className='col'>

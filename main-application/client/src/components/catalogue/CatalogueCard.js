@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import CardContent from '../layout/CardContent';
 
-const Catalogue = ({ event, onDeleteClick, onEventCardClick }) => {
+const CatalogueCard = ({ event, onDeleteClick, onEventCardClick }) => {
   const [cardHeight, setCardHeight] = useState(null);
   const [onDelete, toggleOnDelete] = useState(false);
 
@@ -40,9 +40,9 @@ const Catalogue = ({ event, onDeleteClick, onEventCardClick }) => {
   );
 };
 
-Catalogue.propTypes = {
+CatalogueCard.propTypes = {
   onDeleteClick: PropTypes.func.isRequired,
   event: PropTypes.object.isRequired
 };
 
-export default Catalogue;
+export default CatalogueCard;

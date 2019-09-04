@@ -1,11 +1,3 @@
-#event-card {
-  transition: box-shadow 0.5s;
-}
-
-#event-card:hover {
-  box-shadow: 10px 20px 40px -5px gray;
-}
-
 .limited-text {
   max-height: 250px;
 }

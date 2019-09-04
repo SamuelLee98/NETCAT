@@ -1,11 +1,9 @@
 import axios from 'axios';
 import {
-  GET_MORE_EVENTS,
   GET_FEATURED_EVENTS,
   GET_DETAILS_EVENT,
   GET_EXPLORE_EVENTS,
   EVENT_ERROR,
-  MORE_LOADING,
   FEATURED_LOADING,
   EXPLORE_LOADING,
   DETAILS_LOADING,
@@ -22,27 +20,6 @@ export const setPage = (page = '') => dispatch => {
     type: SET_PAGE,
     payload: page
   });
-};
-
-// Get more events on index page
-export const getMoreEvents = (school = '') => async dispatch => {
-  try {
-    // Set loading
-    dispatch(loading(MORE_LOADING));
-    const res = await axios.get(
-      `/api/events/index?school=${school}&limit=6&featured=false`
-    );
-
-    dispatch({
-      type: GET_MORE_EVENTS,
-      payload: res.data
-    });
-  } catch (err) {
-    dispatch({
-      type: EVENT_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
-  }
 };
 
 // Get FEATURED events on index page

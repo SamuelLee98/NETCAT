@@ -9,7 +9,7 @@ import { getCatalogueEvents, clearCatalogue } from '../../actions/catalogue';
 import { setPage } from '../../actions/event';
 
 // Components
-import Catalogue from './Catalogue';
+import CatalogueCard from './CatalogueCard';
 import Spinner from '../layout/Spinner';
 import ServerError from '../layout/ServerError';
 import MapWrapper from '../map/MapWrapper';
@@ -18,7 +18,7 @@ import MapWrapper from '../map/MapWrapper';
 import spinner from '../layout/spinner.svg';
 
 // css
-import './Dashboard.css';
+import './Catalogue.css';
 
 const eventsPerPage = 5;
 
@@ -40,7 +40,7 @@ const Loader = (
   </div>
 );
 
-const Dashboard = ({
+const Catalogue = ({
   setPage,
   getCatalogueEvents,
   clearCatalogue,
@@ -80,15 +80,13 @@ const Dashboard = ({
     setCurrOffset(currOffset - 1);
   }, [currOffset]);
 
-  console.log(events);
-
-  const loadEvents = () => {
-    getCatalogueEvents(currOffset, eventsPerPage);
+  const loadEvents = async () => {
+    await getCatalogueEvents(currOffset, eventsPerPage);
     setCurrOffset(currOffset + eventsPerPage);
   };
 
   if (isAdmin) {
-    return <Redirect to='/admin-dashboard' />;
+    return <Redirect to='/admin-catalogue' />;
   }
 
   if (catalogue.error && catalogue.error.status === 500) {
@@ -120,7 +118,7 @@ const Dashboard = ({
               loader={Loader}
             >
               {events.map(event => (
-                <Catalogue
+                <CatalogueCard
                   key={event._id}
                   event={event}
                   onDeleteClick={onDeleteClick}
@@ -170,7 +168,7 @@ const Dashboard = ({
   );
 };
 
-Dashboard.propTypes = {
+Catalogue.propTypes = {
   setPage: PropTypes.func.isRequired,
   getCatalogueEvents: PropTypes.func.isRequired,
   clearCatalogue: PropTypes.func.isRequired,
@@ -190,4 +188,4 @@ export default connect(
     clearCatalogue,
     setPage
   }
-)(Dashboard);
+)(Catalogue);

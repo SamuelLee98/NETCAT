@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import moment from 'moment';
 // Actions
 import { addToCatalogue, deleteFromCatalogue } from '../../actions/catalogue';
 import { openModal } from '../../actions/modal';
@@ -12,7 +12,7 @@ const CardButtons = ({
   deleteFromCatalogue,
   openModal,
   isCatalogued,
-  eventId,
+  event,
   onDeleteClick,
   onIntermediateDeleteClick,
   page
@@ -23,16 +23,43 @@ const CardButtons = ({
     onIntermediateDeleteClick();
     // Remove event after .5s
     setTimeout(() => {
-      deleteFromCatalogue(eventId);
+      deleteFromCatalogue(event._id);
       onDeleteClick();
     }, 500);
+  };
+
+  // Date string used for google calendar
+  const buildGoogleCalendarString = () => {
+    let dateFrom, dateTo;
+    if (event.date.allDay) {
+      dateFrom = event.date.from.replace(/-|:|\.\d\d\d/g, '').slice(0, 8);
+      let toDateObj = new Date(event.date.to);
+      dateTo = toDateObj
+        .toISOString()
+        .replace(/-|:|\.\d\d\d/g, '')
+        .slice(0, 8);
+    } else {
+      dateFrom = event.date.from.replace(/-|:|\.\d\d\d/g, '').slice(0, -1);
+      dateTo = event.date.to.replace(/-|:|\.\d\d\d/g, '').slice(0, -1);
+    }
+    return `https://www.google.com/calendar/render?action=TEMPLATE&text=${
+      event.title
+    }&dates=${dateFrom}/${dateTo}${
+      event.location.address
+        ? `&location=${
+            event.location.room
+              ? event.location.room + ', ' + event.location.address
+              : event.location.address
+          }`
+        : null
+    }&sf=true&output=xml`;
   };
 
   // Different styling for different pages
   if (page === 'map')
     return (
       <div className='d-flex justify-content-center'>
-        <Link className='btn btn-danger btn-block' to={`/details/${eventId}`}>
+        <Link className='btn btn-danger btn-block' to={`/details/${event._id}`}>
           READ MORE
         </Link>
       </div>
@@ -48,7 +75,7 @@ const CardButtons = ({
           data-placement='top'
           title='Share this post'
           onClick={() => {
-            openModal(eventId);
+            openModal(event._id);
           }}
         />
         <i
@@ -56,7 +83,8 @@ const CardButtons = ({
           className='btn fas fa-calendar-alt fa-2x'
           data-toggle='tooltip'
           data-placement='top'
-          title='Add to calender'
+          title='Add to Google Calender'
+          onClick={() => window.open(buildGoogleCalendarString(), '_blank')}
         />
         {isCatalogued ? (
           <i
@@ -65,7 +93,7 @@ const CardButtons = ({
             data-toggle='tooltip'
             data-placement='top'
             title='Remove from catalogue'
-            onClick={() => deleteFromCatalogue(eventId)}
+            onClick={() => deleteFromCatalogue(event._id)}
             style={{ color: 'red' }}
           />
         ) : (
@@ -75,7 +103,7 @@ const CardButtons = ({
             data-toggle='tooltip'
             data-placement='top'
             title='Add to catalogue'
-            onClick={() => addToCatalogue(eventId)}
+            onClick={() => addToCatalogue(event._id)}
           />
         )}
       </div>
@@ -85,7 +113,7 @@ const CardButtons = ({
     return (
       <Fragment>
         <div>
-          <Link className='btn btn-danger' to={`/details/${eventId}`}>
+          <Link className='btn btn-danger' to={`/details/${event._id}`}>
             READ MORE
           </Link>
           <div className='float-right'>
@@ -96,7 +124,7 @@ const CardButtons = ({
               data-placement='top'
               title='Share this post'
               onClick={() => {
-                openModal(eventId);
+                openModal(event._id);
               }}
             />
             <i
@@ -104,28 +132,25 @@ const CardButtons = ({
               className='btn fas fa-calendar-alt px-0 my-1 mx-3 mx-md-1'
               data-toggle='tooltip'
               data-placement='top'
-              title='Add to calender'
+              title='Add to Google Calender'
+              onClick={() => window.open(buildGoogleCalendarString(), '_blank')}
             />
-            {isCatalogued ? (
-              <i
-                id='card-button-icon'
-                className='btn fas fa-heart px-0 my-1'
-                data-toggle='tooltip'
-                data-placement='top'
-                title='Remove from catalogue'
-                onClick={() => deleteFromCatalogue(eventId)}
-                style={{ color: 'red' }}
-              />
-            ) : (
-              <i
-                id='card-button-icon'
-                className='btn fas fa-heart px-0 my-1'
-                data-toggle='tooltip'
-                data-placement='top'
-                title='Add to catalogue'
-                onClick={() => addToCatalogue(eventId)}
-              />
+            {console.log(
+              event.date.from.replace(/-|:|\.\d\d\d/g, '').slice(0, -1)
             )}
+            <i
+              id='card-button-icon'
+              className='btn fas fa-heart px-0 my-1'
+              data-toggle='tooltip'
+              data-placement='top'
+              title='Remove from catalogue'
+              onClick={() =>
+                isCatalogued
+                  ? deleteFromCatalogue(event._id)
+                  : addToCatalogue(event._id)
+              }
+              style={isCatalogued ? { color: 'red' } : null}
+            />
           </div>
         </div>
       </Fragment>
@@ -134,7 +159,7 @@ const CardButtons = ({
   if (page === 'catalogue')
     return (
       <div>
-        <Link className='btn btn-danger' to={`/details/${eventId}`}>
+        <Link className='btn btn-danger' to={`/details/${event._id}`}>
           READ MORE
         </Link>
         <div className='float-right'>
@@ -145,7 +170,7 @@ const CardButtons = ({
             data-placement='top'
             title='Share this post'
             onClick={() => {
-              openModal(eventId);
+              openModal(event._id);
             }}
           />
           <i
@@ -153,7 +178,8 @@ const CardButtons = ({
             className='btn fas fa-calendar-alt fa-2x px-0 my-1 mx-3'
             data-toggle='tooltip'
             data-placement='top'
-            title='Add to calender'
+            title='Add to Google Calender'
+            onClick={() => window.open(buildGoogleCalendarString(), '_blank')}
           />
           <i
             id='card-button-icon'
@@ -170,7 +196,7 @@ const CardButtons = ({
 
   return (
     <div>
-      <Link className='btn btn-danger' to={`/details/${eventId}`}>
+      <Link className='btn btn-danger' to={`/details/${event._id}`}>
         READ MORE
       </Link>
       <div className='float-right'>
@@ -181,7 +207,7 @@ const CardButtons = ({
           data-placement='top'
           title='Share this post'
           onClick={() => {
-            openModal(eventId);
+            openModal(event._id);
           }}
         />
         <i
@@ -189,7 +215,8 @@ const CardButtons = ({
           className='btn fas fa-calendar-alt fa-2x px-0 my-1 mx-3'
           data-toggle='tooltip'
           data-placement='top'
-          title='Add to calender'
+          title='Add to Google Calender'
+          onClick={() => window.open(buildGoogleCalendarString(), '_blank')}
         />
         {isCatalogued ? (
           <i
@@ -198,7 +225,7 @@ const CardButtons = ({
             data-toggle='tooltip'
             data-placement='top'
             title='Remove from catalogue'
-            onClick={() => deleteFromCatalogue(eventId)}
+            onClick={() => deleteFromCatalogue(event._id)}
             style={{ color: 'red' }}
           />
         ) : (
@@ -208,7 +235,7 @@ const CardButtons = ({
             data-toggle='tooltip'
             data-placement='top'
             title='Add to catalogue'
-            onClick={() => addToCatalogue(eventId)}
+            onClick={() => addToCatalogue(event._id)}
           />
         )}
       </div>
@@ -220,7 +247,7 @@ CardButtons.propTypes = {
   addToCatalogue: PropTypes.func.isRequired,
   deleteFromCatalogue: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
-  eventId: PropTypes.string.isRequired,
+  event: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired
 };
 

@@ -22,20 +22,22 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case GET_CATALOGUE_EVENTS:
-      let idsArr;
-      if (state.events !== null) idsArr = state.events.map(event => event._id);
+      let newEventsState;
+      if (state.events !== null) {
+        let idsArr = state.events.map(event => event._id);
+        newEventsState = state.events;
+        payload.events.forEach(event => {
+          if (idsArr.includes(event._id) === false) {
+            newEventsState.push(event);
+          }
+        });
+      } else {
+        newEventsState = payload.events;
+      }
 
       return {
         ...state,
-        events:
-          state.events === null
-            ? payload.events
-            : [
-                ...state.events,
-                ...payload.events.filter(
-                  event => idsArr.includes(event._id) === false
-                )
-              ],
+        events: newEventsState,
         hasMore: payload.hasMore,
         eventsLoading: false,
         error: null

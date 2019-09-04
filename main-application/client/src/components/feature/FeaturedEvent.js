@@ -10,7 +10,7 @@ const FeaturedEvent = ({ event, onEventCardClick }) => {
     >
       <img
         src={event.thumbnailUrl}
-        id='featured-thumbnail1'
+        id='featured-thumbnail'
         className='card-img-top img-fluid'
         alt='Responsive Thumbnail'
       />

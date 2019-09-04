@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import Moment from 'react-moment';
 import 'moment-timezone';
-import LinesEllipsis from 'react-lines-ellipsis';
+import EllipsisText from 'react-ellipsis-text';
 import CardButtons from './CardButtons';
 
 const CardContent = ({
@@ -81,13 +81,8 @@ const CardContent = ({
       </div>
       {page === 'feature' && (
         <Fragment>
-          <LinesEllipsis
-            text={event.description}
-            maxLine='6'
-            ellipsis='...'
-            trimRight
-            basedOn='letters'
-          />
+          <EllipsisText text={event.description} length={300} />
+          <br />
           <br />
         </Fragment>
       )}
@@ -101,7 +96,7 @@ const CardContent = ({
       <br />
       <CardButtons
         isCatalogued={event.isCatalogued}
-        eventId={event._id}
+        event={event}
         page={page}
         onDeleteClick={onDeleteClick}
         onIntermediateDeleteClick={onIntermediateDeleteClick}
