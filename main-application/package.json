@@ -24,7 +24,7 @@
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
-    "mongoose": "^5.5.12",
+    "mongoose": "^5.7.5",
     "react-paginate": "^6.3.0",
     "request": "^2.88.0"
   },
